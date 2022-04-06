@@ -969,13 +969,13 @@ static void compute_wireconn_connections(
             VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
         } 
         /* TO INVESTIGATE - Might be unnecessary */
-        else if (from_wire_direction == Direction::SAME) {
+        //else if (from_wire_direction == Direction::SAME) {
             /* a wire heading in the same direction can only connect on the same side of a switch block */
             // if (sb_conn.from_side != ) {
             //     continue;
             // }
             //VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
-        }
+        //}
         else {
             VTR_ASSERT(from_wire_direction == Direction::BIDIR);
         }

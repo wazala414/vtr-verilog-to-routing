@@ -1848,9 +1848,9 @@ static int get_unidir_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
         to_dir = Direction::INC;
     }
     /* TO INVESTIGATE - Might be unnecessary */
-    if (to_sb == to_seg) {
-        to_dir = Direction::SAME;
-    }
+    // if (to_sb == to_seg) {
+    //     to_dir = Direction::SAME;
+    // }
 
     *Fs_clipped = false;
 
