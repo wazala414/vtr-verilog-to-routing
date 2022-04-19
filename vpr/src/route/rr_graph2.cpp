@@ -701,11 +701,7 @@ int get_unidir_opin_connections(RRGraphBuilder& rr_graph_builder,
                      Direction::INC, max_chan_width, true, inc_muxes, &num_inc_muxes, &dummy);
     label_wire_muxes(chan, seg, seg_details, seg_type_index, max_len,
                      Direction::DEC, max_chan_width, true, dec_muxes, &num_dec_muxes, &dummy);
-    /* TO INVESTIGATE - Might be unnecessary
-                        Make sure Direction::SAME is fully defined 
-                        Requires MUX for same side        */
-    //label_wire_muxes(chan, seg, seg_details, seg_type_index, max_len,
-                     //Direction::SAME, max_chan_width, true, dec_muxes, &num_dec_muxes, &dummy);                 
+    /* CODE CHECKED - No SAME needed, just creates muxes for DEC and INC wires respectively. */                 
 
     /* Clip Fc to the number of muxes. */
     if (((Fc / 2) > num_inc_muxes) || ((Fc / 2) > num_dec_muxes)) {
@@ -757,7 +753,7 @@ bool is_cblock(const int chan, const int seg, const int track, const t_chan_seg_
     VTR_ASSERT(ofs >= 0);
     VTR_ASSERT(ofs < length);
 
-    /* TO INVESTIGATE - Does it still hold with ::SAME not existing ? What is the ofs about ? Understand why the we check DEC and assume that */
+    /* TO INVESTIGATE - Does it still hold with ::SAME not existing ? Ofs is the offset and is set at line 751 Understand why the we check DEC and assume that */
     /* If unidir segment that is going backwards, we need to flip the ofs */
     if (Direction::DEC == seg_details[track].direction()) {
         ofs = (length - 1) - ofs;
