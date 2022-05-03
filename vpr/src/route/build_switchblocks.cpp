@@ -759,24 +759,24 @@ static void get_switchpoint_wires(
                  * at the left or bottom sides (analogous for wires going in INC direction) */
                 /* EXPLANATION - Seems to specify the edges of each wire. It just states where the wire in/out can be. 
                                  It just seems to be a sanity check before actually starting putting on switchpoints. */
-                if (side == TOP || side == RIGHT) {
-                    if (seg_direction == Direction::DEC && is_dest) {
-                        continue;
-                    }
-                    if (seg_direction == Direction::INC && !is_dest) {
-                        continue;
-                    }
-                } else {
-                    VTR_ASSERT(side == LEFT || side == BOTTOM);
-                    if (seg_direction == Direction::DEC && !is_dest) {
-                        continue;
-                    }
-                    if (seg_direction == Direction::INC && is_dest) {
-                        continue;
-                    }
-                /* CODE CHECKED - As explained, it seems to only be a wire sanity check.
-                                  This works because wires can only go along the same CHAN. Switchpoint are not yet put here. */
-                }
+                // if (side == TOP || side == RIGHT) {
+                //     if (seg_direction == Direction::DEC && is_dest) {
+                //         continue;
+                //     }
+                //     if (seg_direction == Direction::INC && !is_dest) {
+                //         continue;
+                //     }
+                // } else {
+                //     VTR_ASSERT(side == LEFT || side == BOTTOM);
+                //     if (seg_direction == Direction::DEC && !is_dest) {
+                //         continue;
+                //     }
+                //     if (seg_direction == Direction::INC && is_dest) {
+                //         continue;
+                //     }
+                // /* CODE CHECKED - As explained, it seems to only be a wire sanity check.
+                //                   This works because wires can only go along the same CHAN. Switchpoint are not yet put here. */
+                // }
 
                 int wire_switchpoint = get_switchpoint_of_wire(grid, chan_type, chan_details[iwire], seg_coord, side);
 
@@ -953,21 +953,23 @@ static void compute_wireconn_connections(
         int src_wire_ind = iconn % potential_src_wires.size();  //Index in src set
         int from_wire = potential_src_wires[src_wire_ind].wire; //Index in channel
 
+        /* TO INVESTIGATE - to_wire_direction does not exist, only from_wire_direction. 
+                            The code might be trying to base itself on that as an assumption rather than using another variable. */
         Direction from_wire_direction = from_chan_details[from_x][from_y][from_wire].direction();
-        if (from_wire_direction == Direction::INC) {
-            /* if this is a unidirectional wire headed in the increasing direction (relative to coordinate system)
-             * then switch block source side should be BOTTOM or LEFT */
-            if (sb_conn.from_side == TOP || sb_conn.from_side == RIGHT) {
-                continue;
-            }
-            VTR_ASSERT(sb_conn.from_side == BOTTOM || sb_conn.from_side == LEFT);
-        } else if (from_wire_direction == Direction::DEC) {
-            /* a wire heading in the decreasing direction can only connect from the TOP or RIGHT sides of a switch block */
-            if (sb_conn.from_side == BOTTOM || sb_conn.from_side == LEFT) {
-                continue;
-            }
-            VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
-        } 
+        // if (from_wire_direction == Direction::INC) {
+        //     /* if this is a unidirectional wire headed in the increasing direction (relative to coordinate system)
+        //      * then switch block source side should be BOTTOM or LEFT */
+        //     if (sb_conn.from_side == TOP || sb_conn.from_side == RIGHT) {P
+        //         continue;
+        //     }
+        //     VTR_ASSERT(sb_conn.from_side == BOTTOM || sb_conn.from_side == LEFT);
+        // } else if (from_wire_direction == Direction::DEC) {
+        //     /* a wire heading in the decreasing direction can only connect from the TOP or RIGHT sides of a switch block */
+        //     if (sb_conn.from_side == BOTTOM || sb_conn.from_side == LEFT) {
+        //         continue;
+        //     }
+        //     VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
+        // } 
         /* TO INVESTIGATE - Create new arch with more switchpoints */
         /* CODE CHECKED - Previous statement looks like it still holds. Still related to the nomenclature of DEC and INC that states the if it's DEC then it can't go it means it's to only 2 possible direction. Following code shouldn't help. */
         //else if (from_wire_direction == Direction::SAME) {
@@ -977,9 +979,9 @@ static void compute_wireconn_connections(
             // }
             //VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
         //}
-        else {
-            VTR_ASSERT(from_wire_direction == Direction::BIDIR);
-        }
+        // else {
+        //     VTR_ASSERT(from_wire_direction == Direction::BIDIR);
+        // }
 
         //Evaluate permutation functions for the from_wire
         SB_Side_Connection side_conn(sb_conn.from_side, sb_conn.to_side);
@@ -1000,6 +1002,8 @@ static void compute_wireconn_connections(
             if (dest_wire_ind < 0) {
                 VPR_FATAL_ERROR(VPR_ERROR_ARCH, "Got a negative wire from switch block formula %s", permutations_ref[iperm].c_str());
             }
+
+            /* TO INVESTIGATE - Something might be going wrong here */
 
             int to_wire = potential_dest_wires[dest_wire_ind].wire; //Index in channel
 

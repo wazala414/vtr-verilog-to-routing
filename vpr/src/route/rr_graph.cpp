@@ -1682,6 +1682,7 @@ static void build_rr_chan(RRGraphBuilder& rr_graph_builder,
             }
         }
 
+        /* TO INVESTIGATE - Specifies straight through connection only */
         /* walk over the switch blocks along the source track and implement edges from this track to other tracks
          * in the same channel (i.e. straight-through connections) */
         for (int target_seg = start - 1; target_seg <= end + 1; target_seg++) {
@@ -2036,6 +2037,8 @@ static void advance_to_next_block_side(t_physical_tile_type_ptr Type, int& width
     //      *    4    *
     //      ***********
     //
+
+    /* TO INVESTIGATE - Does this still hold */
 
     //Validate current state
     VTR_ASSERT(width_offset >= 0 && width_offset < Type->width);

@@ -1341,6 +1341,8 @@ bool verify_rr_node_indices(const DeviceGrid& grid,
     return true;
 }
 
+
+/* TO INVESTIGATE - Might also be a problem */
 int get_track_to_pins(RRGraphBuilder& rr_graph_builder,
                       int seg,
                       int chan,
@@ -1435,6 +1437,9 @@ int get_track_to_pins(RRGraphBuilder& rr_graph_builder,
  * switches are marked as being of the types of the larger (lower R) pass
  * transistor.
  */
+
+/* TO INVESTIGATE - Deals with track to track following sb pattern */
+
 int get_track_to_tracks(RRGraphBuilder& rr_graph_builder,
                         const int from_chan,
                         const int from_seg,
@@ -1497,9 +1502,10 @@ int get_track_to_tracks(RRGraphBuilder& rr_graph_builder,
     //If source and destination segments both lie along the same channel
     //we clip the loop bounds to the switch blocks of interest and proceed
     //normally
+    /* TO INVESTIGATE - Does this still holds ? */
     if (to_type == from_type) {
-        start = to_seg - 1;
-        end = to_seg;
+            start = to_seg - 1;
+            end = to_seg;
     }
 
     //Walk along the 'from' wire segment identifying if a switchblock is located
@@ -1527,6 +1533,8 @@ int get_track_to_tracks(RRGraphBuilder& rr_graph_builder,
          * i.e. for segments laid in the x-direction, sb_seg corresponds to the x coordinate and from_chan to the y,
          * but for segments in the y-direction, from_chan is the x coordinate and sb_seg is the y. So here we reverse
          * the coordinates if necessary */
+        /* TO INVESTIGATE - In this case, it seems to assume that if the types are equal then the channel number must be equal as well.
+        This is not a problem ONLY IF that is used only for wires for which we are not at the endpoint. */
         if (from_type == to_type) {
             //Same channel
             to_chan = from_chan;
@@ -1551,6 +1559,10 @@ int get_track_to_tracks(RRGraphBuilder& rr_graph_builder,
 
         /* Figure out whether the switch block at the current sb_seg coordinate is *behind*
          * the target channel segment (with respect to VPR coordinate system) */
+        /* TO INVESTIGATE - Definitely something wrong in this function
+        This could be holding assuming that the segment information has not lost its "SAME side" meaning */
+        /* EXPLANATION - Checking if the SB is the start of the segment allows you to know if the SB is behind or not. 
+        Only thing I do not understand is how does it deal with uni-directionality. "start" only seem to hold if going in increasing direction */
         is_behind = false;
         if (to_type == from_type) {
             if (sb_seg == start) {
@@ -1727,6 +1739,7 @@ static int get_bidir_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
  * edges added .
  * See route/build_switchblocks.c for a detailed description of how the switch block
  * connection map sb_conn_map is generated. */
+/* TO INVESTIGATE - This is used earlier with INC and DEC as input arguments for custom switch blocks */
 static int get_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
                                  const int from_wire,
                                  const int to_chan,
@@ -1742,6 +1755,9 @@ static int get_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
     int to_x, to_y;
     int tile_x, tile_y;
 
+    /* CODE CHECKED - This gets the right coordinates from segments and chan. 
+    Later tile_x and tile_y are used to refer to the SB coords and NOT to the CB, therefore this holds. 
+    If NOT the case, the this doesn't hold for same side scenario as it assumes that automatically coords are behind. */
     /* get x/y coordinates from seg/chan coordinates */
     if (CHANX == to_chan_type) {
         to_x = tile_x = to_seg;
@@ -1769,6 +1785,7 @@ static int get_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
         for (int iconn = 0; iconn < (int)conn_vector.size(); ++iconn) {
             if (conn_vector.at(iconn).from_wire != from_wire) continue;
 
+            /* CODE CHECKED - At the end uses regular from and to node id to specify connections. So should be fine */
             int to_wire = conn_vector.at(iconn).to_wire;
             RRNodeId to_node = rr_graph_builder.node_lookup().find_node(to_x, to_y, to_chan_type, to_wire);
 
@@ -1843,7 +1860,7 @@ static int get_unidir_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
     if (to_sb < to_seg) {
         to_dir = Direction::INC;
     }
-    /* TO INVESTIGATE - Might be unnecessary */
+    /* CODE CHECKED - Unnecessary */
     // if (to_sb == to_seg) {
     //     to_dir = Direction::SAME;
     // }
@@ -1852,7 +1869,7 @@ static int get_unidir_track_to_chan_seg(RRGraphBuilder& rr_graph_builder,
 
     /* get list of muxes to which we can connect */
     int dummy;
-    /* TO INVESTIGATE - Make sure this allows label on the same side */
+    /* CODE CHECKED - Function deals with predefined switchblocks */
     label_wire_muxes(to_chan, to_seg, seg_details, UNDEFINED, max_len,
                      to_dir, max_chan_width, false, mux_labels, &num_labels, &dummy);
 
@@ -2199,8 +2216,7 @@ void load_sblock_pattern_lookup(const int i,
 
         /* Figure out all the tracks on a side that are ending and the
          * ones that are passing through and have a SB. */
-        /* TO INVESTIGATE - Investigate the need for the 2 following function to include
-                            mentions of same side */
+        /* CODE CHECKED - Whole function deals with predefined topologies so doesn't matter yet */
         enum Direction end_dir = (pos_dir ? Direction::DEC : Direction::INC);
         label_incoming_wires(chan, seg, sb_seg,
                              seg_details, chan_len, end_dir, nodes_per_chan->max,
@@ -2242,7 +2258,7 @@ void load_sblock_pattern_lookup(const int i,
          * passing and ending wires so the above statement still holds
          * if you replace "passing" by "incoming" */
         
-        //Added
+        /* CHANGE DONE - Not taking into account same side connection */
         if (!incoming_wire_label[side_same].empty()) {
             for (int ichan = 0; ichan < nodes_per_chan->max; ichan++) {
                 int itrack = ichan;
@@ -2399,7 +2415,7 @@ static void label_wire_muxes(const int chan_num,
                 }
             }
 
-            /* TO INVESTIGATE - Does this still hold if ::SAME doesn't exists ? */
+            /* CODE CHECKED - Seems to be a convention that just affects segments description */
             /* Determine if we are a wire startpoint */
             is_endpoint = (seg_num == start);
             if (Direction::DEC == seg_details[itrack].direction()) {
@@ -2465,7 +2481,7 @@ static void label_incoming_wires(const int chan_num,
                 start = get_seg_start(seg_details, itrack, chan_num, seg_num);
                 end = get_seg_end(seg_details, itrack, start, chan_num, max_len);
 
-                /* TO INVESTIGATE - Does this still hold if ::SAME doesn't exist ? */
+                /* CODE CHECKED - Seems to be a convention that just affects segments description */
                 /* Determine if we are a wire endpoint */
                 is_endpoint = (seg_num == end);
                 if (Direction::DEC == seg_details[itrack].direction()) {
