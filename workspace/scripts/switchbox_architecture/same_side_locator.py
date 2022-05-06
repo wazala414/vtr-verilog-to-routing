@@ -85,11 +85,12 @@ else:
                 # Sets values of Regex to use
                 re_edges = re.compile('.*<edge\s+sink_node=\"(?:(?P<sink>\d+))\"\s+src_node=\"(?:(?P<src>\d+))\"\s+switch_id=\"(?:(?P<switch>\d+))\"')
                 re_nodes = re.compile('.*<loc\s+ptc=\"(?:(?P<ptc>\d+))\".+xhigh=\"(?:(?P<xhigh>\d+))\"\s+xlow=\"(?:(?P<xlow>\d+))\"\s+yhigh=\"(?:(?P<yhigh>\d+))\"\s+ylow=\"(?:(?P<ylow>\d+))\"')
-                re_nodes_id = re.compile('.*<node.+id=\"(?:(?P<id>\d+))\"')
+                re_nodes_id = re.compile('.*<node.+id=\"(?:(?P<id>\d+))\".+type=\"(?:(?P<type>.+))\"\>')
                 re_nodes_type = re.compile('.*<node.+direction=\"(?:(?P<dir>.+))\".+id=\"(?:(?P<id>.+))\"\s+type=\"(?:(?P<chan>.+))\"\>')
 
                 # Variable for remembering the node ID
                 node_id = None
+                #node_chan = None
                 node_extended = False
 
                 # Loops through line of the route file
@@ -112,12 +113,13 @@ else:
 
                     elif match_nodes_id:
                         node_id = match_nodes_id.group('id')
+                        node_chan = match_nodes_id.group('type')
 
                     if match_nodes:
                         if node_extended:
                             ser_nodes = pd.Series(data={'id': node_id, 'chan': node_chan, 'dir': node_dir, 'ptc': match_nodes.group('ptc'), 'xhigh': match_nodes.group('xhigh'), 'xlow': match_nodes.group('xlow'), 'yhigh': match_nodes.group('yhigh'), 'ylow': match_nodes.group('ylow')}, index=['id', 'chan', 'dir', 'ptc', 'xhigh', 'xlow', 'yhigh', 'ylow'])
                         else:
-                            ser_nodes = pd.Series(data={'id': node_id, 'chan': '', 'dir': '', 'ptc': match_nodes.group('ptc'), 'xhigh': match_nodes.group('xhigh'), 'xlow': match_nodes.group('xlow'), 'yhigh': match_nodes.group('yhigh'), 'ylow': match_nodes.group('ylow')}, index=['id', 'chan', 'dir', 'ptc', 'xhigh', 'xlow', 'yhigh', 'ylow'])
+                            ser_nodes = pd.Series(data={'id': node_id, 'chan': node_chan, 'dir': '', 'ptc': match_nodes.group('ptc'), 'xhigh': match_nodes.group('xhigh'), 'xlow': match_nodes.group('xlow'), 'yhigh': match_nodes.group('yhigh'), 'ylow': match_nodes.group('ylow')}, index=['id', 'chan', 'dir', 'ptc', 'xhigh', 'xlow', 'yhigh', 'ylow'])
                         df_node = df_node.append(ser_nodes, ignore_index=True)
                         node_extended = False
         
@@ -136,12 +138,13 @@ else:
     else:    
         result = open("results/output.txt", 'x')
 
+    df_results = pd.DataFrame(columns=['in_id','out_id','in_type','out_type'])
+
     # Iterates through nodes edges and pickup nodes ids
     for _,iter_node in df_edge.iterrows():
         # Loop through the src node ids that have an edge with the current sink_nodes
         node_in = df_node.loc[df_node['id'] == iter_node[2]]
         node_out = df_node.loc[df_node['id'] == iter_node[1]]
-
         # if node_in['chan'].values and node_out['chan'].values:
         #     print("Same Channel")
         #     result.write("\nSame Channel")
@@ -156,9 +159,15 @@ else:
         #     result.write('\nDirection In: %s' % node_in['dir'].values + '\tDirection Out: %s' % node_out['dir'].values)
         # # Syntax to refer to node
 
+        ser_results = pd.Series(data={'in_id': int(node_in['id'].values),'out_id': int(node_out['id'].values),'in_type': node_in['chan'].values,'out_type': node_out['chan'].values}, index=['in_id','out_id','in_type','out_type'])
+        df_results = df_results.append(ser_results, ignore_index=True)
+
         # Output found same side connection
-        if (node_in['chan'].values and node_out['chan'].values) and (not node_in['dir'].values and not node_out['dir'].values):
-            result.write('Found')
+        if (node_in['chan'].values == node_out['chan'].values) and (node_in['dir'].values != node_out['dir'].values) and (node_in['dir'].values and node_out['dir'].values):
+            result.write('Found\n')
+    
+    df_results.to_csv('results/rr_graph_results_panda.csv')
+    
 
 
 

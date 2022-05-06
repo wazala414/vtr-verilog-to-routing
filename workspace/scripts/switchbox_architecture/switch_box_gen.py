@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 openlist = []
 
-side = ['lt','lr','lb','tr','tb','rb']
+side = ['lt','lr','lb','tr','tb','rb','bb','tt','rr','ll']
 W = 100
 filename = "/home/vm/VTR-Tools/workspace/Basic_Architecture/switchbox_out.xml"
 
