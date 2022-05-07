@@ -1,5 +1,0 @@
-vpr_status=exited with return code 134
-vpr_seconds=1
-rundir=/home/vm/VTR-Tools/workspace/Test_Folder
-hostname=vm-VirtualBox
-error=
