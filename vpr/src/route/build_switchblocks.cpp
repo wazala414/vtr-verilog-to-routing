@@ -767,10 +767,6 @@ static void compute_wire_connections(int x_coord, int y_coord, enum e_side from_
     SB_Side_Connection side_conn(from_side, to_side);                 /* for indexing into this switchblock's permutation funcs */
     Switchblock_Lookup sb_conn(x_coord, y_coord, from_side, to_side); /* for indexing into FPGA's switchblock map */
 
-    /* can't connect a switchblock side to itself */
-    if (from_side == to_side) {
-        return;
-    }
     /* check that the permutation map has an entry for this side combination */
     if (sb->permutation_map.count(side_conn) == 0) {
         /* the specified switchblock does not have any permutation funcs for this side1->side2 connection */
