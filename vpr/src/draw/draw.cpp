@@ -2032,6 +2032,15 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
          * wires this handles well */
         x1 = from_chan.right();
         x2 = to_chan.left();
+    } else if (to_xhigh == from_xlow) { /* Same side edges */
+        /* Locate side of same side connection from wire direction */
+        if (rr_graph.node_direction(from_node) == Direction::INC) {
+            x1 = from_chan.right();
+            x2 = to_chan.right();
+        } else {
+            x1 = from_chan.left();
+            x2 = to_chan.left();
+        }
     }
 
     /* Segments overlap in the channel.  Figure out best way to draw.  Have to  *
@@ -2123,6 +2132,15 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
     } else if (to_ylow > from_yhigh) { /* From lower to upper */
         y1 = from_chan.top();
         y2 = to_chan.bottom();
+    } else if (to_yhigh == from_ylow) { /* Same side edges */
+        /* Locate side of same side connection from wire direction */
+        if (rr_graph.node_direction(from_node) == Direction::DEC) { 
+            y1 = from_chan.bottom();
+            y2 = to_chan.bottom();
+        } else {
+            y1 = from_chan.top();
+            y2 = to_chan.top();
+        }
     }
 
     /* Segments overlap in the channel.  Figure out best way to draw.  Have to  *
@@ -2726,10 +2744,16 @@ void draw_highlight_fan_in_fan_out(const std::set<int>& nodes) {
                 int fanout_node = size_t(rr_graph.edge_sink_node(inode, iedge));
                 if (fanout_node == node) {
                     if (draw_state->draw_rr_node[node].color == ezgl::MAGENTA
-                        && draw_state->draw_rr_node[size_t(inode)].color
-                               != ezgl::MAGENTA) {
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::RED) {
                         // If node is highlighted, highlight its fanin
                         draw_state->draw_rr_node[size_t(inode)].color = ezgl::BLUE;
+                        draw_state->draw_rr_node[size_t(inode)].node_highlighted = true;
+                    } else if (draw_state->draw_rr_node[node].color == ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color == ezgl::RED) {
+                        // If node is highlighted and its fanin == fanout, highlight its fanin/fanout in brown
+                        draw_state->draw_rr_node[size_t(inode)].color = ezgl::ORANGE;
                         draw_state->draw_rr_node[size_t(inode)].node_highlighted = true;
                     } else if (draw_state->draw_rr_node[node].color
                                == ezgl::WHITE) {
