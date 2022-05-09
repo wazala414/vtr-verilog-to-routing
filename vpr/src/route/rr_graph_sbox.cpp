@@ -34,21 +34,28 @@
 vtr::NdMatrix<std::vector<int>, 3> alloc_and_load_switch_block_conn(const size_t nodes_per_chan,
                                                                     const e_switch_block_type switch_block_type,
                                                                     const int Fs) {
-    /* Currently Fs must be 3 since each track maps once to each other side */
-    VTR_ASSERT(4 == Fs);
+    /* TODO: same_side_boolean - This section should be uncommented when predefined architecture are able to get a same-side boolean to specify to the topology
+                                    that same side connections are allowed. The If statement should be completed here to check the state of the boolean. */
+    //if () {    
+    //    VTR_ASSERT(Fs == 4);
+    //} else {
+        /* Currently Fs must be 3 since each track maps once to each other side */
+        VTR_ASSERT(Fs == 3);
+    //} 
 
     vtr::NdMatrix<std::vector<int>, 3> switch_block_conn({4, 4, nodes_per_chan});
 
     for (e_side from_side : {TOP, RIGHT, BOTTOM, LEFT}) {
         for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
             for (size_t from_track = 0; from_track < nodes_per_chan; from_track++) {
-                if (1) {
-                //if (from_side != to_side) {
+                /* TODO: same_side_boolean - Add more flexibility by adding extra specification of same-side boolean 
+                                             in predefined topologies rather than relying on a specific Fs. */
+                if ((from_side != to_side) | (Fs == 4)) {   /* Allow same side connection ONLY IF Fs is 4 a not more. */
                     switch_block_conn[from_side][to_side][from_track].resize(1);
 
                     switch_block_conn[from_side][to_side][from_track][0] = get_simple_switch_block_track(from_side, to_side,
                                                                                                          from_track, switch_block_type, nodes_per_chan);
-                } else { /* from_side == to_side -> no connection. */
+                } else { /* If Fs is not 4, prioritize non same side connection */
                     switch_block_conn[from_side][to_side][from_track].clear();
                 }
             }

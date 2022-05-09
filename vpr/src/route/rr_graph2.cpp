@@ -686,7 +686,7 @@ int get_unidir_opin_connections(RRGraphBuilder& rr_graph_builder,
     *Fc_clipped = false;
 
     /* Fc is assigned in pairs so check it is even. */
-    //VTR_ASSERT(Fc % 2 == 0);
+    VTR_ASSERT(Fc % 2 == 0);
 
     /* get_rr_node_indices needs x and y coords. */
     x = ((CHANX == chan_type) ? seg : chan);
@@ -1504,8 +1504,8 @@ int get_track_to_tracks(RRGraphBuilder& rr_graph_builder,
     //normally
     /* TO INVESTIGATE - Does this still holds ? */
     if (to_type == from_type) {
-            start = to_seg - 1;
-            end = to_seg;
+        start = to_seg - 1;
+        end = to_seg;
     }
 
     //Walk along the 'from' wire segment identifying if a switchblock is located
@@ -2244,8 +2244,7 @@ void load_sblock_pattern_lookup(const int i,
         int side_cw = (to_side + 1) % 4;
         int side_opp = (to_side + 2) % 4;
         int side_ccw = (to_side + 3) % 4;
-        //Added
-        int side_same = to_side % 4;
+        int side_same = (to_side + 4) %4;
 
         /* For the core sblock:
          * The new order for passing wires should appear as
@@ -2258,32 +2257,31 @@ void load_sblock_pattern_lookup(const int i,
          * passing and ending wires so the above statement still holds
          * if you replace "passing" by "incoming" */
         
-        /* CHANGE DONE - Not taking into account same side connection */
-        if (!incoming_wire_label[side_same].empty()) {
-            for (int ichan = 0; ichan < nodes_per_chan->max; ichan++) {
-                int itrack = ichan;
-                if (side_same == TOP || side_same == BOTTOM) {
-                    itrack = ichan % nodes_per_chan->y_list[i];
-                } else if (side_same == RIGHT || side_same == LEFT) {
-                    itrack = ichan % nodes_per_chan->x_list[j];
-                }
+        /* TODO: same_side_boolean - This section should be uncommented when predefined architecture are able to get a same-side boolean to specify to the 
+                                     topology that same side connections are allowed. An If statement should also be added here to check the state of the boolean. */
+        // if (!incoming_wire_label[side_same].empty()) {
+        //     for (int ichan = 0; ichan < nodes_per_chan->max; ichan++) {
+        //         int itrack = ichan;
+        //         if (side_same == TOP || side_same == BOTTOM) {
+        //             itrack = ichan % nodes_per_chan->y_list[i];
+        //         } else if (side_same == RIGHT || side_same == LEFT) {
+        //             itrack = ichan % nodes_per_chan->x_list[j];
+        //         }
 
-                if (incoming_wire_label[side_same][itrack] != UN_SET) {
-                    int mux = get_simple_switch_block_track((enum e_side)side_same,
-                                                            (enum e_side)to_side,
-                                                            incoming_wire_label[side_same][ichan],
-                                                            switch_block_type, num_wire_muxes[to_side]);
+        //         if (incoming_wire_label[side_same][itrack] != UN_SET) {
+        //             int mux = get_simple_switch_block_track((enum e_side)side_same,
+        //                                                     (enum e_side)to_side,
+        //                                                     incoming_wire_label[side_same][ichan],
+        //                                                     switch_block_type, num_wire_muxes[to_side]);
 
-                    if (sblock_pattern[i][j][side_same][to_side][itrack][0] == UN_SET) {
-                        sblock_pattern[i][j][side_same][to_side][itrack][0] = mux;
-                    } else if (sblock_pattern[i][j][side_same][to_side][itrack][2] == UN_SET) {
-                        sblock_pattern[i][j][side_same][to_side][itrack][2] = mux;
-                    }
-                }
-            }
-        }
-
-
+        //             if (sblock_pattern[i][j][side_same][to_side][itrack][0] == UN_SET) {
+        //                 sblock_pattern[i][j][side_same][to_side][itrack][0] = mux;
+        //             } else if (sblock_pattern[i][j][side_same][to_side][itrack][2] == UN_SET) {
+        //                 sblock_pattern[i][j][side_same][to_side][itrack][2] = mux;
+        //             }
+        //         }
+        //     }
+        // }
 
         if (!incoming_wire_label[side_cw].empty()) {
             for (int ichan = 0; ichan < nodes_per_chan->max; ichan++) {
