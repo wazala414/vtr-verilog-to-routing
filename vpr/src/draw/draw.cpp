@@ -2038,15 +2038,6 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
          * wires this handles well */
         x1 = from_chan.right();
         x2 = to_chan.left();
-    } else if (to_xhigh == from_xlow) { /* Same side edges */
-        /* Locate side of same side connection from wire direction */
-        if (rr_graph.node_direction(from_node) == Direction::INC) {
-            x1 = from_chan.right();
-            x2 = to_chan.right();
-        } else {
-            x1 = from_chan.left();
-            x2 = to_chan.left();
-        }
     }
 
     /* Segments overlap in the channel.  Figure out best way to draw.  Have to  *
@@ -2054,20 +2045,32 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
      * will be drawn on top of each other for bidirectional connections.        */
 
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
-            /* must connect to to_node's wire beginning at x2 */
             if (to_track % 2 == 0) { /* INC wire starts at leftmost edge */
-                //printf("%i,%i", from_xlow, to_xlow);
-                //VTR_ASSERT(from_xlow < to_xlow);
+                if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Left to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow - 1] + draw_coords->get_tile_width();
+                } else if (to_xlow == from_xlow) {
+                    /* Left to Left endpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                } else if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Left to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                }
                 x2 = to_chan.left();
-                /* since no U-turns from_track must be INC as well */
-                x1 = draw_coords->tile_x[to_xlow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at rightmost edge */
-                //printf("%i,%i", from_xlow, to_xlow);
-                //VTR_ASSERT(from_xhigh > to_xhigh);
+                if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Right to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh + 1];
+                } else if (to_xhigh == from_xhigh) {
+                    /* Right to Right endpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                } else if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Right to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                }
                 x2 = to_chan.right();
-                x1 = draw_coords->tile_x[to_xhigh + 1];
             }
         } else {
             if (to_xlow < from_xlow) { /* Draw from left edge of one to other */
@@ -2140,15 +2143,6 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
     } else if (to_ylow > from_yhigh) { /* From lower to upper */
         y1 = from_chan.top();
         y2 = to_chan.bottom();
-    } else if (to_yhigh == from_ylow) { /* Same side edges */
-        /* Locate side of same side connection from wire direction */
-        if (rr_graph.node_direction(from_node) == Direction::DEC) { 
-            y1 = from_chan.bottom();
-            y2 = to_chan.bottom();
-        } else {
-            y1 = from_chan.top();
-            y2 = to_chan.top();
-        }
     }
 
     /* Segments overlap in the channel.  Figure out best way to draw.  Have to  *
@@ -2157,17 +2151,32 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
 
     /* UDSD Modification by WMF Begin */
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
             if (to_track % 2 == 0) { /* INC wire starts at bottom edge */
-
+                if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Bottom to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow - 1] + draw_coords->get_tile_width();
+                } else if (to_ylow == from_ylow) {
+                    /* Bottom to Bottom endpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                } else if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Bottom to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                }
                 y2 = to_chan.bottom();
-                /* since no U-turns from_track must be INC as well */
-                y1 = draw_coords->tile_y[to_ylow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at top edge */
-
+                if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Top to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh + 1];
+                } else if (to_yhigh == from_yhigh) {
+                    /* Top to Top endpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                } else if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Top to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                }
                 y2 = to_chan.top();
-                y1 = draw_coords->tile_y[to_yhigh + 1];
             }
         } else {
             if (to_ylow < from_ylow) { /* Draw from bottom edge of one to other. */
