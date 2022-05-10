@@ -12,8 +12,6 @@
  * Last updated: June 2019
  */
 
-#include <iostream>
-#include <string>
 #include <cstdio>
 #include <cfloat>
 #include <cstring>
@@ -1542,8 +1540,6 @@ static void draw_rr_chan(int inode, const ezgl::color color, ezgl::renderer* g) 
     //We assume increasing direction, and swap if needed
     ezgl::point2d start = bound_box.bottom_left();
     ezgl::point2d end = bound_box.top_right();
-    
-    /* CODE CHECKED - This still makes sense */
     if (dir == Direction::DEC) {
         std::swap(start, end);
     }
@@ -1561,7 +1557,6 @@ static void draw_rr_chan(int inode, const ezgl::color color, ezgl::renderer* g) 
         g->set_line_width(0);
     }
 
-    /* CODE CHECKED - Still referring to nodes so same side is probably fine here */
     e_side mux_dir = TOP;
     int coord_min = -1;
     int coord_max = -1;
@@ -1584,7 +1579,6 @@ static void draw_rr_chan(int inode, const ezgl::color color, ezgl::renderer* g) 
         }
     }
 
-    /* CODE CHECKED - No obvious issue */
     //Draw direction indicators at the boundary of each switch block, and label them
     //with the corresponding switch point (see build_switchblocks.c for a description of switch points)
     t_draw_coords* draw_coords = get_draw_coords_vars();
@@ -2045,20 +2039,32 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
      * will be drawn on top of each other for bidirectional connections.        */
 
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
-            /* must connect to to_node's wire beginning at x2 */
             if (to_track % 2 == 0) { /* INC wire starts at leftmost edge */
-                //printf("%i,%i", from_xlow, to_xlow);
-                //VTR_ASSERT(from_xlow < to_xlow);
+                if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Left to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow - 1] + draw_coords->get_tile_width();
+                } else if (to_xlow == from_xlow) {
+                    /* Left to Left endpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                } else if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Left to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                }
                 x2 = to_chan.left();
-                /* since no U-turns from_track must be INC as well */
-                x1 = draw_coords->tile_x[to_xlow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at rightmost edge */
-                //printf("%i,%i", from_xlow, to_xlow);
-                //VTR_ASSERT(from_xhigh > to_xhigh);
+                if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Right to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh + 1];
+                } else if (to_xhigh == from_xhigh) {
+                    /* Right to Right endpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                } else if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Right to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                }
                 x2 = to_chan.right();
-                x1 = draw_coords->tile_x[to_xhigh + 1];
             }
         } else {
             if (to_xlow < from_xlow) { /* Draw from left edge of one to other */
@@ -2139,17 +2145,32 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
 
     /* UDSD Modification by WMF Begin */
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
             if (to_track % 2 == 0) { /* INC wire starts at bottom edge */
-
+                if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Bottom to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow - 1] + draw_coords->get_tile_width();
+                } else if (to_ylow == from_ylow) {
+                    /* Bottom to Bottom endpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                } else if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Bottom to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                }
                 y2 = to_chan.bottom();
-                /* since no U-turns from_track must be INC as well */
-                y1 = draw_coords->tile_y[to_ylow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at top edge */
-
+                if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Top to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh + 1];
+                } else if (to_yhigh == from_yhigh) {
+                    /* Top to Top endpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                } else if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Top to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                }
                 y2 = to_chan.top();
-                y1 = draw_coords->tile_y[to_yhigh + 1];
             }
         } else {
             if (to_ylow < from_ylow) { /* Draw from bottom edge of one to other. */
@@ -2734,10 +2755,16 @@ void draw_highlight_fan_in_fan_out(const std::set<int>& nodes) {
                 int fanout_node = size_t(rr_graph.edge_sink_node(inode, iedge));
                 if (fanout_node == node) {
                     if (draw_state->draw_rr_node[node].color == ezgl::MAGENTA
-                        && draw_state->draw_rr_node[size_t(inode)].color
-                               != ezgl::MAGENTA) {
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::RED) {
                         // If node is highlighted, highlight its fanin
                         draw_state->draw_rr_node[size_t(inode)].color = ezgl::BLUE;
+                        draw_state->draw_rr_node[size_t(inode)].node_highlighted = true;
+                    } else if (draw_state->draw_rr_node[node].color == ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color != ezgl::MAGENTA
+                        && draw_state->draw_rr_node[size_t(inode)].color == ezgl::RED) {
+                        // If node is highlighted and its fanin == fanout, highlight its fanin/fanout in brown
+                        draw_state->draw_rr_node[size_t(inode)].color = ezgl::ORANGE;
                         draw_state->draw_rr_node[size_t(inode)].node_highlighted = true;
                     } else if (draw_state->draw_rr_node[node].color
                                == ezgl::WHITE) {
@@ -3141,8 +3168,6 @@ void draw_triangle_along_line(ezgl::renderer* g, float xend, float yend, float x
     g->fill_poly(poly);
 }
 
-
-/* CODE CHECKED - This only regards pins, so shouldn't affect the same side connection. */
 static void draw_pin_to_chan_edge(int pin_node, int chan_node, ezgl::renderer* g) {
     /* This routine draws an edge from the pin_node to the chan_node (CHANX or   *
      * CHANY).  The connection is made to the nearest end of the track instead   *
@@ -3208,7 +3233,6 @@ static void draw_pin_to_chan_edge(int pin_node, int chan_node, ezgl::renderer* g
     /* Only 1 side will be picked in the end
      * Any rr_node of a grid should have at least 1 side!!!
      */
-    /* CODE CHECKED - This only regards pins and nodes, so shouldn't affect the same side connection. */
     e_side pin_side = NUM_SIDES;
     const t_rr_type channel_type = rr_graph.node_type(RRNodeId(chan_node));
     if (1 == pin_candidate_sides.size()) {
@@ -3255,8 +3279,6 @@ static void draw_pin_to_chan_edge(int pin_node, int chan_node, ezgl::renderer* g
      *   |               ----+-----+  
      *   +------------------------------------------------------------>x
      */
-
-    /* CODE CHECKED - This only regards pins and nodes, so shouldn't affect the same side connection. */
     float draw_pin_offset;
     if (TOP == pin_side || RIGHT == pin_side) {
         draw_pin_offset = draw_coords->pin_size;
@@ -3271,8 +3293,6 @@ static void draw_pin_to_chan_edge(int pin_node, int chan_node, ezgl::renderer* g
 
     float x2 = 0, y2 = 0;
     const Direction chan_rr_direction = rr_graph.node_direction(RRNodeId(chan_node));
-    
-    /* CODE CHECKED - This only regards pins and nodes, so shouldn't affect the same side connection. */
     switch (channel_type) {
         case CHANX: {
             y1 += draw_pin_offset;
@@ -3317,7 +3337,6 @@ static void draw_pin_to_chan_edge(int pin_node, int chan_node, ezgl::renderer* g
     }
 }
 
-/* TO INVESTIGATE - Draws pin to pin so might be preventing same side drawing */
 static void draw_pin_to_pin(int opin_node, int ipin_node, ezgl::renderer* g) {
     /* This routine draws an edge from the opin rr node to the ipin rr node */
     auto& device_ctx = g_vpr_ctx.device();

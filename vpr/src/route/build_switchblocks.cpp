@@ -129,9 +129,6 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
-#include <experimental/filesystem>
-
-#include <sys/stat.h>
 
 #include "vtr_assert.h"
 #include "vtr_memory.h"
@@ -144,12 +141,9 @@
 #include "physical_types.h"
 #include "parse_switchblocks.h"
 #include "vtr_expr_eval.h"
-#include <fstream>
+
 using vtr::FormulaParser;
 using vtr::t_formula_data;
-
-//namespace fs = std::experimental::filesystem;
-//namespace io = std::iostream;
 
 /************ Defines ************/
 /* if defined, switch block patterns are loaded by first computing a row of switch blocks and then
@@ -359,7 +353,6 @@ t_sb_connection_map* alloc_and_load_switchblock_permutations(const t_chan_detail
 #else
     /******** slow switch block computation method; computes switchblocks at each coordinate ********/
     /* iterate over all the switchblocks specified in the architecture */
-    std::ofstream SB_Connection_Export("x.txt", std::ofstream::out);
     for (int i_sb = 0; i_sb < (int)switchblocks.size(); i_sb++) {
         t_switchblock_inf sb = switchblocks[i_sb];
 
@@ -367,19 +360,12 @@ t_sb_connection_map* alloc_and_load_switchblock_permutations(const t_chan_detail
         if (directionality != sb.directionality) {
             VPR_FATAL_ERROR(VPR_ERROR_ARCH, "alloc_and_load_switchblock_connections: Switchblock %s does not match directionality of architecture\n", sb.name.c_str());
         }
-        
-        
-        //SB_Connection_Export << "Name: " << sb.name << " ; Type: " << sb.location << "\n";
-        
         /* Iterate over the x,y coordinates spanning the FPGA. */
         for (size_t x_coord = 0; x_coord < grid.width(); x_coord++) {
             for (size_t y_coord = 0; y_coord <= grid.height(); y_coord++) {
                 if (sb_not_here(grid, x_coord, y_coord, sb.location)) {
                     continue;
                 }
-
-                SB_Connection_Export << "x: " << x_coord << " y: " << y_coord << " SB Name: " << sb.name << " SB Type: " << sb.location << "\n\n";
-
                 /* now we iterate over all the potential side1->side2 connections */
                 for (e_side from_side : {TOP, RIGHT, BOTTOM, LEFT}) {
                     for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
@@ -388,40 +374,13 @@ t_sb_connection_map* alloc_and_load_switchblock_permutations(const t_chan_detail
                         compute_wire_connections(x_coord, y_coord, from_side, to_side,
                                                  chan_details_x, chan_details_y, &sb, grid,
                                                  &wire_type_sizes, directionality, sb_conns, rand_state, &scratchpad);
-                        
-                        // SB_Connection_Export  << "Sides: "  << static_cast<unsigned>(from_side) << " ; " << static_cast<unsigned>(to_side) << "\n";
-                        // //SB_Connection_Export  << scratchpad.formula_data.get_var_value("lf") << "\n";
-                        
-                        // for (uint i=0; i<=scratchpad.scratch_wires.size(); i++)
-                        // {
-                        //     SB_Connection_Export    << "Wire Index: " << scratchpad.scratch_wires[i].wire << " ; "
-                        //                            << "Switchpoint: " << scratchpad.scratch_wires[i].switchpoint << "\n";
-                        // }
                     }
                 }
-                // if (!fs::exists("~/VTR-Tools/workspace/Test_Folder/SB_Out"))
-                // {
-                //     //fs::create_directory("~/VTR-Tools/workspace/SB_Out");
-                // }
-                // else if (!fs::exists("~/VTR-Tools/workspace/SB_Out/x-y.txt"))
-                // {
-                    
-                    // for (int i = 0; i < ;i++)    
-                    // {
-                    
-                    //}
-                //}
             }
-        
-            
-
         }
-
-        
     }
 #endif
-    
-    
+
     return sb_conns;
 }
 
@@ -757,8 +716,6 @@ static void get_switchpoint_wires(
                 /* unidirectional wires going in the decreasing direction can have an outgoing edge
                  * only from the top or right switch block sides, and an incoming edge only if they are
                  * at the left or bottom sides (analogous for wires going in INC direction) */
-                /* EXPLANATION - Seems to specify the edges of each wire. It just states where the wire in/out can be. 
-                                 It just seems to be a sanity check before actually starting putting on switchpoints. */
                 if (side == TOP || side == RIGHT) {
                     if (seg_direction == Direction::DEC && is_dest) {
                         continue;
@@ -774,8 +731,6 @@ static void get_switchpoint_wires(
                     if (seg_direction == Direction::INC && is_dest) {
                         continue;
                     }
-                /* CODE CHECKED - As explained, it seems to only be a wire sanity check.
-                                  This works because wires can only go along the same CHAN. Switchpoint are not yet put here. */
                 }
 
                 int wire_switchpoint = get_switchpoint_of_wire(grid, chan_type, chan_details[iwire], seg_coord, side);
@@ -812,10 +767,6 @@ static void compute_wire_connections(int x_coord, int y_coord, enum e_side from_
     SB_Side_Connection side_conn(from_side, to_side);                 /* for indexing into this switchblock's permutation funcs */
     Switchblock_Lookup sb_conn(x_coord, y_coord, from_side, to_side); /* for indexing into FPGA's switchblock map */
 
-    /* can't connect a switchblock side to itself */
-    // if (from_side == to_side) {
-    //     return;
-    // }
     /* check that the permutation map has an entry for this side combination */
     if (sb->permutation_map.count(side_conn) == 0) {
         /* the specified switchblock does not have any permutation funcs for this side1->side2 connection */
@@ -967,16 +918,7 @@ static void compute_wireconn_connections(
                 continue;
             }
             VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
-        } 
-        /* TO INVESTIGATE - Might be unnecessary */
-        else if (from_wire_direction == Direction::SAME) {
-            /* a wire heading in the same direction can only connect on the same side of a switch block */
-            // if (sb_conn.from_side != ) {
-            //     continue;
-            // }
-            //VTR_ASSERT(sb_conn.from_side == TOP || sb_conn.from_side == RIGHT);
-        }
-        else {
+        } else {
             VTR_ASSERT(from_wire_direction == Direction::BIDIR);
         }
 
@@ -1041,8 +983,6 @@ static int evaluate_num_conns_formula(t_wireconn_scratchpad* scratchpad, std::st
 /* Here we find the correct channel (x or y), and the coordinates to index into it based on the
  * specified tile coordinates and the switchblock side. Also returns the type of channel
  * that we are indexing into (ie, CHANX or CHANY */
-/* EXPLANATION - No change seems to be needed as the coordinates still holds with same side */
-
 static const t_chan_details& index_into_correct_chan(int tile_x, int tile_y, enum e_side side, const t_chan_details& chan_details_x, const t_chan_details& chan_details_y, int* set_x, int* set_y, t_rr_type* chan_type) {
     *chan_type = CHANX;
 
@@ -1139,7 +1079,6 @@ static int get_wire_subsegment_num(const DeviceGrid& grid, e_rr_type chan_type, 
     }
 
     /* if this wire is going in the decreasing direction, reverse the subsegment num */
-    /* TO INVESTIGATE - Does this still hold ? */
     VTR_ASSERT(seg_end >= seg_start);
     if (direction == Direction::DEC) {
         subsegment_num = wire_length - 1 - subsegment_num;
@@ -1210,7 +1149,6 @@ static int get_switchpoint_of_wire(const DeviceGrid& grid, e_rr_type chan_type, 
         int wire_length = get_wire_segment_length(grid, chan_type, wire_details);
         int subsegment_num = get_wire_subsegment_num(grid, chan_type, wire_details, seg_coord);
 
-        /* TO INVESTIGATE - See if it still holds if type ::SAME doesn't exists*/
         Direction direction = wire_details.direction();
         if (LEFT == sb_side || BOTTOM == sb_side) {
             switchpoint = (subsegment_num + 1) % wire_length;
