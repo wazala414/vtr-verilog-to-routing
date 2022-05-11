@@ -1,4 +1,4 @@
-# Benchmark "blink" written by ABC on Wed May 11 02:52:52 2022
+# Benchmark "blink" written by ABC on Thu May 12 00:47:22 2022
 .model blink
 .inputs blink^clk blink^i_reset
 .outputs blink^o_led
@@ -23,17 +23,19 @@
 -001 1
 0-01 1
 1100 1
-.names blink^i_reset n25 blink^r_counter~3_FF n22
-001 1
-010 1
-.names blink^r_counter~0_FF blink^r_counter~1_FF blink^r_counter~2_FF n25
-111 1
-.names blink^i_reset n27_1 blink^r_counter~4_FF n27
-001 1
-010 1
 .names blink^r_counter~0_FF blink^r_counter~1_FF blink^r_counter~2_FF \
- blink^r_counter~3_FF n27_1
-1111 1
+ blink^i_reset blink^r_counter~3_FF n22
+--001 1
+-0-01 1
+0--01 1
+11100 1
+.names blink^r_counter~0_FF blink^r_counter~1_FF blink^r_counter~2_FF \
+ blink^r_counter~3_FF blink^i_reset blink^r_counter~4_FF n27
+---001 1
+--0-01 1
+-0--01 1
+0---01 1
+111100 1
 .names blink^r_counter~4_FF blink^o_led
 0 1
 .end

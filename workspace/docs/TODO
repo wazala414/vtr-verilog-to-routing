@@ -1,0 +1,31 @@
+TODO:
+	- implement FULL boolean
+	- implement Fs == 4 and make a check
+		- l.2708 Fs might need change for implementation
+		- Basically, Fs checks have to be implemented to handle Fs==4 with same side boolean variable but 
+		  xml file also has to be read correctly to parse the same side boolean correctly. In addition
+		  checks have to be modified in read_xml_arch_file to change the default assignment of Fs
+	
+- build_switchblocks.cpp
+	- l.721 -> When commented its making same side
+	- 
+
+
+Full preset topology:
+	- read_xml_arch_file.cpp	l.2713	-> Fs might need change for implementation
+	- rr_graph_sbox.cpp		l.48	-> Seems to be for bidir
+	- rr_graph2.cpp			l.2260	-> Needs to be uncommented for supporting unidir preset 
+	- Implement boolean in read_arch_xml_file -> maybe implement 2 version of FULL rather than trying to add same_side boolean in the parsing of arch data
+	- Basically, Fs checks have to be implemented to handle Fs==4 with same side boolean variable but 
+	  xml file also has to be read correctly to parse the same side boolean correctly. In addition
+	  checks have to be modified in read_xml_arch_file to change the default assignment of Fs
+
+Bidir same side adaptation:
+	- build_switchblocks.cpp 	l.483 	-> sanity check to remove (or adapt)
+	- build_switchblocks.cpp 	l.775 	-> sanity check to remove (or adapt)
+	- rr_graph2.cpp			l.865	-> sanity check to remove (or adapt) but issue only for FAST_SB_COMPUTATION
+	- parse_switchblocks.cpp	l.390	-> sanity check to remove (or adapt)
+	- OdinII isn't happy about these architectures
+	
+Testing:
+	- Create architecture that is suited for our testing

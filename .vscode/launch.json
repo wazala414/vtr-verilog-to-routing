@@ -6,7 +6,7 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "/home/vm/VTR-Tools/build/libs/libarchfpga/read_arch",
-        "args": ["/home/vm/VTR-Tools/workspace/Basic_Architecture/Arch_Test_Same_Side.xml", "0", "/home/vm/VTR-Tools/workspace/Test_Folder/Testbench_Results/Arch_Test_Same_Side.out"],
+        "args": ["/home/vm/VTR-Tools/workspace/architectures/Arch_Test_Same_Side.xml", "0", "/home/vm/VTR-Tools/workspace/Test_Folder/Testbench_Results/Arch_Test_Same_Side.out"],
         "stopAtEntry": false,
         "cwd": "/home/vm/VTR-Tools/build/libs/libarchfpga/",
         "environment": [],

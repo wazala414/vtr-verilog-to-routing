@@ -26,8 +26,8 @@ import re
 import argparse
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--in_arch", default="/home/vm/VTR-Tools/workspace/Basic_Architecture/Arch_Test_Same_Side.xml", help="Directory to get arch xml files from.")
-parser.add_argument("--out_arch", nargs='?', const="/home/vm/VTR-Tools/workspace/Basic_Architecture/Arch_Test_Same_Side_Test.xml", help="Directory to write arch xml files to.")
+parser.add_argument("--in_arch", default="/home/vm/VTR-Toolsworkspace/architectures/Arch_Test_Same_Side.xml", help="Directory to get arch xml files from.")
+parser.add_argument("--out_arch", nargs='?', const="/home/vm/VTR-Tools/workspace/architectures/Arch_Test_Same_Side_Test.xml", help="Directory to write arch xml files to.")
 parser.add_argument("--size", default="100", help="Amount of tracks in a channel.")
 parser.add_argument("--same_side", action="store_true", help="Describes if same side connections (u-turn) are required.")
 args = parser.parse_args()

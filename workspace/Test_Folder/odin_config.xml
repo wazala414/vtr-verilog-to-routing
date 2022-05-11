@@ -26,7 +26,7 @@
 
 			
 
-			<arch_file>Arch_Test_Same_Side_FULL.xml</arch_file>
+			<arch_file>Same_Side_Preset.xml</arch_file>
 
 		</target>
 
@@ -36,7 +36,7 @@
 
 		<multiply size="3" fixed="1" fracture="0" padding="-1" />
 
-		<memory split_memory_width="1" split_memory_depth="14" />
+		<memory split_memory_width="1" split_memory_depth="0" />
 
 		<adder size="0" threshold_size="1" />
 
