@@ -2073,26 +2073,39 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
                 x2 = to_chan.right();
             }
         } else {
-            if (to_xlow < from_xlow) { /* Draw from left edge of one to other */
+            // IMPORTANT - Bidir lines are drawn from lower switchpoints (left and bottom)
+            /* Check if same_side connection is happening, avoids doing individual check in each statement. */
+            bool same_side = ((from_chan.left() == to_chan.left()) | (from_chan.right() == to_chan.right()));
+            same_side = false;
+
+            if ((to_xlow < from_xlow) && !same_side) { /* Draw from left edge of one to other */
                 x1 = from_chan.left();
                 x2 = draw_coords->tile_x[from_xlow - 1]
                      + draw_coords->get_tile_width();
-            } else if (from_xlow < to_xlow) {
+            } else if ((from_xlow < to_xlow) && !same_side) {
                 x1 = draw_coords->tile_x[to_xlow - 1]
                      + draw_coords->get_tile_width();
                 x2 = to_chan.left();
-
             }                                 /* The following then is executed when from_xlow == to_xlow */
-            else if (to_xhigh > from_xhigh) { /* Draw from right edge of one to other */
+            else if ((to_xhigh > from_xhigh) && !same_side) { /* Draw from right edge of one to other */
                 x1 = from_chan.right();
                 x2 = draw_coords->tile_x[from_xhigh + 1];
-            } else if (from_xhigh > to_xhigh) {
+            } else if ((from_xhigh > to_xhigh) && !same_side) {
                 x1 = draw_coords->tile_x[to_xhigh + 1];
                 x2 = to_chan.right();
-            } else { /* Complete overlap: start and end both align. Draw outside the sbox */
+            } 
+            /* Same side connection */
+            // else if (from_chan.left() == to_chan.left()) {
+            //     x1 = from_chan.left();
+            //     x2 = to_chan.left();
+            // } else if (from_chan.right() == to_chan.right()) {
+            //     x1 = from_chan.right();
+            //     x2 = to_chan.right();
+            // }
+            else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 x1 = from_chan.left();
                 x2 = from_chan.left() + draw_coords->get_tile_width();
-            }
+            } 
         }
     }
 
@@ -2179,24 +2192,37 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
                 y2 = to_chan.top();
             }
         } else {
-            if (to_ylow < from_ylow) { /* Draw from bottom edge of one to other. */
+            /* Check if same_side connection is happening, avoids doing individual check in each statement. */
+            bool same_side = ((from_chan.bottom() == to_chan.bottom()) | (from_chan.top() == to_chan.top()));            
+            same_side = false;
+
+            if ((to_ylow < from_ylow) && !same_side) { /* Draw from bottom edge of one to other. */
                 y1 = from_chan.bottom();
                 y2 = draw_coords->tile_y[from_ylow - 1]
                      + draw_coords->get_tile_width();
-            } else if (from_ylow < to_ylow) {
+            } else if ((from_ylow < to_ylow) && !same_side) {
                 y1 = draw_coords->tile_y[to_ylow - 1]
                      + draw_coords->get_tile_width();
                 y2 = to_chan.bottom();
-            } else if (to_yhigh > from_yhigh) { /* Draw from top edge of one to other. */
+            } else if ((to_yhigh > from_yhigh) && !same_side) { /* Draw from top edge of one to other. */
                 y1 = from_chan.top();
                 y2 = draw_coords->tile_y[from_yhigh + 1];
-            } else if (from_yhigh > to_yhigh) {
+            } else if ((from_yhigh > to_yhigh) && !same_side) {
                 y1 = draw_coords->tile_y[to_yhigh + 1];
                 y2 = to_chan.top();
-            } else { /* Complete overlap: start and end both align. Draw outside the sbox */
+            } 
+            /* Same side connection */
+            // else if (from_chan.bottom() == to_chan.bottom()) {
+            //     y1 = from_chan.bottom();
+            //     y2 = to_chan.bottom();
+            // } else if (from_chan.top() == to_chan.top()) {
+            //     y1 = from_chan.top();
+            //     y2 = to_chan.top();
+            // }
+            else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 y1 = from_chan.bottom();
                 y2 = from_chan.bottom() + draw_coords->get_tile_width();
-            }
+            } 
         }
     }
 

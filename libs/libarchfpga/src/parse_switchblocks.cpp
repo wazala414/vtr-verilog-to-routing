@@ -386,6 +386,11 @@ static void check_bidir_switchblock(const t_permutation_map* permutation_map) {
     /* iterate over all combinations of from_side -> to side */
     for (e_side from_side : {TOP, RIGHT, BOTTOM, LEFT}) {
         for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
+            
+            /* can't connect a switchblock side to itself */
+            if (from_side == to_side) {
+                continue;
+            }
 
             /* index into permutation map with this variable */
             conn.set_sides(from_side, to_side);
