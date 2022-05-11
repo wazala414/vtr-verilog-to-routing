@@ -1236,6 +1236,9 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
     //RR graph creation is the high-watermark of VPR's memory use.
     t_rr_edge_info_set rr_edges_to_create;
 
+    /* Passes Fs to the build_rr_chan while taking same side connection into account */
+    int Fs_per_side;
+
     /* If Fc gets clipped, this will be flagged to true */
     *Fc_clipped = false;
 
@@ -1283,15 +1286,16 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
 
     /* Build channels */
     /* TODO: same_side_boolean - This section should be uncommented when predefined architecture are able to get a same-side boolean to specify to the topology 
-                                 that same side connections are allowed. The If statement should be completed here to check the state of the boolean. */
-    //if () {    
+                                 that same side connections are allowed. The If statement should be completed here to check the state of the boolean. 
+                                 At the moment, Fs % 3 == 0 works even when same side exist, modifications needed in place_and_route.cpp */
+    // if (false) {    
     //    VTR_ASSERT(Fs % 4 == 0);
-    //    constint Fs_per_side = Fs / 4;
-    //} else {
+    //    Fs_per_side = Fs / 4;
+    // } else {
         /* it looks like we get unbalanced muxing from this switch block code with Fs > 3 */
         VTR_ASSERT(Fs % 3 == 0);
-        const int Fs_per_side = Fs / 3;
-    //}       
+        Fs_per_side = Fs / 3;
+    // }       
     
     for (size_t i = 0; i < grid.width() - 1; ++i) {
         for (size_t j = 0; j < grid.height() - 1; ++j) {
