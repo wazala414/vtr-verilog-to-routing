@@ -162,7 +162,7 @@
   <!-- ODIN II specific config ends -->
   <!-- Physical descriptions begin -->
   <layout>
-    <auto_layout aspect_ratio="1.0">
+    <fixed_layout name="unidir_same_side" width="5" height="5">
       <!--Perimeter of 'io' blocks with 'EMPTY' blocks at corners-->
       <perimeter type="io" priority="100"/>
       <corners type="EMPTY" priority="101"/>
@@ -174,7 +174,7 @@
       <!--Column of 'memory' with 'EMPTY' blocks wherever a 'memory' does not fit. Vertical offset by 1 for perimeter.-->
       <col type="memory" startx="13" starty="1" repeatx="22" priority="20"/>
       <col type="EMPTY" startx="13" repeatx="22" starty="1" priority="19"/>
-    </auto_layout>
+    </fixed_layout>
   </layout>
   <device>
     <sizing R_minW_nmos="13090.000000" R_minW_pmos="19086.831111"/>
@@ -202,129 +202,45 @@
   </switchlist>
   <segmentlist>
     <!-- 85% length-2 wires on the semi-global metal layer -->
-    <segment freq="0.85" name="l2s" length="2" type="unidir" Rmetal="174" Cmetal="0.0">
+    <segment freq="0.85" name="l2s" length="1" type="unidir" Rmetal="174" Cmetal="0.0">
       <mux name="l2s_mux"/>
-      <sb type="pattern">1 1 1</sb>
-      <cb type="pattern">1 1</cb>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
     </segment>
     <!-- 15% length-4 wires on the global metal layer -->
-    <segment freq="0.15" name="l4g" length="2" type="unidir" Rmetal="23" Cmetal="0.0">
+    <segment freq="0.15" name="l4g" length="1" type="unidir" Rmetal="23" Cmetal="0.0">
       <mux name="l4g_mux"/>
-      <sb type="pattern">1 1 1</sb>
-      <cb type="pattern">1 1</cb>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
     </segment>
   </segmentlist>
   <!-- Define custom switch blocks -->
   <switchblocklist>
-    <switchblock name="wilton_turn_core" type="unidir">
-      <switchblock_location type="CORE"/>
-      <switchfuncs>
-        <func type="tt" formula="t+2"/>
-        <func type="bb" formula="t+2"/>
-        <func type="ll" formula="t+2"/>
-        <func type="lr" formula="t+5"/>
-        <func type="lt" formula="W-t"/>
-        <func type="lb" formula="t-1"/>
-        <func type="rt" formula="t-1"/>
-        <func type="br" formula="W-t-2"/>
-        <func type="tl" formula="W-t"/>
-        <func type="bl" formula="t+1"/>
-        <func type="tr" formula="t+1"/>
-        <func type="rb" formula="W-t-2"/>
-      </switchfuncs>
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l2s" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/> -->
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/> -->
-      <!-- <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/> -->
-      <wireconn num_conns="from" from_order="fixed">
-        <from type="l4g" switchpoint="0,1"/>
-        <from type="l2s" switchpoint="0,1"/>
-        <to type="l4g" switchpoint="0"/>
-        <to type="l2s" switchpoint="0"/>
-      </wireconn>
-    </switchblock>
-    
-    <switchblock name="wilton_turn_perimeter" type="unidir">
-      <switchblock_location type="PERIMETER"/>
-      <switchfuncs>
-        <func type="tt" formula="t+2"/>
-        <func type="bb" formula="t+2"/>
-        <func type="ll" formula="t+2"/>
-        <func type="lr" formula="t+5"/>
-        <func type="lt" formula="W-t"/>
-        <func type="lb" formula="t-1"/>
-        <func type="rt" formula="t-1"/>
-        <func type="br" formula="W-t-2"/>
-        <func type="tl" formula="W-t"/>
-        <func type="bl" formula="t+1"/>
-        <func type="tr" formula="t+1"/>
-        <func type="rb" formula="W-t-2"/>
-      </switchfuncs>
-      <wireconn num_conns="from" from_order="fixed">
-        <from type="l4g" switchpoint="0,1"/>
-        <from type="l2s" switchpoint="0,1"/>
-        <to type="l4g" switchpoint="0"/>
-        <to type="l2s" switchpoint="0"/>
-      </wireconn>
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l2s" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/> -->
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/> -->
-      <!-- <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/> -->
-    </switchblock>
     <switchblock name="wilton_straight" type="unidir">
       <switchblock_location type="EVERYWHERE"/>
       <switchfuncs>
-        <func type="tt" formula="t+2"/>
-        <func type="bb" formula="t+2"/>
-        <func type="ll" formula="t+2"/>
-        <func type="lr" formula="t+5"/>
-        <func type="lt" formula="W-t"/>
-        <func type="lb" formula="t-1"/>
-        <func type="rt" formula="t-1"/>
-        <func type="br" formula="W-t-2"/>
-        <func type="tl" formula="W-t"/>
-        <func type="bl" formula="t+1"/>
-        <func type="tr" formula="t+1"/>
-        <func type="rb" formula="W-t-2"/>
-        <!--func type="tt" formula="t+2"/>
-        <func type="bb" formula="t+2"/>
-        <func type="rr" formula="t+2"/-->
+        <func type="bb" formula="t+1"/>
       </switchfuncs>
-      <wireconn num_conns="from" from_order="fixed">
-        <from type="l4g" switchpoint="0,1"/>
-        <from type="l2s" switchpoint="0,1"/>
-        <to type="l4g" switchpoint="0"/>
+      <wireconn num_conns="from" from_order="fixed" to_order="fixed">
+        <from type="l2s" switchpoint="0"/>
+        <from type="l4g" switchpoint="0"/>
         <to type="l2s" switchpoint="0"/>
+        <to type="l4g" switchpoint="0"/>
       </wireconn>
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l2s" from_switchpoint="0,1,2,3" to_switchpoint="0" num_conns="from"/> -->
-      <!-- <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l2s" to_type="l2s" from_switchpoint="0,1" to_switchpoint="1" num_conns="from"/> -->
-      <!-- <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="1" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="2" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/>
-      <wireconn from_type="l4g" to_type="l4g" from_switchpoint="0,1,2,3" to_switchpoint="3" num_conns="from"/> -->
+      <!-- <wireconn num_conns="from" from_type="l2s,l4g" from_switchpoint="0" from_order="fixed" to_type="l2s,l4g" to_switchpoint="0" to_order="fixed"/> -->
     </switchblock>
+    <!-- <switchblock name="wilton_peri" type="unidir">
+      <switchblock_location type="PERIMETER"/>
+      <switchfuncs>
+        <func type="rb" formula="t+1"/>
+      </switchfuncs>
+      <wireconn num_conns="from" from_order="fixed" to_order="fixed">
+        <from type="l2s" switchpoint="0"/>
+        <from type="l4g" switchpoint="0"/>
+        <to type="l2s" switchpoint="0"/>
+        <to type="l4g" switchpoint="0"/>
+      </wireconn>
+    </switchblock> -->
   </switchblocklist>
   <complexblocklist>
     <!-- Capacity is a unique property of I/Os, it is the maximum number of I/Os that can be placed at the same (X,Y) location on the FPGA -->

@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 openlist = []
 
-side = ['lt','lr','lb','tr','tb','rb','bb','tt','rr','ll']
+side = ['lt','lr','lb','tr', 'tl', 'tb','rb', 'rl', 'rt', 'br', 'bl', 'bt','bb','tt','rr','ll']
 W = 50
 filename = "/home/vm/VTR-Tools/workspace/Basic_Architecture/switchbox_out.xml"
 
@@ -28,7 +28,7 @@ f = open(filename, "w")
 perm = None
 for x in range(len(side)):
     for y in range(int(W/2)):
-        perm = 2*y+1
+        perm = y+1
         #print(perm)
         f.write('<func type="')
         f.write("%s" % side[x])
