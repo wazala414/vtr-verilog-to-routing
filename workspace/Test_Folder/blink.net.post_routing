@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<block name="blink.net.post_routing" instance="FPGA_packed_netlist[0]" architecture_id="SHA256:aa5b9463167e77f564ad2cd79d379b91413bc5c9331fadd9fee2c6f7f7c544b3" atom_netlist_id="SHA256:2f54c3c63f662d08f40e09958f41e1250c3f54bffa0de3a07f92d063d3fecfb3">
+<block name="blink.net.post_routing" instance="FPGA_packed_netlist[0]" architecture_id="SHA256:aa5b9463167e77f564ad2cd79d379b91413bc5c9331fadd9fee2c6f7f7c544b3" atom_netlist_id="SHA256:bf251b1011ea1d735d843e624c49311675226cd540e6a23763e429d62872768a">
 	<inputs>blink^clk blink^i_reset</inputs>
 	<outputs>out:blink^o_led</outputs>
 	<clocks>blink^clk</clocks>

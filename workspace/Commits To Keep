@@ -24,6 +24,10 @@ TODO:
 	- implement FULL boolean
 	- implement bidir drawing AND processing of same side
 	- implement Fs == 4 and make a check
+		- l.2708 Fs might need change for implementation
+		- Basically, Fs checks have to be implemented to handle Fs==4 with same side boolean variable but 
+		  xml file also has to be read correctly to parse the same side boolean correctly. In addition
+		  checks have to be modified in read_xml_arch_file to change the default assignment of Fs
 	
 - build_switchblocks.cpp
 	- l.721 -> When commented its making same side
