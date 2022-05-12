@@ -226,10 +226,10 @@
     <switchblock name="wilton_straight" type="bidir">
       <switchblock_location type="EVERYWHERE"/>
       <switchfuncs>
-<!-- <func type="ll" formula="t+0"/>
-<func type="rr" formula="t+0"/>
-<func type="tt" formula="t+0"/>
-<func type="bb" formula="t+0"/> -->
+<func type="ll" formula="t+1"/>
+<func type="rr" formula="t+1"/>
+<func type="tt" formula="t+1"/>
+<func type="bb" formula="t+1"/>
 <func type="rb" formula="t+0"/>
 <func type="tb" formula="t+0"/>
 <func type="tr" formula="t+0"/>

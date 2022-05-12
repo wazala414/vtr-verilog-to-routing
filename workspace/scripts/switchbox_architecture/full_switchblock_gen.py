@@ -11,10 +11,10 @@
 #               line, the script will then populate it.
 #               
 #
-# Args: --in_arch   -> The location and name of the inputted architecture
-#       --out_arch  -> (If specified) The output architecture destination and name
-#       --size      -> The amount of tracks on one side
-#       --same_side -> Adds same side connections (u-turn) to the connection list
+# Args: --in_arch       -> The location and name of the inputted architecture
+#       --out_arch      -> (If specified) The output architecture destination and name
+#       --chan_width    -> The amount of tracks on one side
+#       --same_side     -> Adds same side connections (u-turn) to the connection list
 #-----------------------------------------------------------------------------------------------
 
 import os
@@ -26,9 +26,9 @@ import re
 import argparse
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--in_arch", default="/home/vm/VTR-Toolsworkspace/architectures/Arch_Test_Same_Side.xml", help="Directory to get arch xml files from.")
+parser.add_argument("--in_arch", default="/home/vm/VTR-Tools/workspace/architectures/Arch_Test_Same_Side.xml", help="Directory to get arch xml files from.")
 parser.add_argument("--out_arch", nargs='?', const="/home/vm/VTR-Tools/workspace/architectures/Arch_Test_Same_Side_Test.xml", help="Directory to write arch xml files to.")
-parser.add_argument("--size", default="100", help="Amount of tracks in a channel.")
+parser.add_argument("--chan_width", default="100", help="Amount of tracks in a channel.")
 parser.add_argument("--same_side", action="store_true", help="Describes if same side connections (u-turn) are required.")
 args = parser.parse_args()
 
@@ -37,7 +37,7 @@ data = []
 line_index = 0
 comment = False
 # TODO: Use routing width to set number
-W = int(args.size)
+W = int(args.chan_width)
 
 # Set of sides to connect to
 side_bidir = ['lt','lr','lb','tr','tb','rb']
@@ -102,7 +102,7 @@ with open(out_arch_name, "w") as out_arch:
             if match_func_start:
                 if direction == 'bidir':
                     for x in range(len(side_bidir)):
-                        for y in range(int(W/2)):
+                        for y in range(int(W)):
                             perm = y
                             data.insert(line_index+1, '<func type="%s'  % side_bidir[x] + '" formula="t+%i' % perm + '"/>\n')
                 else:

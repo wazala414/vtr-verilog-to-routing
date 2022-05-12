@@ -862,8 +862,8 @@ void dump_sblock_pattern(const t_sblock_pattern& sblock_pattern,
 
                 for (int from_side = 0; from_side < 4; ++from_side) {
                     for (int to_side = 0; to_side < 4; ++to_side) {
-                        if (from_side == to_side)
-                            continue;
+                        // if (from_side == to_side)
+                        //     continue;
 
                         const char* psz_from_side = "?";
                         switch (from_side) {

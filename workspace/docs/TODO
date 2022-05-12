@@ -21,11 +21,17 @@ Full preset topology:
 	  checks have to be modified in read_xml_arch_file to change the default assignment of Fs
 
 Bidir same side adaptation:
-	- build_switchblocks.cpp 	l.483 	-> sanity check to remove (or adapt)
+	- build_switchblocks.cpp 	l.483 	-> sanity check to remove (or adapt) -> issue only for FAST_SB_COMPUTATION
 	- build_switchblocks.cpp 	l.775 	-> sanity check to remove (or adapt)
-	- rr_graph2.cpp			l.865	-> sanity check to remove (or adapt) but issue only for FAST_SB_COMPUTATION
-	- parse_switchblocks.cpp	l.390	-> sanity check to remove (or adapt)
+	- rr_graph2.cpp			l.865	-> sanity check to remove (or adapt) -> issue only for preset same side
+	- parse_switchblocks.cpp	l.390	-> sanity check to remove (or adapt) -> Changed the assertion statement, now works with same side
 	- OdinII isn't happy about these architectures
 	
 Testing:
 	- Create architecture that is suited for our testing
+	
+	
+	
+	
+	
+	

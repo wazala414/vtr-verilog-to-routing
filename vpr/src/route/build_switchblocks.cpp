@@ -481,9 +481,9 @@ static void stampout_switchblocks_from_row(int sb_row_size,
                 /* over each destination side */
                 for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
                     /* can't connect a side to itself */
-                    if (from_side == to_side) {
-                        continue;
-                    }
+                    // if (from_side == to_side) {
+                    //     continue;
+                    // }
                     /* over each source wire */
                     for (int iwire = 0; iwire < nodes_per_chan; iwire++) {
                         /* get the total x+y distance of the current switchblock from the reference switchblock */
@@ -772,11 +772,11 @@ static void compute_wire_connections(int x_coord, int y_coord, enum e_side from_
     Switchblock_Lookup sb_conn(x_coord, y_coord, from_side, to_side); /* for indexing into FPGA's switchblock map */
 
     /* can't connect a switchblock side to itself */
-    if (directionality == BI_DIRECTIONAL){
-        if (from_side == to_side) {
-            return;
-        }
-    }
+    // if (directionality == BI_DIRECTIONAL){
+    //     if (from_side == to_side) {
+    //         return;
+    //     }
+    // }
 
     /* check that the permutation map has an entry for this side combination */
     if (sb->permutation_map.count(side_conn) == 0) {
