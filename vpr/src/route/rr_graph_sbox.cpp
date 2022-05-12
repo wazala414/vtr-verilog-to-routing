@@ -49,12 +49,18 @@ vtr::NdMatrix<std::vector<int>, 3> alloc_and_load_switch_block_conn(const size_t
         for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
             for (size_t from_track = 0; from_track < nodes_per_chan; from_track++) {
                 /* TODO: same_side_boolean - Add more flexibility by adding extra specification of same-side boolean 
-                                             in predefined topologies rather than relying on a specific Fs. */
-                if ((from_side != to_side) | (Fs == 4)) {   /* Allow same side connection ONLY IF Fs is 4 a not more. */
-                    switch_block_conn[from_side][to_side][from_track].resize(1);
+                                             in predefined topologies rather than relying on a specific Fs. 
+                                             Uncomment the loop and adapt. */
+                if (((from_side != to_side) && (switch_block_type != FULL)) | (Fs == 4)) {   /* Allow same side connection ONLY IF Fs is 4 a not more. */
+                        switch_block_conn[from_side][to_side][from_track].resize(1);
 
-                    switch_block_conn[from_side][to_side][from_track][0] = get_simple_switch_block_track(from_side, to_side,
+                        switch_block_conn[from_side][to_side][from_track][0] = get_simple_switch_block_track(from_side, to_side,
                                                                                                          from_track, switch_block_type, nodes_per_chan);
+                // } else if (switch_block_type == FULL) {
+                //     switch_block_conn[from_side][to_side][from_track].resize(nodes_per_chan);
+                //     for (size_t i = 0; i < nodes_per_chan; i++) {
+                //         switch_block_conn[from_side][to_side][from_track][i] = from_track + i;
+                //     }                   
                 } else { /* If Fs is not 4, prioritize non same side connection */
                     switch_block_conn[from_side][to_side][from_track].clear();
                 }
