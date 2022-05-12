@@ -3,38 +3,39 @@
 # Output precision: 3
 
 #Path 1
-Startpoint: blink^i_reset.inpad[0] (.input clocked by blink^clk)
-Endpoint  : blink^r_counter~3_FF.D[0] (.latch clocked by blink^clk)
+Startpoint: blink^r_counter~0_FF.Q[0] (.latch clocked by blink^clk)
+Endpoint  : blink^r_counter~0_FF.D[0] (.latch clocked by blink^clk)
 Path Type : hold
 
 Point                                                             Incr      Path
 --------------------------------------------------------------------------------
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
-input external delay                                             0.000     0.000
-blink^i_reset.inpad[0] (.input)                                  0.000     0.000
-n22.in[0] (.names)                                               0.428     0.428
-n22.out[0] (.names)                                              0.114     0.542
-blink^r_counter~3_FF.D[0] (.latch)                               0.000     0.542
-data arrival time                                                          0.542
+blink^clk.inpad[0] (.input)                                      0.000     0.000
+blink^r_counter~0_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~0_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
+n7.in[1] (.names)                                                3.539     3.599
+n7.out[0] (.names)                                               0.114     3.714
+blink^r_counter~0_FF.D[0] (.latch)                               0.000     3.714
+data arrival time                                                          3.714
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~3_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~0_FF.clk[0] (.latch)                             0.000     0.000
 clock uncertainty                                                0.000     0.000
 cell hold time                                                   0.019     0.019
 data required time                                                         0.019
 --------------------------------------------------------------------------------
 data required time                                                        -0.019
-data arrival time                                                          0.542
+data arrival time                                                          3.714
 --------------------------------------------------------------------------------
-slack (MET)                                                                0.523
+slack (MET)                                                                3.695
 
 
 #Path 2
-Startpoint: blink^r_counter~2_FF.Q[0] (.latch clocked by blink^clk)
-Endpoint  : blink^r_counter~2_FF.D[0] (.latch clocked by blink^clk)
+Startpoint: blink^r_counter~0_FF.Q[0] (.latch clocked by blink^clk)
+Endpoint  : blink^r_counter~1_FF.D[0] (.latch clocked by blink^clk)
 Path Type : hold
 
 Point                                                             Incr      Path
@@ -42,25 +43,25 @@ Point                                                             Incr      Path
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~2_FF.clk[0] (.latch)                             0.000     0.000
-blink^r_counter~2_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
-n17.in[3] (.names)                                               0.467     0.527
-n17.out[0] (.names)                                              0.115     0.642
-blink^r_counter~2_FF.D[0] (.latch)                               0.000     0.642
-data arrival time                                                          0.642
+blink^r_counter~0_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~0_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
+n12.in[1] (.names)                                               3.539     3.599
+n12.out[0] (.names)                                              0.114     3.714
+blink^r_counter~1_FF.D[0] (.latch)                               0.000     3.714
+data arrival time                                                          3.714
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~2_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~1_FF.clk[0] (.latch)                             0.000     0.000
 clock uncertainty                                                0.000     0.000
 cell hold time                                                   0.019     0.019
 data required time                                                         0.019
 --------------------------------------------------------------------------------
 data required time                                                        -0.019
-data arrival time                                                          0.642
+data arrival time                                                          3.714
 --------------------------------------------------------------------------------
-slack (MET)                                                                0.623
+slack (MET)                                                                3.695
 
 
 #Path 3
@@ -75,10 +76,10 @@ clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
 blink^r_counter~4_FF.clk[0] (.latch)                             0.000     0.000
 blink^r_counter~4_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
-n27.in[2] (.names)                                               0.467     0.528
-n27.out[0] (.names)                                              0.115     0.642
-blink^r_counter~4_FF.D[0] (.latch)                               0.000     0.642
-data arrival time                                                          0.642
+n27.in[2] (.names)                                               3.539     3.599
+n27.out[0] (.names)                                              0.114     3.714
+blink^r_counter~4_FF.D[0] (.latch)                               0.000     3.714
+data arrival time                                                          3.714
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
@@ -89,44 +90,45 @@ cell hold time                                                   0.019     0.019
 data required time                                                         0.019
 --------------------------------------------------------------------------------
 data required time                                                        -0.019
-data arrival time                                                          0.642
+data arrival time                                                          3.714
 --------------------------------------------------------------------------------
-slack (MET)                                                                0.623
+slack (MET)                                                                3.695
 
 
 #Path 4
-Startpoint: blink^i_reset.inpad[0] (.input clocked by blink^clk)
-Endpoint  : blink^r_counter~1_FF.D[0] (.latch clocked by blink^clk)
+Startpoint: blink^r_counter~2_FF.Q[0] (.latch clocked by blink^clk)
+Endpoint  : blink^r_counter~2_FF.D[0] (.latch clocked by blink^clk)
 Path Type : hold
 
 Point                                                             Incr      Path
 --------------------------------------------------------------------------------
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
-input external delay                                             0.000     0.000
-blink^i_reset.inpad[0] (.input)                                  0.000     0.000
-n12.in[0] (.names)                                               0.819     0.819
-n12.out[0] (.names)                                              0.115     0.934
-blink^r_counter~1_FF.D[0] (.latch)                               0.000     0.934
-data arrival time                                                          0.934
+blink^clk.inpad[0] (.input)                                      0.000     0.000
+blink^r_counter~2_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~2_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
+n17.in[3] (.names)                                               5.095     5.155
+n17.out[0] (.names)                                              0.114     5.269
+blink^r_counter~2_FF.D[0] (.latch)                               0.000     5.269
+data arrival time                                                          5.269
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~1_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~2_FF.clk[0] (.latch)                             0.000     0.000
 clock uncertainty                                                0.000     0.000
 cell hold time                                                   0.019     0.019
 data required time                                                         0.019
 --------------------------------------------------------------------------------
 data required time                                                        -0.019
-data arrival time                                                          0.934
+data arrival time                                                          5.269
 --------------------------------------------------------------------------------
-slack (MET)                                                                0.915
+slack (MET)                                                                5.251
 
 
 #Path 5
-Startpoint: blink^r_counter~0_FF.Q[0] (.latch clocked by blink^clk)
-Endpoint  : blink^r_counter~0_FF.D[0] (.latch clocked by blink^clk)
+Startpoint: blink^r_counter~3_FF.Q[0] (.latch clocked by blink^clk)
+Endpoint  : blink^r_counter~3_FF.D[0] (.latch clocked by blink^clk)
 Path Type : hold
 
 Point                                                             Incr      Path
@@ -134,25 +136,25 @@ Point                                                             Incr      Path
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~0_FF.clk[0] (.latch)                             0.000     0.000
-blink^r_counter~0_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
-n7.in[1] (.names)                                                1.212     1.272
-n7.out[0] (.names)                                               0.114     1.387
-blink^r_counter~0_FF.D[0] (.latch)                               0.000     1.387
-data arrival time                                                          1.387
+blink^r_counter~3_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~3_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
+n22.in[2] (.names)                                               6.868     6.928
+n22.out[0] (.names)                                              0.114     7.042
+blink^r_counter~3_FF.D[0] (.latch)                               0.000     7.042
+data arrival time                                                          7.042
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
-blink^r_counter~0_FF.clk[0] (.latch)                             0.000     0.000
+blink^r_counter~3_FF.clk[0] (.latch)                             0.000     0.000
 clock uncertainty                                                0.000     0.000
 cell hold time                                                   0.019     0.019
 data required time                                                         0.019
 --------------------------------------------------------------------------------
 data required time                                                        -0.019
-data arrival time                                                          1.387
+data arrival time                                                          7.042
 --------------------------------------------------------------------------------
-slack (MET)                                                                1.368
+slack (MET)                                                                7.023
 
 
 #Path 6
@@ -167,10 +169,10 @@ clock source latency                                             0.000     0.000
 blink^clk.inpad[0] (.input)                                      0.000     0.000
 blink^r_counter~4_FF.clk[0] (.latch)                             0.000     0.000
 blink^r_counter~4_FF.Q[0] (.latch) [clock-to-output]             0.060     0.060
-blink^o_led.in[0] (.names)                                       0.779     0.839
-blink^o_led.out[0] (.names)                                      0.114     0.954
-out:blink^o_led.outpad[0] (.output)                              0.859     1.813
-data arrival time                                                          1.813
+blink^o_led.in[0] (.names)                                       3.539     3.599
+blink^o_led.out[0] (.names)                                      0.114     3.714
+out:blink^o_led.outpad[0] (.output)                              9.253    12.967
+data arrival time                                                         12.967
 
 clock blink^clk (rise edge)                                      0.000     0.000
 clock source latency                                             0.000     0.000
@@ -179,9 +181,9 @@ output external delay                                            0.000     0.000
 data required time                                                         0.000
 --------------------------------------------------------------------------------
 data required time                                                        -0.000
-data arrival time                                                          1.813
+data arrival time                                                         12.967
 --------------------------------------------------------------------------------
-slack (MET)                                                                1.813
+slack (MET)                                                               12.967
 
 
 #End of timing report

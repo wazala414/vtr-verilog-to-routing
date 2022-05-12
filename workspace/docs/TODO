@@ -30,6 +30,8 @@ Bidir same side adaptation:
 Testing:
 	- Create architecture that is suited for our testing
 	
+Issue:
+	- When trying to do VPR analysis this error happens -> "SDC file 'blink.pre-vpr.sdc' not found"
 	
 	
 	
