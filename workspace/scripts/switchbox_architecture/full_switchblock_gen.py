@@ -43,7 +43,7 @@ W = int(args.chan_width)
 side_bidir = ['lt','lr','lb','tr','tb','rb']
 side_unidir = ['lt','lr','lb','tr','tl','tb','rb','rl','rt','br','bl','bt']
 if args.same_side:
-    side_bidir.extend(['bb','tt','rr','ll'])
+    side_bidir.extend(['bb','ll'])
     side_unidir.extend(['bb','tt','rr','ll'])
 
 # Overwrite architecture file if no output has been specified

@@ -2095,13 +2095,10 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
                 x2 = to_chan.right();
             } 
             /* Same side connection */
-            // else if (from_chan.left() == to_chan.left()) {
-            //     x1 = from_chan.left();
-            //     x2 = to_chan.left();
-            // } else if (from_chan.right() == to_chan.right()) {
-            //     x1 = from_chan.right();
-            //     x2 = to_chan.right();
-            // }
+            else if (same_side) {
+                x1 = from_chan.left();
+                x2 = to_chan.left();
+            }
             else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 x1 = from_chan.left();
                 x2 = from_chan.left() + draw_coords->get_tile_width();
@@ -2212,13 +2209,10 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
                 y2 = to_chan.top();
             } 
             /* Same side connection */
-            // else if (from_chan.bottom() == to_chan.bottom()) {
-            //     y1 = from_chan.bottom();
-            //     y2 = to_chan.bottom();
-            // } else if (from_chan.top() == to_chan.top()) {
-            //     y1 = from_chan.top();
-            //     y2 = to_chan.top();
-            // }
+            else if (same_side) {
+                y1 = from_chan.bottom();
+                y2 = to_chan.bottom();
+            }
             else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 y1 = from_chan.bottom();
                 y2 = from_chan.bottom() + draw_coords->get_tile_width();
