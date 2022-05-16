@@ -1,0 +1,16 @@
+# Path to directory of circuits to use
+circuits_dir=../workspace/benchmarking/Test/verilog
+
+# Path to directory of architectures to use
+archs_dir=../workspace/benchmarking/Test/arch
+
+# Add circuits to list to sweep
+circuit_list_add=ch_intrinsics.v
+
+# Add architectures to list to sweep
+arch_list_add=Reference_Arch.xml
+arch_list_add=Unidir_FS4_Same_Side.xml
+
+# Parse info and how to parse
+parse_file=vpr_standard.txt
+
