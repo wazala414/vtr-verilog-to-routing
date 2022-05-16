@@ -1,0 +1,219 @@
+<!--
+
+    Same side benchmarking
+
+    Unidirectional switchblock with fully connected track and same side connection.
+    The architecture has been adapted to work with a fully connected switchblock.
+
+-->
+
+
+<architecture>
+
+    <!--
+            Models: Multiplier, Single Port and Dual Port RAM
+    -->    
+
+    <models>
+        <model name="multiply">
+            <input_ports>
+                <port name="a" combinational_sink_ports="out"/>
+                <port name="b" combinational_sink_ports="out"/>
+            </input_ports>
+            <output_ports>
+                <port name="out"/>
+            </output_ports>
+        </model>
+        <model name="single_port_ram">
+            <input_ports>
+                <port name="we" clock="clk"/>
+                <port name="addr" clock="clk"/>
+                <port name="data" clock="clk"/>
+                <port name="clk" is_clock="1"/>
+            </input_ports>
+            <output_ports>
+                <port name="out" clock="clk"/>
+            </output_ports>
+        </model>
+        <model name="dual_port_ram">
+            <input_ports>
+                <port name="we1" clock="clk"/>
+                <port name="we2" clock="clk"/>
+                <port name="addr1" clock="clk"/>
+                <port name="addr2" clock="clk"/>
+                <port name="data1" clock="clk"/>
+                <port name="data2" clock="clk"/>
+                <port name="clk" is_clock="1"/>
+            </input_ports>
+            <output_ports>
+                <port name="out1" clock="clk"/>
+                <port name="out2" clock="clk"/>
+            </output_ports>
+        </model>
+    </models>
+
+    <tiles>
+        <tile name="io">
+            <sub_tile capacity="int">
+
+            </sub_tile>
+        </tile>
+
+        <tile name="clb" area="float">
+            <sub_tile name="clb">
+
+            </sub_tile>
+        </tile>      
+    </tiles>
+
+    <!-- 
+            Auto Layout: IO, CLB, Multiplier, RAM
+    -->
+
+    <layout>
+        <auto_layout aspect_ratio="1.0">
+            <perimeter type="io" priority="100"/>
+            <corners type="EMPTY" priority="101"/>
+            <fill type="clb" priority="10"/>
+        </auto_layout>
+    </layout>
+
+    <!-- 
+            Device: Even channel distribution, custom SB, same input switch mux as for wires 
+    -->
+
+    <device>
+        <area grid_logic_tile_area="0"/>
+        <chan_width_distr>
+          <x distr="uniform" peak="1"/>
+          <y distr="uniform" peak="1"/>
+        </chan_width_distr>
+        <switch_block type="custom"/>
+        <connection_block input_switch_name="mux_switch"/>
+    </device>
+
+    <!-- 
+            Switch List: Single Mux
+    -->
+
+    <switchlist>
+        <switch type="mux" name="mux_switch" R="" Cin="" Cout="" mux_trans_size="" buf_size=""/>
+    </switchlist>
+
+    <!-- 
+            Segment List: Single fully connected segment type of length 1 using a Mux and present uniformely accross the channel
+    -->
+
+    <segmentlist>
+        <segment freq="1.00" name="wire" length="1" type="unidir" Rmetal="" Cmetal="">
+            <mux name="mux_switch"/>
+            <sb type="pattern">1 1</sb>
+            <cb type="pattern">1</cb>
+        </segment>
+    </segmentlist>
+
+    <!-- 
+            Switchblock List: All switchblocks are unidirectional fully connected switchblocks 
+    -->
+    
+    <switchblocklist>
+        <switchblock name="full_switchblock" type="unidir">
+            <switchblock_location type="EVERYWHERE"/>
+            <switchfuncs>
+            </switchfuncs>
+            <wireconn from_type="wire" to_type="wire" from_switchpoint="0" to_switchpoint="0" num_conns="from"/>
+        </switchblock>
+    </switchblocklist>
+
+    <!-- 
+            Complex Blocks List: 
+    -->
+
+    <complexblocklist>
+        <pb_type name="io">
+            <input name="outpad" num_pins="1"/>
+            <output name="inpad" num_pins="1"/>
+            <clock name="clock" num_pins="1"/>
+            <mode name="inpad">
+                <pb_type name="inpad" blif_model=".input" num_pb="1">
+                    <output name="inpad" num_pins="1"/>
+                </pb_type>
+                <interconnect>
+                    <direct name="inpad" input="inpad.inpad" output="io.inpad">
+                    <delay_constant max="4.243e-11" in_port="inpad.inpad" out_port="io.inpad"/>
+                    </direct>
+                </interconnect>
+            </mode>
+            <mode name="outpad">
+                <pb_type name="outpad" blif_model=".output" num_pb="1">
+                    <input name="outpad" num_pins="1"/>
+                </pb_type>
+                <interconnect>
+                    <direct name="outpad" input="io.outpad" output="outpad.outpad">
+                    <delay_constant max="1.394e-11" in_port="io.outpad" out_port="outpad.outpad"/>
+                    </direct>
+                </interconnect>
+            </mode>
+        </pb_type>
+
+        <pb_type name="clb">
+            <input name="I0" num_pins="4" equivalent="full"/>
+            <input name="I1" num_pins="4" equivalent="full"/>
+            <input name="I2" num_pins="4" equivalent="full"/>
+            <input name="I3" num_pins="4" equivalent="full"/>
+            <input name="I4" num_pins="4" equivalent="full"/>
+            <input name="I5" num_pins="4" equivalent="full"/>
+            <input name="I6" num_pins="4" equivalent="full"/>
+            <input name="I7" num_pins="4" equivalent="full"/>
+            <output name="O" num_pins="8" equivalent="none"/>
+            <clock name="clk" num_pins="1"/>
+            <pb_type name="ble4" num_pb="8">
+                <input name="in" num_pins="4"/>
+                <output name="out" num_pins="1"/>
+                <clock name="clk" num_pins="1"/>
+                <pb_type name="lut4" blif_model=".names" num_pb="1" class="lut">
+                    <input name="in" num_pins="4" port_class="lut_in"/>
+                    <output name="out" num_pins="1" port_class="lut_out"/>
+                    <delay_matrix type="max" in_port="lut4.in" out_port="lut4.out">
+                        1.145e-10
+                        1.145e-10
+                        1.145e-10
+                        1.145e-10
+                    </delay_matrix>
+                </pb_type>
+                <pb_type name="ff" blif_model=".latch" num_pb="1" class="flipflop">
+                    <input name="D" num_pins="1" port_class="D"/>
+                    <output name="Q" num_pins="1" port_class="Q"/>
+                    <clock name="clk" num_pins="1" port_class="clock"/>
+                    <T_setup value="1.891e-11" port="ff.D" clock="clk"/>
+                    <T_clock_to_Q max="6.032e-11" port="ff.Q" clock="clk"/>
+                </pb_type>
+                <interconnect>
+                    <direct name="direct1" input="ble4.in" output="lut4[0:0].in"/>
+                    <direct name="direct2" input="lut4.out" output="ff.D">
+                        <pack_pattern name="ble4" in_port="lut4.out" out_port="ff.D"/>
+                    </direct>
+                    <direct name="direct3" input="ble4.clk" output="ff.clk"/>
+                    <mux name="mux1" input="ff.Q lut4.out" output="ble4.out">
+                        <delay_constant max="16.6e-12" in_port="lut4.out[0:0]" out_port="ble4.out[0:0]"/>
+                        <delay_constant max="30e-12" in_port="ff[0:0].Q" out_port="ble4.out[0:0]"/>
+                    </mux>
+                </interconnect>
+            </pb_type>
+            <interconnect>
+                <complete name="completeI0" input="clb.I0" output="ble4[0].in"/>
+                <complete name="completeI1" input="clb.I1" output="ble4[1].in"/>
+                <complete name="completeI2" input="clb.I2" output="ble4[2].in"/>
+                <complete name="completeI3" input="clb.I3" output="ble4[3].in"/>
+                <complete name="completeI4" input="clb.I4" output="ble4[4].in"/>
+                <complete name="completeI5" input="clb.I5" output="ble4[5].in"/>
+                <complete name="completeI6" input="clb.I6" output="ble4[6].in"/>
+                <complete name="completeI7" input="clb.I7" output="ble4[7].in"/>
+                <complete name="clks" input="clb.clk" output="ble4[7:0].clk"/>
+                <direct name="directO" input="ble4[7:0].out" output="clb.O"/>
+            </interconnect>
+        </pb_type>
+  
+    </complexblocklist>
+
+</architecture>
