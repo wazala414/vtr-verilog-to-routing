@@ -1,0 +1,1403 @@
+<!-- 
+ Architecture file translated from ifar repository N04K04L01.FC15FO25.AREA1DELAY1.CMOS90NM.BPTM
+
+ Simple architecture file consisting of clusters of 4 BLEs, each BLE contains a 4-LUT+FF pair.  Delay models from 90nm PTM.
+-->
+<architecture>
+  <!-- 
+       ODIN II specific config begins 
+       Describes the types of user-specified netlist blocks (in blif, this corresponds to 
+       ".model [type_of_block]") that this architecture supports.
+
+       Note: Basic LUTs, I/Os, and flip-flops are not included here as there are 
+       already special structures in blif (.names, .input, .output, and .latch) 
+       that describe them.
+  -->
+  <models>
+  </models>
+  <tiles>
+    <tile name="io">
+      <sub_tile name="io" capacity="3">
+        <equivalent_sites>
+          <site pb_type="io" pin_mapping="direct"/>
+        </equivalent_sites>
+        <input name="outpad" num_pins="1"/>
+        <output name="inpad" num_pins="1"/>
+        <clock name="clock" num_pins="1"/>
+        <fc in_type="frac" in_val="1.0" out_type="frac" out_val="0.25"/>
+        <pinlocations pattern="custom">
+          <loc side="left">io.outpad io.inpad io.clock</loc>
+          <loc side="top">io.outpad io.inpad io.clock</loc>
+          <loc side="right">io.outpad io.inpad io.clock</loc>
+          <loc side="bottom">io.outpad io.inpad io.clock</loc>
+        </pinlocations>
+      </sub_tile>
+    </tile>
+    <tile name="clb">
+      <sub_tile name="clb">
+        <equivalent_sites>
+          <site pb_type="clb" pin_mapping="direct"/>
+        </equivalent_sites>
+        <input name="I" num_pins="10" equivalent="full"/>
+        <output name="O" num_pins="4" equivalent="instance"/>
+        <clock name="clk" num_pins="1"/>
+        <fc in_type="frac" in_val="0.15" out_type="frac" out_val="0.25"/>
+        <pinlocations pattern="spread"/>
+      </sub_tile>
+    </tile>
+  </tiles>
+  <!-- ODIN II specific config ends -->
+  <!-- Physical descriptions begin -->
+  <layout>
+    <auto_layout aspect_ratio="1.000000">
+      <!--Perimeter of 'io' blocks with 'EMPTY' blocks at corners-->
+      <perimeter type="io" priority="100"/>
+      <corners type="EMPTY" priority="101"/>
+      <!--Fill with 'clb'-->
+      <fill type="clb" priority="10"/>
+    </auto_layout>
+  </layout>
+  <device>
+    <sizing R_minW_nmos="4220.930176" R_minW_pmos="11207.599609"/>
+    <area grid_logic_tile_area="2229.320068"/>
+    <chan_width_distr>
+      <x distr="uniform" peak="1.000000"/>
+      <y distr="uniform" peak="1.000000"/>
+    </chan_width_distr>
+  <switch_block type="custom"/>
+    <connection_block input_switch_name="ipin_cblock"/>
+  </device>
+  <switchlist>
+    <switch type="mux" name="0" R="0.000000" Cin="0.000000e+00" Cout="0.000000e+00" Tdel="6.244000e-11" mux_trans_size="1.835460" buf_size="10.498600"/>
+    <!--switch ipin_cblock resistance set to yeild for 4x minimum drive strength buffer-->
+    <switch type="mux" name="ipin_cblock" R="1055.232544" Cout="0." Cin="0.000000e+00" Tdel="8.045000e-11" mux_trans_size="0.983352" buf_size="auto"/>
+  </switchlist>
+  <segmentlist>
+    <segment name="wire" freq="1.000000" length="1" type="unidir" Rmetal="0.000000" Cmetal="0.000000e+00">
+      <mux name="0"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+  </segmentlist>
+
+  <switchblocklist>
+    <switchblock name="full_switchblock" type="unidir">
+      <switchblock_location type="EVERYWHERE"/>
+      <switchfuncs>
+<func type="ll" formula="t+74"/>
+<func type="ll" formula="t+73"/>
+<func type="ll" formula="t+72"/>
+<func type="ll" formula="t+71"/>
+<func type="ll" formula="t+70"/>
+<func type="ll" formula="t+69"/>
+<func type="ll" formula="t+68"/>
+<func type="ll" formula="t+67"/>
+<func type="ll" formula="t+66"/>
+<func type="ll" formula="t+65"/>
+<func type="ll" formula="t+64"/>
+<func type="ll" formula="t+63"/>
+<func type="ll" formula="t+62"/>
+<func type="ll" formula="t+61"/>
+<func type="ll" formula="t+60"/>
+<func type="ll" formula="t+59"/>
+<func type="ll" formula="t+58"/>
+<func type="ll" formula="t+57"/>
+<func type="ll" formula="t+56"/>
+<func type="ll" formula="t+55"/>
+<func type="ll" formula="t+54"/>
+<func type="ll" formula="t+53"/>
+<func type="ll" formula="t+52"/>
+<func type="ll" formula="t+51"/>
+<func type="ll" formula="t+50"/>
+<func type="ll" formula="t+49"/>
+<func type="ll" formula="t+48"/>
+<func type="ll" formula="t+47"/>
+<func type="ll" formula="t+46"/>
+<func type="ll" formula="t+45"/>
+<func type="ll" formula="t+44"/>
+<func type="ll" formula="t+43"/>
+<func type="ll" formula="t+42"/>
+<func type="ll" formula="t+41"/>
+<func type="ll" formula="t+40"/>
+<func type="ll" formula="t+39"/>
+<func type="ll" formula="t+38"/>
+<func type="ll" formula="t+37"/>
+<func type="ll" formula="t+36"/>
+<func type="ll" formula="t+35"/>
+<func type="ll" formula="t+34"/>
+<func type="ll" formula="t+33"/>
+<func type="ll" formula="t+32"/>
+<func type="ll" formula="t+31"/>
+<func type="ll" formula="t+30"/>
+<func type="ll" formula="t+29"/>
+<func type="ll" formula="t+28"/>
+<func type="ll" formula="t+27"/>
+<func type="ll" formula="t+26"/>
+<func type="ll" formula="t+25"/>
+<func type="ll" formula="t+24"/>
+<func type="ll" formula="t+23"/>
+<func type="ll" formula="t+22"/>
+<func type="ll" formula="t+21"/>
+<func type="ll" formula="t+20"/>
+<func type="ll" formula="t+19"/>
+<func type="ll" formula="t+18"/>
+<func type="ll" formula="t+17"/>
+<func type="ll" formula="t+16"/>
+<func type="ll" formula="t+15"/>
+<func type="ll" formula="t+14"/>
+<func type="ll" formula="t+13"/>
+<func type="ll" formula="t+12"/>
+<func type="ll" formula="t+11"/>
+<func type="ll" formula="t+10"/>
+<func type="ll" formula="t+9"/>
+<func type="ll" formula="t+8"/>
+<func type="ll" formula="t+7"/>
+<func type="ll" formula="t+6"/>
+<func type="ll" formula="t+5"/>
+<func type="ll" formula="t+4"/>
+<func type="ll" formula="t+3"/>
+<func type="ll" formula="t+2"/>
+<func type="ll" formula="t+1"/>
+<func type="ll" formula="t+0"/>
+<func type="rr" formula="t+74"/>
+<func type="rr" formula="t+73"/>
+<func type="rr" formula="t+72"/>
+<func type="rr" formula="t+71"/>
+<func type="rr" formula="t+70"/>
+<func type="rr" formula="t+69"/>
+<func type="rr" formula="t+68"/>
+<func type="rr" formula="t+67"/>
+<func type="rr" formula="t+66"/>
+<func type="rr" formula="t+65"/>
+<func type="rr" formula="t+64"/>
+<func type="rr" formula="t+63"/>
+<func type="rr" formula="t+62"/>
+<func type="rr" formula="t+61"/>
+<func type="rr" formula="t+60"/>
+<func type="rr" formula="t+59"/>
+<func type="rr" formula="t+58"/>
+<func type="rr" formula="t+57"/>
+<func type="rr" formula="t+56"/>
+<func type="rr" formula="t+55"/>
+<func type="rr" formula="t+54"/>
+<func type="rr" formula="t+53"/>
+<func type="rr" formula="t+52"/>
+<func type="rr" formula="t+51"/>
+<func type="rr" formula="t+50"/>
+<func type="rr" formula="t+49"/>
+<func type="rr" formula="t+48"/>
+<func type="rr" formula="t+47"/>
+<func type="rr" formula="t+46"/>
+<func type="rr" formula="t+45"/>
+<func type="rr" formula="t+44"/>
+<func type="rr" formula="t+43"/>
+<func type="rr" formula="t+42"/>
+<func type="rr" formula="t+41"/>
+<func type="rr" formula="t+40"/>
+<func type="rr" formula="t+39"/>
+<func type="rr" formula="t+38"/>
+<func type="rr" formula="t+37"/>
+<func type="rr" formula="t+36"/>
+<func type="rr" formula="t+35"/>
+<func type="rr" formula="t+34"/>
+<func type="rr" formula="t+33"/>
+<func type="rr" formula="t+32"/>
+<func type="rr" formula="t+31"/>
+<func type="rr" formula="t+30"/>
+<func type="rr" formula="t+29"/>
+<func type="rr" formula="t+28"/>
+<func type="rr" formula="t+27"/>
+<func type="rr" formula="t+26"/>
+<func type="rr" formula="t+25"/>
+<func type="rr" formula="t+24"/>
+<func type="rr" formula="t+23"/>
+<func type="rr" formula="t+22"/>
+<func type="rr" formula="t+21"/>
+<func type="rr" formula="t+20"/>
+<func type="rr" formula="t+19"/>
+<func type="rr" formula="t+18"/>
+<func type="rr" formula="t+17"/>
+<func type="rr" formula="t+16"/>
+<func type="rr" formula="t+15"/>
+<func type="rr" formula="t+14"/>
+<func type="rr" formula="t+13"/>
+<func type="rr" formula="t+12"/>
+<func type="rr" formula="t+11"/>
+<func type="rr" formula="t+10"/>
+<func type="rr" formula="t+9"/>
+<func type="rr" formula="t+8"/>
+<func type="rr" formula="t+7"/>
+<func type="rr" formula="t+6"/>
+<func type="rr" formula="t+5"/>
+<func type="rr" formula="t+4"/>
+<func type="rr" formula="t+3"/>
+<func type="rr" formula="t+2"/>
+<func type="rr" formula="t+1"/>
+<func type="rr" formula="t+0"/>
+<func type="tt" formula="t+74"/>
+<func type="tt" formula="t+73"/>
+<func type="tt" formula="t+72"/>
+<func type="tt" formula="t+71"/>
+<func type="tt" formula="t+70"/>
+<func type="tt" formula="t+69"/>
+<func type="tt" formula="t+68"/>
+<func type="tt" formula="t+67"/>
+<func type="tt" formula="t+66"/>
+<func type="tt" formula="t+65"/>
+<func type="tt" formula="t+64"/>
+<func type="tt" formula="t+63"/>
+<func type="tt" formula="t+62"/>
+<func type="tt" formula="t+61"/>
+<func type="tt" formula="t+60"/>
+<func type="tt" formula="t+59"/>
+<func type="tt" formula="t+58"/>
+<func type="tt" formula="t+57"/>
+<func type="tt" formula="t+56"/>
+<func type="tt" formula="t+55"/>
+<func type="tt" formula="t+54"/>
+<func type="tt" formula="t+53"/>
+<func type="tt" formula="t+52"/>
+<func type="tt" formula="t+51"/>
+<func type="tt" formula="t+50"/>
+<func type="tt" formula="t+49"/>
+<func type="tt" formula="t+48"/>
+<func type="tt" formula="t+47"/>
+<func type="tt" formula="t+46"/>
+<func type="tt" formula="t+45"/>
+<func type="tt" formula="t+44"/>
+<func type="tt" formula="t+43"/>
+<func type="tt" formula="t+42"/>
+<func type="tt" formula="t+41"/>
+<func type="tt" formula="t+40"/>
+<func type="tt" formula="t+39"/>
+<func type="tt" formula="t+38"/>
+<func type="tt" formula="t+37"/>
+<func type="tt" formula="t+36"/>
+<func type="tt" formula="t+35"/>
+<func type="tt" formula="t+34"/>
+<func type="tt" formula="t+33"/>
+<func type="tt" formula="t+32"/>
+<func type="tt" formula="t+31"/>
+<func type="tt" formula="t+30"/>
+<func type="tt" formula="t+29"/>
+<func type="tt" formula="t+28"/>
+<func type="tt" formula="t+27"/>
+<func type="tt" formula="t+26"/>
+<func type="tt" formula="t+25"/>
+<func type="tt" formula="t+24"/>
+<func type="tt" formula="t+23"/>
+<func type="tt" formula="t+22"/>
+<func type="tt" formula="t+21"/>
+<func type="tt" formula="t+20"/>
+<func type="tt" formula="t+19"/>
+<func type="tt" formula="t+18"/>
+<func type="tt" formula="t+17"/>
+<func type="tt" formula="t+16"/>
+<func type="tt" formula="t+15"/>
+<func type="tt" formula="t+14"/>
+<func type="tt" formula="t+13"/>
+<func type="tt" formula="t+12"/>
+<func type="tt" formula="t+11"/>
+<func type="tt" formula="t+10"/>
+<func type="tt" formula="t+9"/>
+<func type="tt" formula="t+8"/>
+<func type="tt" formula="t+7"/>
+<func type="tt" formula="t+6"/>
+<func type="tt" formula="t+5"/>
+<func type="tt" formula="t+4"/>
+<func type="tt" formula="t+3"/>
+<func type="tt" formula="t+2"/>
+<func type="tt" formula="t+1"/>
+<func type="tt" formula="t+0"/>
+<func type="bb" formula="t+74"/>
+<func type="bb" formula="t+73"/>
+<func type="bb" formula="t+72"/>
+<func type="bb" formula="t+71"/>
+<func type="bb" formula="t+70"/>
+<func type="bb" formula="t+69"/>
+<func type="bb" formula="t+68"/>
+<func type="bb" formula="t+67"/>
+<func type="bb" formula="t+66"/>
+<func type="bb" formula="t+65"/>
+<func type="bb" formula="t+64"/>
+<func type="bb" formula="t+63"/>
+<func type="bb" formula="t+62"/>
+<func type="bb" formula="t+61"/>
+<func type="bb" formula="t+60"/>
+<func type="bb" formula="t+59"/>
+<func type="bb" formula="t+58"/>
+<func type="bb" formula="t+57"/>
+<func type="bb" formula="t+56"/>
+<func type="bb" formula="t+55"/>
+<func type="bb" formula="t+54"/>
+<func type="bb" formula="t+53"/>
+<func type="bb" formula="t+52"/>
+<func type="bb" formula="t+51"/>
+<func type="bb" formula="t+50"/>
+<func type="bb" formula="t+49"/>
+<func type="bb" formula="t+48"/>
+<func type="bb" formula="t+47"/>
+<func type="bb" formula="t+46"/>
+<func type="bb" formula="t+45"/>
+<func type="bb" formula="t+44"/>
+<func type="bb" formula="t+43"/>
+<func type="bb" formula="t+42"/>
+<func type="bb" formula="t+41"/>
+<func type="bb" formula="t+40"/>
+<func type="bb" formula="t+39"/>
+<func type="bb" formula="t+38"/>
+<func type="bb" formula="t+37"/>
+<func type="bb" formula="t+36"/>
+<func type="bb" formula="t+35"/>
+<func type="bb" formula="t+34"/>
+<func type="bb" formula="t+33"/>
+<func type="bb" formula="t+32"/>
+<func type="bb" formula="t+31"/>
+<func type="bb" formula="t+30"/>
+<func type="bb" formula="t+29"/>
+<func type="bb" formula="t+28"/>
+<func type="bb" formula="t+27"/>
+<func type="bb" formula="t+26"/>
+<func type="bb" formula="t+25"/>
+<func type="bb" formula="t+24"/>
+<func type="bb" formula="t+23"/>
+<func type="bb" formula="t+22"/>
+<func type="bb" formula="t+21"/>
+<func type="bb" formula="t+20"/>
+<func type="bb" formula="t+19"/>
+<func type="bb" formula="t+18"/>
+<func type="bb" formula="t+17"/>
+<func type="bb" formula="t+16"/>
+<func type="bb" formula="t+15"/>
+<func type="bb" formula="t+14"/>
+<func type="bb" formula="t+13"/>
+<func type="bb" formula="t+12"/>
+<func type="bb" formula="t+11"/>
+<func type="bb" formula="t+10"/>
+<func type="bb" formula="t+9"/>
+<func type="bb" formula="t+8"/>
+<func type="bb" formula="t+7"/>
+<func type="bb" formula="t+6"/>
+<func type="bb" formula="t+5"/>
+<func type="bb" formula="t+4"/>
+<func type="bb" formula="t+3"/>
+<func type="bb" formula="t+2"/>
+<func type="bb" formula="t+1"/>
+<func type="bb" formula="t+0"/>
+<func type="bt" formula="t+74"/>
+<func type="bt" formula="t+73"/>
+<func type="bt" formula="t+72"/>
+<func type="bt" formula="t+71"/>
+<func type="bt" formula="t+70"/>
+<func type="bt" formula="t+69"/>
+<func type="bt" formula="t+68"/>
+<func type="bt" formula="t+67"/>
+<func type="bt" formula="t+66"/>
+<func type="bt" formula="t+65"/>
+<func type="bt" formula="t+64"/>
+<func type="bt" formula="t+63"/>
+<func type="bt" formula="t+62"/>
+<func type="bt" formula="t+61"/>
+<func type="bt" formula="t+60"/>
+<func type="bt" formula="t+59"/>
+<func type="bt" formula="t+58"/>
+<func type="bt" formula="t+57"/>
+<func type="bt" formula="t+56"/>
+<func type="bt" formula="t+55"/>
+<func type="bt" formula="t+54"/>
+<func type="bt" formula="t+53"/>
+<func type="bt" formula="t+52"/>
+<func type="bt" formula="t+51"/>
+<func type="bt" formula="t+50"/>
+<func type="bt" formula="t+49"/>
+<func type="bt" formula="t+48"/>
+<func type="bt" formula="t+47"/>
+<func type="bt" formula="t+46"/>
+<func type="bt" formula="t+45"/>
+<func type="bt" formula="t+44"/>
+<func type="bt" formula="t+43"/>
+<func type="bt" formula="t+42"/>
+<func type="bt" formula="t+41"/>
+<func type="bt" formula="t+40"/>
+<func type="bt" formula="t+39"/>
+<func type="bt" formula="t+38"/>
+<func type="bt" formula="t+37"/>
+<func type="bt" formula="t+36"/>
+<func type="bt" formula="t+35"/>
+<func type="bt" formula="t+34"/>
+<func type="bt" formula="t+33"/>
+<func type="bt" formula="t+32"/>
+<func type="bt" formula="t+31"/>
+<func type="bt" formula="t+30"/>
+<func type="bt" formula="t+29"/>
+<func type="bt" formula="t+28"/>
+<func type="bt" formula="t+27"/>
+<func type="bt" formula="t+26"/>
+<func type="bt" formula="t+25"/>
+<func type="bt" formula="t+24"/>
+<func type="bt" formula="t+23"/>
+<func type="bt" formula="t+22"/>
+<func type="bt" formula="t+21"/>
+<func type="bt" formula="t+20"/>
+<func type="bt" formula="t+19"/>
+<func type="bt" formula="t+18"/>
+<func type="bt" formula="t+17"/>
+<func type="bt" formula="t+16"/>
+<func type="bt" formula="t+15"/>
+<func type="bt" formula="t+14"/>
+<func type="bt" formula="t+13"/>
+<func type="bt" formula="t+12"/>
+<func type="bt" formula="t+11"/>
+<func type="bt" formula="t+10"/>
+<func type="bt" formula="t+9"/>
+<func type="bt" formula="t+8"/>
+<func type="bt" formula="t+7"/>
+<func type="bt" formula="t+6"/>
+<func type="bt" formula="t+5"/>
+<func type="bt" formula="t+4"/>
+<func type="bt" formula="t+3"/>
+<func type="bt" formula="t+2"/>
+<func type="bt" formula="t+1"/>
+<func type="bt" formula="t+0"/>
+<func type="bl" formula="t+74"/>
+<func type="bl" formula="t+73"/>
+<func type="bl" formula="t+72"/>
+<func type="bl" formula="t+71"/>
+<func type="bl" formula="t+70"/>
+<func type="bl" formula="t+69"/>
+<func type="bl" formula="t+68"/>
+<func type="bl" formula="t+67"/>
+<func type="bl" formula="t+66"/>
+<func type="bl" formula="t+65"/>
+<func type="bl" formula="t+64"/>
+<func type="bl" formula="t+63"/>
+<func type="bl" formula="t+62"/>
+<func type="bl" formula="t+61"/>
+<func type="bl" formula="t+60"/>
+<func type="bl" formula="t+59"/>
+<func type="bl" formula="t+58"/>
+<func type="bl" formula="t+57"/>
+<func type="bl" formula="t+56"/>
+<func type="bl" formula="t+55"/>
+<func type="bl" formula="t+54"/>
+<func type="bl" formula="t+53"/>
+<func type="bl" formula="t+52"/>
+<func type="bl" formula="t+51"/>
+<func type="bl" formula="t+50"/>
+<func type="bl" formula="t+49"/>
+<func type="bl" formula="t+48"/>
+<func type="bl" formula="t+47"/>
+<func type="bl" formula="t+46"/>
+<func type="bl" formula="t+45"/>
+<func type="bl" formula="t+44"/>
+<func type="bl" formula="t+43"/>
+<func type="bl" formula="t+42"/>
+<func type="bl" formula="t+41"/>
+<func type="bl" formula="t+40"/>
+<func type="bl" formula="t+39"/>
+<func type="bl" formula="t+38"/>
+<func type="bl" formula="t+37"/>
+<func type="bl" formula="t+36"/>
+<func type="bl" formula="t+35"/>
+<func type="bl" formula="t+34"/>
+<func type="bl" formula="t+33"/>
+<func type="bl" formula="t+32"/>
+<func type="bl" formula="t+31"/>
+<func type="bl" formula="t+30"/>
+<func type="bl" formula="t+29"/>
+<func type="bl" formula="t+28"/>
+<func type="bl" formula="t+27"/>
+<func type="bl" formula="t+26"/>
+<func type="bl" formula="t+25"/>
+<func type="bl" formula="t+24"/>
+<func type="bl" formula="t+23"/>
+<func type="bl" formula="t+22"/>
+<func type="bl" formula="t+21"/>
+<func type="bl" formula="t+20"/>
+<func type="bl" formula="t+19"/>
+<func type="bl" formula="t+18"/>
+<func type="bl" formula="t+17"/>
+<func type="bl" formula="t+16"/>
+<func type="bl" formula="t+15"/>
+<func type="bl" formula="t+14"/>
+<func type="bl" formula="t+13"/>
+<func type="bl" formula="t+12"/>
+<func type="bl" formula="t+11"/>
+<func type="bl" formula="t+10"/>
+<func type="bl" formula="t+9"/>
+<func type="bl" formula="t+8"/>
+<func type="bl" formula="t+7"/>
+<func type="bl" formula="t+6"/>
+<func type="bl" formula="t+5"/>
+<func type="bl" formula="t+4"/>
+<func type="bl" formula="t+3"/>
+<func type="bl" formula="t+2"/>
+<func type="bl" formula="t+1"/>
+<func type="bl" formula="t+0"/>
+<func type="br" formula="t+74"/>
+<func type="br" formula="t+73"/>
+<func type="br" formula="t+72"/>
+<func type="br" formula="t+71"/>
+<func type="br" formula="t+70"/>
+<func type="br" formula="t+69"/>
+<func type="br" formula="t+68"/>
+<func type="br" formula="t+67"/>
+<func type="br" formula="t+66"/>
+<func type="br" formula="t+65"/>
+<func type="br" formula="t+64"/>
+<func type="br" formula="t+63"/>
+<func type="br" formula="t+62"/>
+<func type="br" formula="t+61"/>
+<func type="br" formula="t+60"/>
+<func type="br" formula="t+59"/>
+<func type="br" formula="t+58"/>
+<func type="br" formula="t+57"/>
+<func type="br" formula="t+56"/>
+<func type="br" formula="t+55"/>
+<func type="br" formula="t+54"/>
+<func type="br" formula="t+53"/>
+<func type="br" formula="t+52"/>
+<func type="br" formula="t+51"/>
+<func type="br" formula="t+50"/>
+<func type="br" formula="t+49"/>
+<func type="br" formula="t+48"/>
+<func type="br" formula="t+47"/>
+<func type="br" formula="t+46"/>
+<func type="br" formula="t+45"/>
+<func type="br" formula="t+44"/>
+<func type="br" formula="t+43"/>
+<func type="br" formula="t+42"/>
+<func type="br" formula="t+41"/>
+<func type="br" formula="t+40"/>
+<func type="br" formula="t+39"/>
+<func type="br" formula="t+38"/>
+<func type="br" formula="t+37"/>
+<func type="br" formula="t+36"/>
+<func type="br" formula="t+35"/>
+<func type="br" formula="t+34"/>
+<func type="br" formula="t+33"/>
+<func type="br" formula="t+32"/>
+<func type="br" formula="t+31"/>
+<func type="br" formula="t+30"/>
+<func type="br" formula="t+29"/>
+<func type="br" formula="t+28"/>
+<func type="br" formula="t+27"/>
+<func type="br" formula="t+26"/>
+<func type="br" formula="t+25"/>
+<func type="br" formula="t+24"/>
+<func type="br" formula="t+23"/>
+<func type="br" formula="t+22"/>
+<func type="br" formula="t+21"/>
+<func type="br" formula="t+20"/>
+<func type="br" formula="t+19"/>
+<func type="br" formula="t+18"/>
+<func type="br" formula="t+17"/>
+<func type="br" formula="t+16"/>
+<func type="br" formula="t+15"/>
+<func type="br" formula="t+14"/>
+<func type="br" formula="t+13"/>
+<func type="br" formula="t+12"/>
+<func type="br" formula="t+11"/>
+<func type="br" formula="t+10"/>
+<func type="br" formula="t+9"/>
+<func type="br" formula="t+8"/>
+<func type="br" formula="t+7"/>
+<func type="br" formula="t+6"/>
+<func type="br" formula="t+5"/>
+<func type="br" formula="t+4"/>
+<func type="br" formula="t+3"/>
+<func type="br" formula="t+2"/>
+<func type="br" formula="t+1"/>
+<func type="br" formula="t+0"/>
+<func type="rt" formula="t+74"/>
+<func type="rt" formula="t+73"/>
+<func type="rt" formula="t+72"/>
+<func type="rt" formula="t+71"/>
+<func type="rt" formula="t+70"/>
+<func type="rt" formula="t+69"/>
+<func type="rt" formula="t+68"/>
+<func type="rt" formula="t+67"/>
+<func type="rt" formula="t+66"/>
+<func type="rt" formula="t+65"/>
+<func type="rt" formula="t+64"/>
+<func type="rt" formula="t+63"/>
+<func type="rt" formula="t+62"/>
+<func type="rt" formula="t+61"/>
+<func type="rt" formula="t+60"/>
+<func type="rt" formula="t+59"/>
+<func type="rt" formula="t+58"/>
+<func type="rt" formula="t+57"/>
+<func type="rt" formula="t+56"/>
+<func type="rt" formula="t+55"/>
+<func type="rt" formula="t+54"/>
+<func type="rt" formula="t+53"/>
+<func type="rt" formula="t+52"/>
+<func type="rt" formula="t+51"/>
+<func type="rt" formula="t+50"/>
+<func type="rt" formula="t+49"/>
+<func type="rt" formula="t+48"/>
+<func type="rt" formula="t+47"/>
+<func type="rt" formula="t+46"/>
+<func type="rt" formula="t+45"/>
+<func type="rt" formula="t+44"/>
+<func type="rt" formula="t+43"/>
+<func type="rt" formula="t+42"/>
+<func type="rt" formula="t+41"/>
+<func type="rt" formula="t+40"/>
+<func type="rt" formula="t+39"/>
+<func type="rt" formula="t+38"/>
+<func type="rt" formula="t+37"/>
+<func type="rt" formula="t+36"/>
+<func type="rt" formula="t+35"/>
+<func type="rt" formula="t+34"/>
+<func type="rt" formula="t+33"/>
+<func type="rt" formula="t+32"/>
+<func type="rt" formula="t+31"/>
+<func type="rt" formula="t+30"/>
+<func type="rt" formula="t+29"/>
+<func type="rt" formula="t+28"/>
+<func type="rt" formula="t+27"/>
+<func type="rt" formula="t+26"/>
+<func type="rt" formula="t+25"/>
+<func type="rt" formula="t+24"/>
+<func type="rt" formula="t+23"/>
+<func type="rt" formula="t+22"/>
+<func type="rt" formula="t+21"/>
+<func type="rt" formula="t+20"/>
+<func type="rt" formula="t+19"/>
+<func type="rt" formula="t+18"/>
+<func type="rt" formula="t+17"/>
+<func type="rt" formula="t+16"/>
+<func type="rt" formula="t+15"/>
+<func type="rt" formula="t+14"/>
+<func type="rt" formula="t+13"/>
+<func type="rt" formula="t+12"/>
+<func type="rt" formula="t+11"/>
+<func type="rt" formula="t+10"/>
+<func type="rt" formula="t+9"/>
+<func type="rt" formula="t+8"/>
+<func type="rt" formula="t+7"/>
+<func type="rt" formula="t+6"/>
+<func type="rt" formula="t+5"/>
+<func type="rt" formula="t+4"/>
+<func type="rt" formula="t+3"/>
+<func type="rt" formula="t+2"/>
+<func type="rt" formula="t+1"/>
+<func type="rt" formula="t+0"/>
+<func type="rl" formula="t+74"/>
+<func type="rl" formula="t+73"/>
+<func type="rl" formula="t+72"/>
+<func type="rl" formula="t+71"/>
+<func type="rl" formula="t+70"/>
+<func type="rl" formula="t+69"/>
+<func type="rl" formula="t+68"/>
+<func type="rl" formula="t+67"/>
+<func type="rl" formula="t+66"/>
+<func type="rl" formula="t+65"/>
+<func type="rl" formula="t+64"/>
+<func type="rl" formula="t+63"/>
+<func type="rl" formula="t+62"/>
+<func type="rl" formula="t+61"/>
+<func type="rl" formula="t+60"/>
+<func type="rl" formula="t+59"/>
+<func type="rl" formula="t+58"/>
+<func type="rl" formula="t+57"/>
+<func type="rl" formula="t+56"/>
+<func type="rl" formula="t+55"/>
+<func type="rl" formula="t+54"/>
+<func type="rl" formula="t+53"/>
+<func type="rl" formula="t+52"/>
+<func type="rl" formula="t+51"/>
+<func type="rl" formula="t+50"/>
+<func type="rl" formula="t+49"/>
+<func type="rl" formula="t+48"/>
+<func type="rl" formula="t+47"/>
+<func type="rl" formula="t+46"/>
+<func type="rl" formula="t+45"/>
+<func type="rl" formula="t+44"/>
+<func type="rl" formula="t+43"/>
+<func type="rl" formula="t+42"/>
+<func type="rl" formula="t+41"/>
+<func type="rl" formula="t+40"/>
+<func type="rl" formula="t+39"/>
+<func type="rl" formula="t+38"/>
+<func type="rl" formula="t+37"/>
+<func type="rl" formula="t+36"/>
+<func type="rl" formula="t+35"/>
+<func type="rl" formula="t+34"/>
+<func type="rl" formula="t+33"/>
+<func type="rl" formula="t+32"/>
+<func type="rl" formula="t+31"/>
+<func type="rl" formula="t+30"/>
+<func type="rl" formula="t+29"/>
+<func type="rl" formula="t+28"/>
+<func type="rl" formula="t+27"/>
+<func type="rl" formula="t+26"/>
+<func type="rl" formula="t+25"/>
+<func type="rl" formula="t+24"/>
+<func type="rl" formula="t+23"/>
+<func type="rl" formula="t+22"/>
+<func type="rl" formula="t+21"/>
+<func type="rl" formula="t+20"/>
+<func type="rl" formula="t+19"/>
+<func type="rl" formula="t+18"/>
+<func type="rl" formula="t+17"/>
+<func type="rl" formula="t+16"/>
+<func type="rl" formula="t+15"/>
+<func type="rl" formula="t+14"/>
+<func type="rl" formula="t+13"/>
+<func type="rl" formula="t+12"/>
+<func type="rl" formula="t+11"/>
+<func type="rl" formula="t+10"/>
+<func type="rl" formula="t+9"/>
+<func type="rl" formula="t+8"/>
+<func type="rl" formula="t+7"/>
+<func type="rl" formula="t+6"/>
+<func type="rl" formula="t+5"/>
+<func type="rl" formula="t+4"/>
+<func type="rl" formula="t+3"/>
+<func type="rl" formula="t+2"/>
+<func type="rl" formula="t+1"/>
+<func type="rl" formula="t+0"/>
+<func type="rb" formula="t+74"/>
+<func type="rb" formula="t+73"/>
+<func type="rb" formula="t+72"/>
+<func type="rb" formula="t+71"/>
+<func type="rb" formula="t+70"/>
+<func type="rb" formula="t+69"/>
+<func type="rb" formula="t+68"/>
+<func type="rb" formula="t+67"/>
+<func type="rb" formula="t+66"/>
+<func type="rb" formula="t+65"/>
+<func type="rb" formula="t+64"/>
+<func type="rb" formula="t+63"/>
+<func type="rb" formula="t+62"/>
+<func type="rb" formula="t+61"/>
+<func type="rb" formula="t+60"/>
+<func type="rb" formula="t+59"/>
+<func type="rb" formula="t+58"/>
+<func type="rb" formula="t+57"/>
+<func type="rb" formula="t+56"/>
+<func type="rb" formula="t+55"/>
+<func type="rb" formula="t+54"/>
+<func type="rb" formula="t+53"/>
+<func type="rb" formula="t+52"/>
+<func type="rb" formula="t+51"/>
+<func type="rb" formula="t+50"/>
+<func type="rb" formula="t+49"/>
+<func type="rb" formula="t+48"/>
+<func type="rb" formula="t+47"/>
+<func type="rb" formula="t+46"/>
+<func type="rb" formula="t+45"/>
+<func type="rb" formula="t+44"/>
+<func type="rb" formula="t+43"/>
+<func type="rb" formula="t+42"/>
+<func type="rb" formula="t+41"/>
+<func type="rb" formula="t+40"/>
+<func type="rb" formula="t+39"/>
+<func type="rb" formula="t+38"/>
+<func type="rb" formula="t+37"/>
+<func type="rb" formula="t+36"/>
+<func type="rb" formula="t+35"/>
+<func type="rb" formula="t+34"/>
+<func type="rb" formula="t+33"/>
+<func type="rb" formula="t+32"/>
+<func type="rb" formula="t+31"/>
+<func type="rb" formula="t+30"/>
+<func type="rb" formula="t+29"/>
+<func type="rb" formula="t+28"/>
+<func type="rb" formula="t+27"/>
+<func type="rb" formula="t+26"/>
+<func type="rb" formula="t+25"/>
+<func type="rb" formula="t+24"/>
+<func type="rb" formula="t+23"/>
+<func type="rb" formula="t+22"/>
+<func type="rb" formula="t+21"/>
+<func type="rb" formula="t+20"/>
+<func type="rb" formula="t+19"/>
+<func type="rb" formula="t+18"/>
+<func type="rb" formula="t+17"/>
+<func type="rb" formula="t+16"/>
+<func type="rb" formula="t+15"/>
+<func type="rb" formula="t+14"/>
+<func type="rb" formula="t+13"/>
+<func type="rb" formula="t+12"/>
+<func type="rb" formula="t+11"/>
+<func type="rb" formula="t+10"/>
+<func type="rb" formula="t+9"/>
+<func type="rb" formula="t+8"/>
+<func type="rb" formula="t+7"/>
+<func type="rb" formula="t+6"/>
+<func type="rb" formula="t+5"/>
+<func type="rb" formula="t+4"/>
+<func type="rb" formula="t+3"/>
+<func type="rb" formula="t+2"/>
+<func type="rb" formula="t+1"/>
+<func type="rb" formula="t+0"/>
+<func type="tb" formula="t+74"/>
+<func type="tb" formula="t+73"/>
+<func type="tb" formula="t+72"/>
+<func type="tb" formula="t+71"/>
+<func type="tb" formula="t+70"/>
+<func type="tb" formula="t+69"/>
+<func type="tb" formula="t+68"/>
+<func type="tb" formula="t+67"/>
+<func type="tb" formula="t+66"/>
+<func type="tb" formula="t+65"/>
+<func type="tb" formula="t+64"/>
+<func type="tb" formula="t+63"/>
+<func type="tb" formula="t+62"/>
+<func type="tb" formula="t+61"/>
+<func type="tb" formula="t+60"/>
+<func type="tb" formula="t+59"/>
+<func type="tb" formula="t+58"/>
+<func type="tb" formula="t+57"/>
+<func type="tb" formula="t+56"/>
+<func type="tb" formula="t+55"/>
+<func type="tb" formula="t+54"/>
+<func type="tb" formula="t+53"/>
+<func type="tb" formula="t+52"/>
+<func type="tb" formula="t+51"/>
+<func type="tb" formula="t+50"/>
+<func type="tb" formula="t+49"/>
+<func type="tb" formula="t+48"/>
+<func type="tb" formula="t+47"/>
+<func type="tb" formula="t+46"/>
+<func type="tb" formula="t+45"/>
+<func type="tb" formula="t+44"/>
+<func type="tb" formula="t+43"/>
+<func type="tb" formula="t+42"/>
+<func type="tb" formula="t+41"/>
+<func type="tb" formula="t+40"/>
+<func type="tb" formula="t+39"/>
+<func type="tb" formula="t+38"/>
+<func type="tb" formula="t+37"/>
+<func type="tb" formula="t+36"/>
+<func type="tb" formula="t+35"/>
+<func type="tb" formula="t+34"/>
+<func type="tb" formula="t+33"/>
+<func type="tb" formula="t+32"/>
+<func type="tb" formula="t+31"/>
+<func type="tb" formula="t+30"/>
+<func type="tb" formula="t+29"/>
+<func type="tb" formula="t+28"/>
+<func type="tb" formula="t+27"/>
+<func type="tb" formula="t+26"/>
+<func type="tb" formula="t+25"/>
+<func type="tb" formula="t+24"/>
+<func type="tb" formula="t+23"/>
+<func type="tb" formula="t+22"/>
+<func type="tb" formula="t+21"/>
+<func type="tb" formula="t+20"/>
+<func type="tb" formula="t+19"/>
+<func type="tb" formula="t+18"/>
+<func type="tb" formula="t+17"/>
+<func type="tb" formula="t+16"/>
+<func type="tb" formula="t+15"/>
+<func type="tb" formula="t+14"/>
+<func type="tb" formula="t+13"/>
+<func type="tb" formula="t+12"/>
+<func type="tb" formula="t+11"/>
+<func type="tb" formula="t+10"/>
+<func type="tb" formula="t+9"/>
+<func type="tb" formula="t+8"/>
+<func type="tb" formula="t+7"/>
+<func type="tb" formula="t+6"/>
+<func type="tb" formula="t+5"/>
+<func type="tb" formula="t+4"/>
+<func type="tb" formula="t+3"/>
+<func type="tb" formula="t+2"/>
+<func type="tb" formula="t+1"/>
+<func type="tb" formula="t+0"/>
+<func type="tl" formula="t+74"/>
+<func type="tl" formula="t+73"/>
+<func type="tl" formula="t+72"/>
+<func type="tl" formula="t+71"/>
+<func type="tl" formula="t+70"/>
+<func type="tl" formula="t+69"/>
+<func type="tl" formula="t+68"/>
+<func type="tl" formula="t+67"/>
+<func type="tl" formula="t+66"/>
+<func type="tl" formula="t+65"/>
+<func type="tl" formula="t+64"/>
+<func type="tl" formula="t+63"/>
+<func type="tl" formula="t+62"/>
+<func type="tl" formula="t+61"/>
+<func type="tl" formula="t+60"/>
+<func type="tl" formula="t+59"/>
+<func type="tl" formula="t+58"/>
+<func type="tl" formula="t+57"/>
+<func type="tl" formula="t+56"/>
+<func type="tl" formula="t+55"/>
+<func type="tl" formula="t+54"/>
+<func type="tl" formula="t+53"/>
+<func type="tl" formula="t+52"/>
+<func type="tl" formula="t+51"/>
+<func type="tl" formula="t+50"/>
+<func type="tl" formula="t+49"/>
+<func type="tl" formula="t+48"/>
+<func type="tl" formula="t+47"/>
+<func type="tl" formula="t+46"/>
+<func type="tl" formula="t+45"/>
+<func type="tl" formula="t+44"/>
+<func type="tl" formula="t+43"/>
+<func type="tl" formula="t+42"/>
+<func type="tl" formula="t+41"/>
+<func type="tl" formula="t+40"/>
+<func type="tl" formula="t+39"/>
+<func type="tl" formula="t+38"/>
+<func type="tl" formula="t+37"/>
+<func type="tl" formula="t+36"/>
+<func type="tl" formula="t+35"/>
+<func type="tl" formula="t+34"/>
+<func type="tl" formula="t+33"/>
+<func type="tl" formula="t+32"/>
+<func type="tl" formula="t+31"/>
+<func type="tl" formula="t+30"/>
+<func type="tl" formula="t+29"/>
+<func type="tl" formula="t+28"/>
+<func type="tl" formula="t+27"/>
+<func type="tl" formula="t+26"/>
+<func type="tl" formula="t+25"/>
+<func type="tl" formula="t+24"/>
+<func type="tl" formula="t+23"/>
+<func type="tl" formula="t+22"/>
+<func type="tl" formula="t+21"/>
+<func type="tl" formula="t+20"/>
+<func type="tl" formula="t+19"/>
+<func type="tl" formula="t+18"/>
+<func type="tl" formula="t+17"/>
+<func type="tl" formula="t+16"/>
+<func type="tl" formula="t+15"/>
+<func type="tl" formula="t+14"/>
+<func type="tl" formula="t+13"/>
+<func type="tl" formula="t+12"/>
+<func type="tl" formula="t+11"/>
+<func type="tl" formula="t+10"/>
+<func type="tl" formula="t+9"/>
+<func type="tl" formula="t+8"/>
+<func type="tl" formula="t+7"/>
+<func type="tl" formula="t+6"/>
+<func type="tl" formula="t+5"/>
+<func type="tl" formula="t+4"/>
+<func type="tl" formula="t+3"/>
+<func type="tl" formula="t+2"/>
+<func type="tl" formula="t+1"/>
+<func type="tl" formula="t+0"/>
+<func type="tr" formula="t+74"/>
+<func type="tr" formula="t+73"/>
+<func type="tr" formula="t+72"/>
+<func type="tr" formula="t+71"/>
+<func type="tr" formula="t+70"/>
+<func type="tr" formula="t+69"/>
+<func type="tr" formula="t+68"/>
+<func type="tr" formula="t+67"/>
+<func type="tr" formula="t+66"/>
+<func type="tr" formula="t+65"/>
+<func type="tr" formula="t+64"/>
+<func type="tr" formula="t+63"/>
+<func type="tr" formula="t+62"/>
+<func type="tr" formula="t+61"/>
+<func type="tr" formula="t+60"/>
+<func type="tr" formula="t+59"/>
+<func type="tr" formula="t+58"/>
+<func type="tr" formula="t+57"/>
+<func type="tr" formula="t+56"/>
+<func type="tr" formula="t+55"/>
+<func type="tr" formula="t+54"/>
+<func type="tr" formula="t+53"/>
+<func type="tr" formula="t+52"/>
+<func type="tr" formula="t+51"/>
+<func type="tr" formula="t+50"/>
+<func type="tr" formula="t+49"/>
+<func type="tr" formula="t+48"/>
+<func type="tr" formula="t+47"/>
+<func type="tr" formula="t+46"/>
+<func type="tr" formula="t+45"/>
+<func type="tr" formula="t+44"/>
+<func type="tr" formula="t+43"/>
+<func type="tr" formula="t+42"/>
+<func type="tr" formula="t+41"/>
+<func type="tr" formula="t+40"/>
+<func type="tr" formula="t+39"/>
+<func type="tr" formula="t+38"/>
+<func type="tr" formula="t+37"/>
+<func type="tr" formula="t+36"/>
+<func type="tr" formula="t+35"/>
+<func type="tr" formula="t+34"/>
+<func type="tr" formula="t+33"/>
+<func type="tr" formula="t+32"/>
+<func type="tr" formula="t+31"/>
+<func type="tr" formula="t+30"/>
+<func type="tr" formula="t+29"/>
+<func type="tr" formula="t+28"/>
+<func type="tr" formula="t+27"/>
+<func type="tr" formula="t+26"/>
+<func type="tr" formula="t+25"/>
+<func type="tr" formula="t+24"/>
+<func type="tr" formula="t+23"/>
+<func type="tr" formula="t+22"/>
+<func type="tr" formula="t+21"/>
+<func type="tr" formula="t+20"/>
+<func type="tr" formula="t+19"/>
+<func type="tr" formula="t+18"/>
+<func type="tr" formula="t+17"/>
+<func type="tr" formula="t+16"/>
+<func type="tr" formula="t+15"/>
+<func type="tr" formula="t+14"/>
+<func type="tr" formula="t+13"/>
+<func type="tr" formula="t+12"/>
+<func type="tr" formula="t+11"/>
+<func type="tr" formula="t+10"/>
+<func type="tr" formula="t+9"/>
+<func type="tr" formula="t+8"/>
+<func type="tr" formula="t+7"/>
+<func type="tr" formula="t+6"/>
+<func type="tr" formula="t+5"/>
+<func type="tr" formula="t+4"/>
+<func type="tr" formula="t+3"/>
+<func type="tr" formula="t+2"/>
+<func type="tr" formula="t+1"/>
+<func type="tr" formula="t+0"/>
+<func type="lb" formula="t+74"/>
+<func type="lb" formula="t+73"/>
+<func type="lb" formula="t+72"/>
+<func type="lb" formula="t+71"/>
+<func type="lb" formula="t+70"/>
+<func type="lb" formula="t+69"/>
+<func type="lb" formula="t+68"/>
+<func type="lb" formula="t+67"/>
+<func type="lb" formula="t+66"/>
+<func type="lb" formula="t+65"/>
+<func type="lb" formula="t+64"/>
+<func type="lb" formula="t+63"/>
+<func type="lb" formula="t+62"/>
+<func type="lb" formula="t+61"/>
+<func type="lb" formula="t+60"/>
+<func type="lb" formula="t+59"/>
+<func type="lb" formula="t+58"/>
+<func type="lb" formula="t+57"/>
+<func type="lb" formula="t+56"/>
+<func type="lb" formula="t+55"/>
+<func type="lb" formula="t+54"/>
+<func type="lb" formula="t+53"/>
+<func type="lb" formula="t+52"/>
+<func type="lb" formula="t+51"/>
+<func type="lb" formula="t+50"/>
+<func type="lb" formula="t+49"/>
+<func type="lb" formula="t+48"/>
+<func type="lb" formula="t+47"/>
+<func type="lb" formula="t+46"/>
+<func type="lb" formula="t+45"/>
+<func type="lb" formula="t+44"/>
+<func type="lb" formula="t+43"/>
+<func type="lb" formula="t+42"/>
+<func type="lb" formula="t+41"/>
+<func type="lb" formula="t+40"/>
+<func type="lb" formula="t+39"/>
+<func type="lb" formula="t+38"/>
+<func type="lb" formula="t+37"/>
+<func type="lb" formula="t+36"/>
+<func type="lb" formula="t+35"/>
+<func type="lb" formula="t+34"/>
+<func type="lb" formula="t+33"/>
+<func type="lb" formula="t+32"/>
+<func type="lb" formula="t+31"/>
+<func type="lb" formula="t+30"/>
+<func type="lb" formula="t+29"/>
+<func type="lb" formula="t+28"/>
+<func type="lb" formula="t+27"/>
+<func type="lb" formula="t+26"/>
+<func type="lb" formula="t+25"/>
+<func type="lb" formula="t+24"/>
+<func type="lb" formula="t+23"/>
+<func type="lb" formula="t+22"/>
+<func type="lb" formula="t+21"/>
+<func type="lb" formula="t+20"/>
+<func type="lb" formula="t+19"/>
+<func type="lb" formula="t+18"/>
+<func type="lb" formula="t+17"/>
+<func type="lb" formula="t+16"/>
+<func type="lb" formula="t+15"/>
+<func type="lb" formula="t+14"/>
+<func type="lb" formula="t+13"/>
+<func type="lb" formula="t+12"/>
+<func type="lb" formula="t+11"/>
+<func type="lb" formula="t+10"/>
+<func type="lb" formula="t+9"/>
+<func type="lb" formula="t+8"/>
+<func type="lb" formula="t+7"/>
+<func type="lb" formula="t+6"/>
+<func type="lb" formula="t+5"/>
+<func type="lb" formula="t+4"/>
+<func type="lb" formula="t+3"/>
+<func type="lb" formula="t+2"/>
+<func type="lb" formula="t+1"/>
+<func type="lb" formula="t+0"/>
+<func type="lr" formula="t+74"/>
+<func type="lr" formula="t+73"/>
+<func type="lr" formula="t+72"/>
+<func type="lr" formula="t+71"/>
+<func type="lr" formula="t+70"/>
+<func type="lr" formula="t+69"/>
+<func type="lr" formula="t+68"/>
+<func type="lr" formula="t+67"/>
+<func type="lr" formula="t+66"/>
+<func type="lr" formula="t+65"/>
+<func type="lr" formula="t+64"/>
+<func type="lr" formula="t+63"/>
+<func type="lr" formula="t+62"/>
+<func type="lr" formula="t+61"/>
+<func type="lr" formula="t+60"/>
+<func type="lr" formula="t+59"/>
+<func type="lr" formula="t+58"/>
+<func type="lr" formula="t+57"/>
+<func type="lr" formula="t+56"/>
+<func type="lr" formula="t+55"/>
+<func type="lr" formula="t+54"/>
+<func type="lr" formula="t+53"/>
+<func type="lr" formula="t+52"/>
+<func type="lr" formula="t+51"/>
+<func type="lr" formula="t+50"/>
+<func type="lr" formula="t+49"/>
+<func type="lr" formula="t+48"/>
+<func type="lr" formula="t+47"/>
+<func type="lr" formula="t+46"/>
+<func type="lr" formula="t+45"/>
+<func type="lr" formula="t+44"/>
+<func type="lr" formula="t+43"/>
+<func type="lr" formula="t+42"/>
+<func type="lr" formula="t+41"/>
+<func type="lr" formula="t+40"/>
+<func type="lr" formula="t+39"/>
+<func type="lr" formula="t+38"/>
+<func type="lr" formula="t+37"/>
+<func type="lr" formula="t+36"/>
+<func type="lr" formula="t+35"/>
+<func type="lr" formula="t+34"/>
+<func type="lr" formula="t+33"/>
+<func type="lr" formula="t+32"/>
+<func type="lr" formula="t+31"/>
+<func type="lr" formula="t+30"/>
+<func type="lr" formula="t+29"/>
+<func type="lr" formula="t+28"/>
+<func type="lr" formula="t+27"/>
+<func type="lr" formula="t+26"/>
+<func type="lr" formula="t+25"/>
+<func type="lr" formula="t+24"/>
+<func type="lr" formula="t+23"/>
+<func type="lr" formula="t+22"/>
+<func type="lr" formula="t+21"/>
+<func type="lr" formula="t+20"/>
+<func type="lr" formula="t+19"/>
+<func type="lr" formula="t+18"/>
+<func type="lr" formula="t+17"/>
+<func type="lr" formula="t+16"/>
+<func type="lr" formula="t+15"/>
+<func type="lr" formula="t+14"/>
+<func type="lr" formula="t+13"/>
+<func type="lr" formula="t+12"/>
+<func type="lr" formula="t+11"/>
+<func type="lr" formula="t+10"/>
+<func type="lr" formula="t+9"/>
+<func type="lr" formula="t+8"/>
+<func type="lr" formula="t+7"/>
+<func type="lr" formula="t+6"/>
+<func type="lr" formula="t+5"/>
+<func type="lr" formula="t+4"/>
+<func type="lr" formula="t+3"/>
+<func type="lr" formula="t+2"/>
+<func type="lr" formula="t+1"/>
+<func type="lr" formula="t+0"/>
+<func type="lt" formula="t+74"/>
+<func type="lt" formula="t+73"/>
+<func type="lt" formula="t+72"/>
+<func type="lt" formula="t+71"/>
+<func type="lt" formula="t+70"/>
+<func type="lt" formula="t+69"/>
+<func type="lt" formula="t+68"/>
+<func type="lt" formula="t+67"/>
+<func type="lt" formula="t+66"/>
+<func type="lt" formula="t+65"/>
+<func type="lt" formula="t+64"/>
+<func type="lt" formula="t+63"/>
+<func type="lt" formula="t+62"/>
+<func type="lt" formula="t+61"/>
+<func type="lt" formula="t+60"/>
+<func type="lt" formula="t+59"/>
+<func type="lt" formula="t+58"/>
+<func type="lt" formula="t+57"/>
+<func type="lt" formula="t+56"/>
+<func type="lt" formula="t+55"/>
+<func type="lt" formula="t+54"/>
+<func type="lt" formula="t+53"/>
+<func type="lt" formula="t+52"/>
+<func type="lt" formula="t+51"/>
+<func type="lt" formula="t+50"/>
+<func type="lt" formula="t+49"/>
+<func type="lt" formula="t+48"/>
+<func type="lt" formula="t+47"/>
+<func type="lt" formula="t+46"/>
+<func type="lt" formula="t+45"/>
+<func type="lt" formula="t+44"/>
+<func type="lt" formula="t+43"/>
+<func type="lt" formula="t+42"/>
+<func type="lt" formula="t+41"/>
+<func type="lt" formula="t+40"/>
+<func type="lt" formula="t+39"/>
+<func type="lt" formula="t+38"/>
+<func type="lt" formula="t+37"/>
+<func type="lt" formula="t+36"/>
+<func type="lt" formula="t+35"/>
+<func type="lt" formula="t+34"/>
+<func type="lt" formula="t+33"/>
+<func type="lt" formula="t+32"/>
+<func type="lt" formula="t+31"/>
+<func type="lt" formula="t+30"/>
+<func type="lt" formula="t+29"/>
+<func type="lt" formula="t+28"/>
+<func type="lt" formula="t+27"/>
+<func type="lt" formula="t+26"/>
+<func type="lt" formula="t+25"/>
+<func type="lt" formula="t+24"/>
+<func type="lt" formula="t+23"/>
+<func type="lt" formula="t+22"/>
+<func type="lt" formula="t+21"/>
+<func type="lt" formula="t+20"/>
+<func type="lt" formula="t+19"/>
+<func type="lt" formula="t+18"/>
+<func type="lt" formula="t+17"/>
+<func type="lt" formula="t+16"/>
+<func type="lt" formula="t+15"/>
+<func type="lt" formula="t+14"/>
+<func type="lt" formula="t+13"/>
+<func type="lt" formula="t+12"/>
+<func type="lt" formula="t+11"/>
+<func type="lt" formula="t+10"/>
+<func type="lt" formula="t+9"/>
+<func type="lt" formula="t+8"/>
+<func type="lt" formula="t+7"/>
+<func type="lt" formula="t+6"/>
+<func type="lt" formula="t+5"/>
+<func type="lt" formula="t+4"/>
+<func type="lt" formula="t+3"/>
+<func type="lt" formula="t+2"/>
+<func type="lt" formula="t+1"/>
+<func type="lt" formula="t+0"/>
+      </switchfuncs>
+      <wireconn from_type="wire" to_type="wire" from_switchpoint="0" to_switchpoint="0" num_conns="from"/>
+  </switchblock>
+  </switchblocklist>
+  <complexblocklist>
+    <!-- Define I/O pads begin -->
+    <!-- Capacity is a unique property of I/Os, it is the maximum number of I/Os that can be placed at the same (X,Y) location on the FPGA -->
+    <pb_type name="io">
+      <input name="outpad" num_pins="1"/>
+      <output name="inpad" num_pins="1"/>
+      <clock name="clock" num_pins="1"/>
+      <!-- IOs can operate as either inputs or outputs.
+	     Delays below come from Ian Kuon. They are small, so they should be interpreted as
+	     the delays to and from registers in the I/O (and generally I/Os are registered 
+	     today and that is when you timing analyze them.
+	     -->
+      <mode name="inpad">
+        <pb_type name="inpad" blif_model=".input" num_pb="1">
+          <output name="inpad" num_pins="1"/>
+        </pb_type>
+        <interconnect>
+          <direct name="inpad" input="inpad.inpad" output="io.inpad">
+            <delay_constant max="9.492000e-11" in_port="inpad.inpad" out_port="io.inpad"/>
+          </direct>
+        </interconnect>
+      </mode>
+      <mode name="outpad">
+        <pb_type name="outpad" blif_model=".output" num_pb="1">
+          <input name="outpad" num_pins="1"/>
+        </pb_type>
+        <interconnect>
+          <direct name="outpad" input="io.outpad" output="outpad.outpad">
+            <delay_constant max="2.675000e-11" in_port="io.outpad" out_port="outpad.outpad"/>
+          </direct>
+        </interconnect>
+      </mode>
+      <!-- Every input pin is driven by 15% of the tracks in a channel, every output pin is driven by 10% of the tracks in a channel -->
+      <!-- IOs go on the periphery of the FPGA, for consistency, 
+          make it physically equivalent on all sides so that only one definition of I/Os is needed.
+          If I do not make a physically equivalent definition, then I need to define 4 different I/Os, one for each side of the FPGA
+        -->
+      <!-- Place I/Os on the sides of the FPGA -->
+      <power method="ignore"/>
+    </pb_type>
+    <!-- Define I/O pads ends -->
+    <!-- Define general purpose logic block (CLB) begin -->
+    <pb_type name="clb">
+      <input name="I" num_pins="10" equivalent="full"/>
+      <output name="O" num_pins="4" equivalent="instance"/>
+      <clock name="clk" num_pins="1"/>
+      <!-- Describe basic logic element. -->
+      <pb_type name="fle" num_pb="4">
+        <input name="in" num_pins="4"/>
+        <output name="out" num_pins="1"/>
+        <clock name="clk" num_pins="1"/>
+        <!-- 6-LUT mode definition begin -->
+        <mode name="n1_lut4">
+          <!-- Define 6-LUT mode -->
+          <pb_type name="ble4" num_pb="1">
+            <input name="in" num_pins="4"/>
+            <output name="out" num_pins="1"/>
+            <clock name="clk" num_pins="1"/>
+            <!-- Define LUT -->
+            <pb_type name="lut4" blif_model=".names" num_pb="1" class="lut">
+              <input name="in" num_pins="4" port_class="lut_in"/>
+              <output name="out" num_pins="1" port_class="lut_out"/>
+              <!-- LUT timing using delay matrix -->
+              <delay_matrix type="max" in_port="lut4.in" out_port="lut4.out">
+                2.253000e-10
+                2.253000e-10
+                2.253000e-10
+                2.253000e-10
+              </delay_matrix>
+            </pb_type>
+            <!-- Define flip-flop -->
+            <pb_type name="ff" blif_model=".latch" num_pb="1" class="flipflop">
+              <input name="D" num_pins="1" port_class="D"/>
+              <output name="Q" num_pins="1" port_class="Q"/>
+              <clock name="clk" num_pins="1" port_class="clock"/>
+              <T_setup value="2.160000e-10" port="ff.D" clock="clk"/>
+              <T_clock_to_Q max="1.426000e-10" port="ff.Q" clock="clk"/>
+            </pb_type>
+            <interconnect>
+              <direct name="direct1" input="ble4.in" output="lut4[0:0].in"/>
+              <direct name="direct2" input="lut4.out" output="ff.D">
+                <!-- Advanced user option that tells CAD tool to find LUT+FF pairs in netlist -->
+                <pack_pattern name="ble6" in_port="lut4.out" out_port="ff.D"/>
+              </direct>
+              <direct name="direct3" input="ble4.clk" output="ff.clk"/>
+              <mux name="mux1" input="ff.Q lut4.out" output="ble4.out">
+              </mux>
+            </interconnect>
+          </pb_type>
+          <interconnect>
+            <direct name="direct1" input="fle.in" output="ble4.in"/>
+            <direct name="direct2" input="ble4.out" output="fle.out[0:0]"/>
+            <direct name="direct3" input="fle.clk" output="ble4.clk"/>
+          </interconnect>
+        </mode>
+        <!-- 4-LUT mode definition end -->
+      </pb_type>
+      <interconnect>
+        <!-- We use a full crossbar to get logical equivalence at inputs of CLB  -->
+        <complete name="crossbar" input="clb.I fle[3:0].out" output="fle[3:0].in">
+          <delay_constant max="5.735000e-11" in_port="clb.I" out_port="fle[3:0].in"/>
+          <delay_constant max="5.428000e-11" in_port="fle[3:0].out" out_port="fle[3:0].in"/>
+        </complete>
+        <complete name="clks" input="clb.clk" output="fle[3:0].clk">
+        </complete>
+        <direct name="clbouts1" input="fle[3:0].out" output="clb.O"/>
+      </interconnect>
+      <!-- Every input pin is driven by 15% of the tracks in a channel, every output pin is driven by 25% of the tracks in a channel -->
+      <!-- Place this general purpose logic block in any unspecified column -->
+    </pb_type>
+    <!-- Define general purpose logic block (CLB) ends -->
+  </complexblocklist>
+</architecture>
