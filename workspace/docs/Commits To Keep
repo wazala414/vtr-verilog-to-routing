@@ -1,0 +1,19 @@
+Changes to keep:
+- libs/libarchpga/src/parse_switchblocks.cpp
+- libs/libarchpga/src/read_xml_arch_file.cpp
+	- l.2713 might not be needed
+- vpr/src/route/build_switchblocks.cpp
+	- l.760 might not be needed -> not commenting seems to help but probably need some tweaking as well
+	- l.816 needed
+	- l.959 might be needed to some extent
+	- 
+- rr_graph.cpp
+	- l.643, 1279, 1286 and 1301 might not be needed because I think only applies to predefined architectures
+- rr_graph2.cpp
+	- l.681 maybe to keep
+	- l.2247 and 2262 look important
+- rr_graph_sbox.cpp
+	- l.45 looks necessary
+	- l.191 optional but would be nice to edit
+	- 
+	

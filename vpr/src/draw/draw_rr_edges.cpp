@@ -99,39 +99,65 @@ void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int to_track
 
     /* UDSD Modification by WMF Begin */
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
             if (to_track % 2 == 0) { /* INC wire starts at bottom edge */
-
+                if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Bottom to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow - 1] + draw_coords->get_tile_width();
+                } else if (to_ylow == from_ylow) {
+                    /* Bottom to Bottom endpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                } else if (to_ylow <= from_yhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Bottom to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_ylow];
+                }
                 y2 = to_chan.bottom();
-                /* since no U-turns from_track must be INC as well */
-                y1 = draw_coords->tile_y[to_ylow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at top edge */
-
+                if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Top to Bottom switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh + 1];
+                } else if (to_yhigh == from_yhigh) {
+                    /* Top to Top endpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                } else if (to_yhigh >= from_ylow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Top to Top switchpoints */
+                    y1 = draw_coords->tile_y[to_yhigh] + draw_coords->get_tile_width();
+                }
                 y2 = to_chan.top();
-                y1 = draw_coords->tile_y[to_yhigh + 1];
             }
         } else {
-            if (to_ylow < from_ylow) { /* Draw from bottom edge of one to other. */
+            /* Check if same_side connection is happening, avoids doing individual check in each statement. */
+            bool same_side = ((from_chan.bottom() == to_chan.bottom()) | (from_chan.top() == to_chan.top()));            
+            //same_side = false;
+
+            if ((to_ylow < from_ylow) && !same_side) { /* Draw from bottom edge of one to other. */
                 y1 = from_chan.bottom();
                 y2 = draw_coords->tile_y[from_ylow - 1]
                      + draw_coords->get_tile_width();
-            } else if (from_ylow < to_ylow) {
+            } else if ((from_ylow < to_ylow) && !same_side) {
                 y1 = draw_coords->tile_y[to_ylow - 1]
                      + draw_coords->get_tile_width();
                 y2 = to_chan.bottom();
-            } else if (to_yhigh > from_yhigh) { /* Draw from top edge of one to other. */
+            } else if ((to_yhigh > from_yhigh) && !same_side) { /* Draw from top edge of one to other. */
                 y1 = from_chan.top();
                 y2 = draw_coords->tile_y[from_yhigh + 1];
-            } else if (from_yhigh > to_yhigh) {
+            } else if ((from_yhigh > to_yhigh) && !same_side) {
                 y1 = draw_coords->tile_y[to_yhigh + 1];
                 y2 = to_chan.top();
-            } else { /* Complete overlap: start and end both align. Draw outside the sbox */
+            } 
+            /* Same side connection */
+            else if (same_side) {
+                y1 = from_chan.bottom();
+                y2 = from_chan.bottom();
+            }
+            else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 y1 = from_chan.bottom();
                 y2 = from_chan.bottom() + draw_coords->get_tile_width();
-            }
+            } 
         }
     }
+
 
     /* UDSD Modification by WMF End */
     g->draw_line({x1, y1}, {x2, y2});
@@ -189,40 +215,64 @@ void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int to_track
      * will be drawn on top of each other for bidirectional connections.        */
 
     else {
+        /* Drawing of unidirectional same side edges and opposite switchpoint edges */
         if (rr_graph.node_direction(to_node) != Direction::BIDIR) {
-            /* must connect to to_node's wire beginning at x2 */
             if (to_track % 2 == 0) { /* INC wire starts at leftmost edge */
-                VTR_ASSERT(from_xlow < to_xlow);
+                if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Left to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow - 1] + draw_coords->get_tile_width();
+                } else if (to_xlow == from_xlow) {
+                    /* Left to Left endpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                } else if (to_xlow <= from_xhigh && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Left to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xlow];
+                }
                 x2 = to_chan.left();
-                /* since no U-turns from_track must be INC as well */
-                x1 = draw_coords->tile_x[to_xlow - 1]
-                     + draw_coords->get_tile_width();
             } else { /* DEC wire starts at rightmost edge */
-                VTR_ASSERT(from_xhigh > to_xhigh);
+                if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::DEC) {
+                    /* Right to Left switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh + 1];
+                } else if (to_xhigh == from_xhigh) {
+                    /* Right to Right endpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                } else if (to_xhigh >= from_xlow && rr_graph.node_direction(from_node) == Direction::INC) {
+                    /* Right to Right switchpoints */
+                    x1 = draw_coords->tile_x[to_xhigh] + draw_coords->get_tile_width();
+                }
                 x2 = to_chan.right();
-                x1 = draw_coords->tile_x[to_xhigh + 1];
             }
         } else {
-            if (to_xlow < from_xlow) { /* Draw from left edge of one to other */
+            // IMPORTANT - Bidir lines are drawn from lower switchpoints (left and bottom)
+            /* Check if same_side connection is happening, avoids doing individual check in each statement. */
+            bool same_side = ((from_chan.left() == to_chan.left()) | (from_chan.right() == to_chan.right()));
+            //same_side = false;
+
+            if ((to_xlow < from_xlow) && !same_side) { /* Draw from left edge of one to other */
                 x1 = from_chan.left();
                 x2 = draw_coords->tile_x[from_xlow - 1]
                      + draw_coords->get_tile_width();
-            } else if (from_xlow < to_xlow) {
+            } else if ((from_xlow < to_xlow) && !same_side) {
                 x1 = draw_coords->tile_x[to_xlow - 1]
                      + draw_coords->get_tile_width();
                 x2 = to_chan.left();
-
             }                                 /* The following then is executed when from_xlow == to_xlow */
-            else if (to_xhigh > from_xhigh) { /* Draw from right edge of one to other */
+            else if ((to_xhigh > from_xhigh) && !same_side) { /* Draw from right edge of one to other */
                 x1 = from_chan.right();
                 x2 = draw_coords->tile_x[from_xhigh + 1];
-            } else if (from_xhigh > to_xhigh) {
+            } else if ((from_xhigh > to_xhigh) && !same_side) {
                 x1 = draw_coords->tile_x[to_xhigh + 1];
                 x2 = to_chan.right();
-            } else { /* Complete overlap: start and end both align. Draw outside the sbox */
+            } 
+            /* Same side connection */
+            else if (same_side) {
+                x1 = from_chan.right();
+                x2 = to_chan.right();
+            }
+            else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 x1 = from_chan.left();
                 x2 = from_chan.left() + draw_coords->get_tile_width();
-            }
+            } 
         }
     }
 
