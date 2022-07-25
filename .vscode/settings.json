@@ -112,7 +112,7 @@
             {
             "name": "Scripts Run",
             "commands": [
-                "cd ~/VTR-Tools/workspace/scripts",
+                "cd ~/VTR-Tools/workspace/scripts/suite_gui",
                 ]
             } 
             ]

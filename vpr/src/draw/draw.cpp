@@ -2076,7 +2076,7 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
             // IMPORTANT - Bidir lines are drawn from lower switchpoints (left and bottom)
             /* Check if same_side connection is happening, avoids doing individual check in each statement. */
             bool same_side = ((from_chan.left() == to_chan.left()) | (from_chan.right() == to_chan.right()));
-            same_side = false;
+            //same_side = false;
 
             if ((to_xlow < from_xlow) && !same_side) { /* Draw from left edge of one to other */
                 x1 = from_chan.left();
@@ -2096,8 +2096,8 @@ static void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int t
             } 
             /* Same side connection */
             else if (same_side) {
-                x1 = from_chan.left();
-                x2 = to_chan.left();
+                x1 = from_chan.right();
+                x2 = to_chan.right();
             }
             else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 x1 = from_chan.left();
@@ -2191,7 +2191,7 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
         } else {
             /* Check if same_side connection is happening, avoids doing individual check in each statement. */
             bool same_side = ((from_chan.bottom() == to_chan.bottom()) | (from_chan.top() == to_chan.top()));            
-            same_side = false;
+            //same_side = false;
 
             if ((to_ylow < from_ylow) && !same_side) { /* Draw from bottom edge of one to other. */
                 y1 = from_chan.bottom();
@@ -2211,7 +2211,7 @@ static void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, int t
             /* Same side connection */
             else if (same_side) {
                 y1 = from_chan.bottom();
-                y2 = to_chan.bottom();
+                y2 = from_chan.bottom();
             }
             else { /* Complete overlap: start and end both align. Draw outside the sbox */
                 y1 = from_chan.bottom();
