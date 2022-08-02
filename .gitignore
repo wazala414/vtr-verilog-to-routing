@@ -136,3 +136,15 @@ tags
 #eclipse project
 #.project
 
+#
+# Titan Benchmark
+#
+vtr_flow/benchmarks/titan_blif
+vtr_flow/benchmarks/titan_other_blif
+vtr_flow/arch/titan
+
+#
+# Workspace Test
+#
+workspace/benchmarking/regression_tests
+workspace/benchmarking/ZeroAMP_Test
