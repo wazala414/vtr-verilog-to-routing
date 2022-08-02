@@ -1,0 +1,6 @@
+Test Description:
+
+Architecture base: k6_frac_N10_frac_chain_mem32K_40nm
+
+Testing Unidir architectures with various switchblock topology
+Routing width limited to 100

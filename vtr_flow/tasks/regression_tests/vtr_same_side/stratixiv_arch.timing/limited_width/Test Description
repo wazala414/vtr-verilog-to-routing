@@ -1,0 +1,6 @@
+Test Description:
+
+Architecture base: stratixiv_arch.timing
+
+Testing Unidir architectures with various switchblock topology
+Routing width limited to 100

@@ -1,0 +1,6 @@
+# Architecture: ultrascale_ispd
+# Unlimited width
+regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_no_timing
+regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_timing
+regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_timing_no_sdc
+regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/hdl_include

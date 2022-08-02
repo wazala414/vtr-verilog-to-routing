@@ -1,0 +1,6 @@
+# Architecture: stratixiv_arch.timing
+# Limited width: 100
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_no_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_timing_no_sdc
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/hdl_include

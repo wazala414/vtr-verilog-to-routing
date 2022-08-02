@@ -1,1 +1,41 @@
-regression_tests/vtr_same_side/vtr_benchmarks/
+# Architecture: k6_frac_N10_frac_chain_mem32K_40nm
+# Limited width: 100
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/limited_width/basic_no_timing
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/limited_width/basic_timing
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/limited_width/basic_timing_no_sdc
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/limited_width/hdl_include
+
+# Architecture: k6_frac_N10_frac_chain_mem32K_40nm
+# Unlimited width
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/unlimited_width/basic_no_timing
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/unlimited_width/basic_timing
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/unlimited_width/basic_timing_no_sdc
+#regression_tests/vtr_same_side/k6_frac_N10_frac_chain_mem32K_40nm/unlimited_width/hdl_include
+
+# Architecture: stratixiv_arch.timing
+# Limited width: 100
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_no_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/basic_timing_no_sdc
+regression_tests/vtr_same_side/stratixiv_arch.timing/limited_width/hdl_include
+
+# Architecture: stratixiv_arch.timing
+# Unlimited width
+regression_tests/vtr_same_side/stratixiv_arch.timing/unlimited_width/basic_no_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/unlimited_width/basic_timing
+regression_tests/vtr_same_side/stratixiv_arch.timing/unlimited_width/basic_timing_no_sdc
+regression_tests/vtr_same_side/stratixiv_arch.timing/unlimited_width/hdl_include
+
+# Architecture: ultrascale_ispd
+# Limited width: 100
+#regression_tests/vtr_same_side/ultrascale_ispd/limited_width/basic_no_timing
+#regression_tests/vtr_same_side/ultrascale_ispd/limited_width/basic_timing
+#regression_tests/vtr_same_side/ultrascale_ispd/limited_width/basic_timing_no_sdc
+#regression_tests/vtr_same_side/ultrascale_ispd/limited_width/hdl_include
+
+# Architecture: ultrascale_ispd
+# Unlimited width
+#regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_no_timing
+#regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_timing
+#regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/basic_timing_no_sdc
+#regression_tests/vtr_same_side/ultrascale_ispd/unlimited_width/hdl_include
