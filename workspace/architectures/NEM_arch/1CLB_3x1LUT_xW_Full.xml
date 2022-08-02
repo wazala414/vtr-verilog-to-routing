@@ -1,0 +1,277 @@
+<!--
+  Single CLB
+  3x1 LUT into FF
+  3 Tracks
+
+ -->
+<architecture>
+  <models>
+  </models>
+
+  <!-- 
+
+      Tile: IO, CLB
+
+  -->  
+
+  <tiles>
+
+    <!-- IO Tile: 3 pin type, 2 CB connection -->
+
+    <tile name="io">
+      <sub_tile name="io" capacity="3">
+        <equivalent_sites>
+          <site pb_type="io" pin_mapping="direct"/>
+        </equivalent_sites>
+        <input name="outpad" num_pins="1"/>
+        <output name="inpad" num_pins="1"/>
+        <clock name="clock" num_pins="1"/>
+          <fc in_type="abs" in_val="0" out_type="abs" out_val="0">
+            <!-- <fc_override fc_type="frac" fc_val="0" port_name="inpad" segment_name="segI0"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="outpad" segment_name="segI0"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="inpad" segment_name="segI1"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="outpad" segment_name="segI1"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="inpad" segment_name="segI2"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="outpad" segment_name="segI2"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="inpad" segment_name="segO"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="outpad" segment_name="segO"/>
+            <fc_override fc_type="frac" fc_val="1" port_name="inpad" segment_name="segIn"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="outpad" segment_name="segIn"/>
+            <fc_override fc_type="frac" fc_val="0" port_name="inpad" segment_name="segOut"/>
+            <fc_override fc_type="frac" fc_val="1" port_name="outpad" segment_name="segOut"/> -->
+      </fc>
+        <pinlocations pattern="custom">
+          <loc side="left">io.outpad io.inpad io.clock</loc>
+          <loc side="top">io.outpad io.inpad io.clock</loc>
+          <loc side="right">io.outpad io.inpad io.clock</loc>
+          <loc side="bottom">io.outpad io.inpad io.clock</loc>
+        </pinlocations>
+      </sub_tile>
+    </tile>
+
+    <!-- CLB Tile: 5 pin type, 4 pin each side, 2 CB connection -->
+
+    <tile name="clb">
+      <sub_tile name="clb">
+        <equivalent_sites>
+          <site pb_type="clb" pin_mapping="direct"/>
+        </equivalent_sites>
+        <input name="I0" num_pins="1" equivalent="full"/>
+        <input name="I1" num_pins="1" equivalent="full"/>
+        <input name="I2" num_pins="1" equivalent="full"/>
+        <output name="O" num_pins="1" equivalent="full"/>
+        <clock name="clk" num_pins="1"/>
+        <fc in_type="frac" in_val="1" out_type="frac" out_val="1">
+          <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segI1"/>
+          <!-- <fc_override fc_type="frac" fc_val="0" port_name="I1" segment_name="segI0"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I2" segment_name="segI0"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="O" segment_name="segI0"/> -->
+          <!-- <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segI1"/>
+          <fc_override fc_type="frac" fc_val="1" port_name="I1" segment_name="segI1"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I2" segment_name="segI1"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="O" segment_name="segI1"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segI2"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I1" segment_name="segI2"/>
+          <fc_override fc_type="frac" fc_val="1" port_name="I2" segment_name="segI2"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="O" segment_name="segI2"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segO"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I1" segment_name="segO"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I2" segment_name="segO"/>
+          <fc_override fc_type="frac" fc_val="1" port_name="O" segment_name="segO"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segIn"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I1" segment_name="segIn"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I2" segment_name="segIn"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="O" segment_name="segIn"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I0" segment_name="segOut"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I1" segment_name="segOut"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="I2" segment_name="segOut"/>
+          <fc_override fc_type="frac" fc_val="0" port_name="O" segment_name="segOut"/> -->
+        </fc>
+        <pinlocations pattern="custom">
+          <loc side="left">clb.I0 clb.I1 clb.I2 clb.O clb.clk</loc>
+          <loc side="top">clb.I0 clb.I1 clb.I2 clb.O clb.clk</loc>
+          <loc side="right">clb.I0 clb.I1 clb.I2 clb.O clb.clk</loc>
+          <loc side="bottom">clb.I0 clb.I1 clb.I2 clb.O clb.clk</loc>
+        </pinlocations>
+      </sub_tile>
+    </tile>
+  </tiles>
+
+
+  <!-- 
+
+      Layout: 1 CLB Fixed Layout
+
+  --> 
+
+  <layout>
+    <fixed_layout name="" width="3" height="3">
+      <perimeter type="io" priority="100"/>
+      <corners type="EMPTY" priority="101"/>
+      <fill type="clb" priority="10"/>
+    </fixed_layout>
+  </layout>
+
+
+  <!-- 
+
+      Device: Custom Switchblock
+
+  --> 
+
+  <device>
+    <sizing R_minW_nmos="13090.000000" R_minW_pmos="19086.831111"/>
+    <area grid_logic_tile_area="0"/>
+    <chan_width_distr>
+      <x distr="uniform" peak="1.000000"/>
+      <y distr="uniform" peak="1.000000"/>
+    </chan_width_distr>
+    <switch_block type="wilton" fs="3"/>
+    <connection_block input_switch_name="ipin_cblock"/>
+  </device>
+
+
+  <!-- 
+
+      Switch list: Custom Switchblock
+
+  --> 
+
+  <switchlist>
+    <switch type="tristate" name="tri_switch" R="0" Cin="0" Cout="0" buf_size="auto"/>
+    <switch type="tristate" name="ipin_cblock" R="0" Cin="0" Cout="0" buf_size="auto"/>
+  </switchlist>
+
+
+  <!-- 
+
+      Segment list: 1L, fully connected, bidirectional
+
+  --> 
+
+  <segmentlist>
+    <segment freq="1" name="segI0" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+    <segment freq="1" name="segI1" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+    <segment freq="1" name="segI2" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+    <segment freq="1" name="segO" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+    <segment freq="1" name="segIn" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+    <segment freq="1" name="segOut" length="1" type="bidir">
+      <wire_switch name="tri_switch"/>
+      <opin_switch name="tri_switch"/>
+      <sb type="pattern">1 1</sb>
+      <cb type="pattern">1</cb>
+    </segment>
+  </segmentlist>
+
+
+  <!-- 
+
+      Complex block list: IO, CLB, LUT, FF, Out Mux
+
+  --> 
+      
+  <complexblocklist>
+
+    <!-- IO Pads -->
+
+    <pb_type name="io">
+      <input name="outpad" num_pins="1"/>
+      <output name="inpad" num_pins="1"/>
+      <clock name="clock" num_pins="1"/>
+      <mode name="inpad">
+        <pb_type name="inpad" blif_model=".input" num_pb="1">
+          <output name="inpad" num_pins="1"/>
+        </pb_type>
+        <interconnect>
+          <direct name="inpad" input="inpad.inpad" output="io.inpad"/>
+        </interconnect>
+      </mode>
+      <mode name="outpad">
+        <pb_type name="outpad" blif_model=".output" num_pb="1">
+          <input name="outpad" num_pins="1"/>
+        </pb_type>
+        <interconnect>
+          <direct name="outpad" input="io.outpad" output="outpad.outpad"/>
+        </interconnect>
+      </mode>
+    </pb_type>
+
+
+    <!-- CLB Cluster -->
+
+    <pb_type name="clb">
+      <input name="I0" num_pins="1" equivalent="full"/>
+      <input name="I1" num_pins="1" equivalent="full"/>
+      <input name="I2" num_pins="1" equivalent="full"/>
+      <output name="O" num_pins="1" equivalent="full"/>
+      <clock name="clk" num_pins="1"/>
+
+      <!-- BLE Cluster -->
+
+      <pb_type name="ble" num_pb="1">
+        <input name="in" num_pins="3"/>
+        <output name="out" num_pins="1"/>
+        <clock name="clk" num_pins="1"/>
+
+        <!-- LUT -->
+
+        <pb_type name="lut" blif_model=".names" num_pb="1" class="lut">
+          <input name="in" num_pins="3" port_class="lut_in"/>
+          <output name="out" num_pins="1" port_class="lut_out"/>
+        </pb_type>
+
+        <!-- FF -->
+        
+        <pb_type name="ff" blif_model=".latch" num_pb="1" class="flipflop">
+          <input name="D" num_pins="1" port_class="D"/>
+          <output name="Q" num_pins="1" port_class="Q"/>
+          <clock name="clk" num_pins="1" port_class="clock"/>
+        </pb_type>
+
+        <!-- BLE Interconnect: Only 1 pin connects to each BLE pin -->
+
+        <interconnect>
+          <direct name="ble_lut" input="ble.in" output="lut.in"/>
+          <direct name="lut_ff" input="lut.out" output="ff.D"/>
+          <direct name="clk" input="ble.clk" output="ff.clk"/>
+          <mux name="out_mux" input="ff.Q lut.out" output="ble.out"/>
+        </interconnect>
+      </pb_type>
+
+      <!-- CLB Interconnect: Each pin from BLE connects to 4 pins of CLB -->
+
+      <interconnect>
+        <complete name="I0_ble" input="clb.I0" output="ble.in[0]"/>
+        <complete name="I1_ble" input="clb.I1" output="ble.in[1]"/>
+        <complete name="I2_ble" input="clb.I2" output="ble.in[2]"/>
+        <complete name="clks" input="clb.clk" output="ble.clk"/>
+        <complete name="ble_out" input="ble.out" output="clb.O"/>
+      </interconnect>
+    </pb_type>
+  </complexblocklist>
+</architecture>
