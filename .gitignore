@@ -146,3 +146,16 @@ tags
 .idea
 cmake-build-debug
 /.metadata/
+
+#
+# Titan Benchmarks
+#
+vtr_flow/arch/titan
+vtr_flow/benchmarks/titan_blif
+vtr_flow/benchmarks/titan_other_blif
+
+#
+# Benchmarks Results
+#
+workspace/benchmarking/ZeroAMP_Test
+workspace/benchmarking/regression_tests
