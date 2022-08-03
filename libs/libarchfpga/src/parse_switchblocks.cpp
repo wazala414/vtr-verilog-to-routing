@@ -387,10 +387,10 @@ static void check_bidir_switchblock(const t_permutation_map* permutation_map) {
     for (e_side from_side : {TOP, RIGHT, BOTTOM, LEFT}) {
         for (e_side to_side : {TOP, RIGHT, BOTTOM, LEFT}) {
             
-            // /* can't connect a switchblock side to itself */
-            // if (from_side == to_side) {
-            //     continue;
-            // }
+            /* can't connect a switchblock side to itself */
+            if (from_side == to_side) {
+                continue;
+            }
 
             /* index into permutation map with this variable */
             conn.set_sides(from_side, to_side);
@@ -400,15 +400,9 @@ static void check_bidir_switchblock(const t_permutation_map* permutation_map) {
             if (it != (*permutation_map).end()) {
                 /* the two sides are connected */
                 /* check if the opposite connection has been specified */
-                if ((from_side == to_side) && ((from_side == TOP) | (from_side == RIGHT)) ) {
-                    archfpga_throw(__FILE__, __LINE__, "If a bidirectional switch block specifies a connection from side1->side1, the connection has to be either from bottom->bottom or left->left.");
-                }
-
                 conn.set_sides(to_side, from_side);
-                
                 it = (*permutation_map).find(conn);
-                if ((it != (*permutation_map).end()) && (from_side != to_side)) {
-                //if (it != (*permutation_map).end()) {
+                if (it != (*permutation_map).end()) {
                     archfpga_throw(__FILE__, __LINE__, "If a bidirectional switch block specifies a connection from side1->side2, no connection should be specified from side2->side1 as it is implicit.\n");
                 }
             }

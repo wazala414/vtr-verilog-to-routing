@@ -12,7 +12,6 @@ bin/
 CMakeCache.txt
 CMakeFiles
 build
-debug
 
 #
 #VTR Flow/Tasks
@@ -102,6 +101,11 @@ ODIN_II/usefull_tools/**/track_completed
 *.a
 
 #
+#Yosys exec dir
+#
+Yosys
+
+#
 #Python
 #
 *.pyc
@@ -131,20 +135,14 @@ tags
 #
 # VS Code
 #
-#.vscode
+.vscode
 .history
 #eclipse project
-#.project
+.project
 
 #
-# Titan Benchmark
+# CLION
 #
-vtr_flow/benchmarks/titan_blif
-vtr_flow/benchmarks/titan_other_blif
-vtr_flow/arch/titan
-
-#
-# Workspace Test
-#
-workspace/benchmarking/regression_tests
-workspace/benchmarking/ZeroAMP_Test
+.idea
+cmake-build-debug
+/.metadata/
