@@ -100,6 +100,34 @@ def browseTask(filename,field):
         else:
             set_text(field,filename)
 
+def browseParse(filename,field):
+    filename = filedialog.askopenfilename(initialdir = "~/VTR-Tools/workspace/",
+                                          title = "Select a File",
+                                          filetypes = (("Text files",
+                                                        "*.txt*"),
+                                                       ("all files",
+                                                        "*.*")))
+    if filename:
+        _,file_extension = os.path.splitext(filename)
+        if file_extension != ".txt":
+            set_text(field,"Error: Requires parse parameter file type") 
+        else:
+            set_text(field,filename)
+
+def browseQoR(filename,field):
+    filename = filedialog.askopenfilename(initialdir = "~/VTR-Tools/workspace/",
+                                          title = "Select a File",
+                                          filetypes = (("Text files",
+                                                        "*.txt*"),
+                                                       ("all files",
+                                                        "*.*")))
+    if filename:
+        _,file_extension = os.path.splitext(filename)
+        if file_extension != ".txt":
+            set_text(field,"Error: Requires QoR file type") 
+        else:
+            set_text(field,filename)
+
 def file_exist(filename, file_override):
     # Create the root window
     error_window = Tk()
@@ -150,8 +178,7 @@ def finish_prompt():
     button_continue.grid()
 
 def helper():
-    print("test")
-
+    webbrowser.open("assets/help.html")
 
 def set_text(entry,text):
     entry.delete(0,END)
@@ -162,6 +189,8 @@ def set_text(entry,text):
 arch_file = ""
 circuit_file = ""
 route_file = ""
+out_dir_single_vtr = ""
+out_dir_parse = ""
 out_dir = ""
 database_dir = ""
 database_name = ""
@@ -172,6 +201,7 @@ routing_width = ""
 args_pass = ""
 task_file = ""
 parse_file = ""
+QoR_file = ""
 mod_in = False
 mod_out = False
 VTR_path = "$VTR_ROOT"
@@ -200,15 +230,31 @@ logo_button.grid()
 
 # Permanent Buttons
 exit_frame = Frame(window)
-exit_frame.pack(side=BOTTOM)
-button_exit = Button(exit_frame,
+exit_frame.pack(side=BOTTOM, fill="x")
+exit_frame.grid_rowconfigure(0, weight=1)
+exit_frame.grid_columnconfigure((0,1), weight=1)
+
+# Exit Button Frame
+exit_frame_left = Frame(exit_frame)
+exit_frame_left.grid_rowconfigure(0, weight=1)
+exit_frame_left.grid_columnconfigure(0, weight=1)
+exit_frame_left.grid(row=0,column=0,sticky="w")
+
+# Help Button Frame
+exit_frame_right = Frame(exit_frame)
+exit_frame_right.grid_rowconfigure(0, weight=1)
+exit_frame_right.grid_columnconfigure(0, weight=1)
+exit_frame_right.grid(row=0,column=1,sticky="e")
+
+# Exit and Help button initialisation
+button_exit = Button(exit_frame_right,
                      text = "Exit",
                      command = exit)
-button_exit.grid(row=2,column=0)
-button_help = Button(exit_frame,
+button_exit.grid(row=0,column=0, pady=8,padx=8)
+button_help = Button(exit_frame_left,
                      text = "Help",
                      command = helper)
-button_help.grid(row=2,column=1)
+button_help.grid(row=0,column=0, pady=8,padx=8)
 
 # Tabs
 tabControl = ttk.Notebook(window)
@@ -227,8 +273,10 @@ tabControl.pack(fill="both", expand=1,padx=8, pady=8)
 VTR_subtab = ttk.Notebook(VTR_tab)
 VTR_single = ttk.Frame(VTR_subtab)
 VTR_batch = ttk.Frame(VTR_subtab)
+VTR_parse = ttk.Frame(VTR_subtab)
 VTR_subtab.add(VTR_single, text='Single')
 VTR_subtab.add(VTR_batch, text='Batch')
+VTR_subtab.add(VTR_parse, text='Parse')
 VTR_subtab.pack(fill="both", expand=1,padx=8, pady=8)
 
 
@@ -278,12 +326,12 @@ circuit_button.grid(row=3, column=1, pady=4,padx=8)
 
 # VTR Output Directory
 ttk.Label(VTR_single_top_left_frame, text="Output Directory").grid(row=4, column=0)
-out_dir_button = Button(VTR_single_top_left_frame,
+out_dir_single_vtr_button = Button(VTR_single_top_left_frame,
                         text = "Browse",
-                        command = lambda: browseOutDir(out_dir,out_dir_entry))
-out_dir_entry = ttk.Entry(VTR_single_top_left_frame, width="40")
-out_dir_entry.grid(row=5, column=0, pady=4)
-out_dir_button.grid(row=5, column=1, pady=4,padx=8)
+                        command = lambda: browseOutDir(out_dir_single_vtr,out_dir_single_vtr_entry))
+out_dir_single_vtr_entry = ttk.Entry(VTR_single_top_left_frame, width="40")
+out_dir_single_vtr_entry.grid(row=5, column=0, pady=4)
+out_dir_single_vtr_button.grid(row=5, column=1, pady=4,padx=8)
 
 VTR_single_bottom_left_frame = ttk.Frame(VTR_single_left_frame)
 VTR_single_bottom_left_frame.grid(row=1, column=0)
@@ -318,30 +366,31 @@ def VTR_run():
     # Field Polling
     circuit_file = circuit_entry.get()
     arch_file = arch_entry.get()
-    out_dir = out_dir_entry.get()
+    out_dir_single_vtr = out_dir_single_vtr_entry.get()
     routing_width = width_entry.get()
     args_pass = ""
+    bash_line = ""
 
     # Merge argument lines
     for line in args_entry.get('1.0', END).splitlines():
         args_pass = args_pass + " " + line
 
-    
-    status = sp.call("cd ;" 
+    bash_line = ("cd ;" 
     + "cd " 
-    + out_dir 
+    + out_dir_single_vtr 
     + "; " 
     + "$VTR_ROOT/vtr_flow/scripts/run_vtr_flow.py     "
     + circuit_file
     + "     "
     + arch_file
     + "     -temp_dir "
-    + out_dir
+    + out_dir_single_vtr
     + "     --route_chan_width "
     + routing_width
     + " "
-    + args_pass,   # add args entry
-    shell=True)
+    + args_pass)    
+
+    status = sp.call(bash_line, shell=True)
     finish_prompt()
 
 def VTR_display():
@@ -349,19 +398,19 @@ def VTR_display():
     # Field Polling
     circuit_file = circuit_entry.get()
     arch_file = arch_entry.get()
-    out_dir = out_dir_entry.get()
+    out_dir_single_vtr = out_dir_single_vtr_entry.get()
     routing_width = width_entry.get()
     #analysis_tick = analysis_entry.get()
     args_pass = ""
+    bash_line = ""
     
     # Merge argument lines
     for line in args_entry.get('1.0', END).splitlines():
         args_pass = args_pass + " " + line
 
-    if analysis_tick.get():
-        status = sp.call("cd ;"
+    bash_line = ("cd ;"
         + "cd "  
-        + out_dir 
+        + out_dir_single_vtr 
         + "; " 
         + "$VTR_ROOT/vpr/vpr     "
         + arch_file
@@ -371,24 +420,14 @@ def VTR_display():
         + os.path.splitext(os.path.basename(circuit_file))[0]
         + ".pre-vpr.blif    --route_chan_width "
         + routing_width
-        + "  --disp on --analysis "
-        + args_pass,   # add args entry
-        shell=True)
-    else:
-        status = sp.call("cd " 
-        + out_dir 
-        + "; " 
-        + "$VTR_ROOT/vpr/vpr     "
-        + arch_file
-        + "     "
-        + os.path.splitext(os.path.basename(circuit_file))[0]
-        + " --circuit_file "
-        + os.path.splitext(os.path.basename(circuit_file))[0]
-        + ".pre-vpr.blif    --route_chan_width "
-        + routing_width
-        + "  --disp on "
-        + args_pass,   # add args entry
-        shell=True)
+        + "  --disp on ")
+
+    if analysis_tick.get():
+        bash_line += " --analysis"
+
+    bash_line += " " + args_pass
+    status = sp.call(bash_line,shell=True)
+    finish_prompt()
 
 VTR_single_bottom_frame = ttk.Frame(VTR_single)
 VTR_single_bottom_frame.grid(row=1, column=0, columnspan=2)
@@ -419,67 +458,52 @@ VTR_batch.grid_columnconfigure(1, weight=2)
 
 VTR_batch_left_frame = ttk.Frame(VTR_batch)
 VTR_batch_left_frame.grid(row=0, column=0)
-VTR_batch_left_frame.grid_rowconfigure((0,1,2,3), weight=1)
+VTR_batch_left_frame.grid_rowconfigure((0,1), weight=1)
 VTR_batch_left_frame.grid_columnconfigure(0, weight=1)
-VTR_batch_left_frame.grid_columnconfigure(1, weight=1)
+
+VTR_batch_top_left_frame = ttk.Frame(VTR_batch_left_frame)
+VTR_batch_top_left_frame.grid(row=0, column=0)
+VTR_batch_top_left_frame.grid_rowconfigure((0,1,2), weight=1)
+VTR_batch_top_left_frame.grid_columnconfigure(0, weight=1)
+VTR_batch_top_left_frame.grid_columnconfigure(1, weight=1)
 
 # VTR Task List
-ttk.Label(VTR_batch_left_frame, text="Task List").grid(row=0, column=0)
-task_button = Button(VTR_batch_left_frame,
+ttk.Label(VTR_batch_top_left_frame, text="Task List").grid(row=0, column=0)
+task_button = Button(VTR_batch_top_left_frame,
                         text = "Browse",
                         command = lambda: browseTask(task_file,task_entry))
-task_entry = ttk.Entry(VTR_batch_left_frame, width="35")
+task_entry = ttk.Entry(VTR_batch_top_left_frame, width="35")
 task_entry.grid(row=1, column=0, pady=4)
 task_button.grid(row=1, column=1, pady=4,padx=8)
 
-# VTR Parse Parameter
-ttk.Label(VTR_batch_left_frame, text="Parse Parameter").grid(row=2, column=0)
-parse_button = Button(VTR_batch_left_frame,
-                        text = "Browse",
-                        command = lambda: browseTask(parse_file,parse_entry))
-parse_entry = ttk.Entry(VTR_batch_left_frame, width="35")
-parse_entry.grid(row=3, column=0, pady=4)
-parse_button.grid(row=3, column=1, pady=4,padx=8)
+VTR_batch_bottom_left_frame = ttk.Frame(VTR_batch_left_frame)
+VTR_batch_bottom_left_frame.grid(row=1, column=0)
+VTR_batch_bottom_left_frame.grid_rowconfigure(0, weight=1)
+VTR_batch_bottom_left_frame.grid_columnconfigure(0, weight=1)
+
+# VTR Short Name Tickboxes
+short_name_tick = IntVar()
+short_name_entry = Checkbutton(VTR_batch_bottom_left_frame, text='Short Name',variable=short_name_tick, onvalue=1, offvalue=0)
+short_name_entry.grid(row=0, column=0,padx=8, pady=8)
 
 # Run VTR Batch
 def VTR_batch_run():
 
     # Field Polling
     task_file = task_entry.get()
-    out_dir = out_dir_entry.get()
-    routing_width = width_entry.get()
+    short_name = short_name_tick.get()
     args_pass = ""
+    bash_line = "cd " + VTR_path + "; $VTR_ROOT/vtr_flow/scripts/run_vtr_task.py -l " + task_file
+
+    if short_name:
+        bash_line += " -short_task_names"
 
     # Merge argument lines
     for line in args_entry.get('1.0', END).splitlines():
         args_pass = args_pass + " " + line
 
-    status = sp.call("cd " 
-    + VTR_path 
-    + "; " 
-    + "$VTR_ROOT/vtr_flow/scripts/run_vtr_task.py -l "
-    + task_file,
-    shell=True)
-    finish_prompt()
-
-def VTR_batch_parse():
-
-    # Field Polling
-    task_file = task_entry.get()
-    out_dir = out_dir_entry.get()
-    routing_width = width_entry.get()
-    args_pass = ""
-
-    # Merge argument lines
-    for line in args_entry.get('1.0', END).splitlines():
-        args_pass = args_pass + " " + line
-
-    status = sp.call("cd " 
-    + VTR_path 
-    + "; " 
-    + "$VTR_ROOT/vtr_flow/scripts/run_vtr_task.py -l "
-    + task_file,
-    shell=True)
+    bash_line += " " + args_pass
+    status = sp.call(bash_line,shell=True)
     finish_prompt()
 
 VTR_batch_right_frame = ttk.Frame(VTR_batch)
@@ -503,12 +527,119 @@ VTR_run_button = Button(VTR_batch_bottom_frame,
                         command = lambda: VTR_batch_run())
 VTR_run_button.grid(row=0, column=0, pady=4,padx=8)
 VTR_run_button.config(height=3, width=6)
-VTR_display_button = Button(VTR_batch_bottom_frame,
-                        text = "Parse",
-                        command = lambda: VTR_batch_parse())
-VTR_display_button.grid(row=0, column=1, pady=4,padx=8)
-VTR_display_button.config(height=3, width=6)
 
+#
+#   Parse Execution
+#
+VTR_parse.grid_rowconfigure((0,1), weight=1)
+VTR_parse.grid_columnconfigure(0, weight=1)
+VTR_parse.grid_columnconfigure(1, weight=2)
+
+VTR_parse_left_frame = ttk.Frame(VTR_parse)
+VTR_parse_left_frame.grid(row=0, column=0)
+VTR_parse_left_frame.grid_rowconfigure((0,1), weight=1)
+VTR_parse_left_frame.grid_columnconfigure(0, weight=1)
+
+VTR_parse_top_left_frame = ttk.Frame(VTR_parse_left_frame)
+VTR_parse_top_left_frame.grid(row=0, column=0)
+VTR_parse_top_left_frame.grid_rowconfigure((0,1,2,3,4,5), weight=1)
+VTR_parse_top_left_frame.grid_columnconfigure((0,1), weight=1)
+
+# VTR Task List
+ttk.Label(VTR_parse_top_left_frame, text="Task List").grid(row=0, column=0)
+task_button = Button(VTR_parse_top_left_frame,
+                        text = "Browse",
+                        command = lambda: browseTask(task_file,task_entry))
+task_entry = ttk.Entry(VTR_parse_top_left_frame, width="35")
+task_entry.grid(row=1, column=0, pady=4)
+task_button.grid(row=1, column=1, pady=4,padx=8)
+
+# VTR Parse Parameter
+ttk.Label(VTR_parse_top_left_frame, text="Parse Parameters").grid(row=2, column=0)
+parse_button = Button(VTR_parse_top_left_frame,
+                        text = "Browse",
+                        command = lambda: browseParse(parse_file,parse_entry))
+parse_entry = ttk.Entry(VTR_parse_top_left_frame, width="35")
+parse_entry.grid(row=3, column=0, pady=4)
+parse_button.grid(row=3, column=1, pady=4,padx=8)
+
+# NOT IN USE BECAUSE PARSE PARAM ENOUGH
+# VTR QoR Parameter
+# ttk.Label(VTR_parse_top_left_frame, text="QoR Parameter").grid(row=4, column=0)
+# QoR_button = Button(VTR_parse_top_left_frame,
+#                         text = "Browse",
+#                         command = lambda: browseQoR(QoR_file,QoR_entry))
+# QoR_entry = ttk.Entry(VTR_parse_top_left_frame, width="35")
+#QoR_entry.grid(row=5, column=0, pady=4)
+#QoR_button.grid(row=5, column=1, pady=4,padx=8)        
+
+# VTR Output Directory
+ttk.Label(VTR_parse_top_left_frame, text="Output Directory").grid(row=4, column=0)
+out_dir_parse_button = Button(VTR_parse_top_left_frame,
+                        text = "Browse",
+                        command = lambda: browseOutDir(out_dir_parse,out_dir_parse_entry))
+out_dir_parse_entry = ttk.Entry(VTR_parse_top_left_frame, width="35")
+out_dir_parse_entry.grid(row=5, column=0, pady=4)
+out_dir_parse_button.grid(row=5, column=1, pady=4,padx=8)
+
+
+VTR_parse_bottom_left_frame = ttk.Frame(VTR_parse_left_frame)
+VTR_parse_bottom_left_frame.grid(row=1, column=0)
+VTR_parse_bottom_left_frame.grid_rowconfigure(0, weight=1)
+VTR_parse_bottom_left_frame.grid_columnconfigure((0,1), weight=1)
+
+# VTR Batch Tickboxes
+batch_tick = IntVar()
+batch_entry = Checkbutton(VTR_parse_bottom_left_frame, text='Batch',variable=batch_tick, onvalue=1, offvalue=0)
+batch_entry.grid(row=0, column=0,padx=8, pady=8)
+
+# Run VTR Batch
+def VTR_run_parse():
+
+    # Field Polling
+    task_file = task_entry.get()
+    batch = batch_tick.get()
+    #QoR_file = QoR_entry.get()
+    parse_file = parse_entry.get()
+    out_dir_parse = out_dir_parse_entry.get()
+    args_pass = ""
+
+    if batch:
+        # TODO: First expression might be the correct syntax but seems to not work very well. Will need modification to hyperlink in helper. 
+        #bash_line = "cd " + VTR_path + "; $VTR_ROOT/vtr_flow/scripts/run_vtr_task.py -l " + task_file + " -parse"
+        bash_line = "cd " + VTR_path + "; $VTR_ROOT/vtr_flow/scripts/python_libs/vtr/parse_vtr_task.py -l " + task_file
+    else:
+        bash_line = "cd " + VTR_path + "; $VTR_ROOT/vtr_flow/scripts/python_libs/vtr/parse_vtr_flow.py " + out_dir_parse + " " + parse_file
+
+    # Merge argument lines
+    for line in args_entry.get('1.0', END).splitlines():
+        args_pass = args_pass + " " + line
+
+    bash_line += " " + args_pass
+    status = sp.call(bash_line,shell=True)
+    finish_prompt()
+
+VTR_parse_right_frame = ttk.Frame(VTR_parse)
+VTR_parse_right_frame.grid(row=0, column=1)
+VTR_parse_right_frame.grid_rowconfigure((0,1), weight=1)
+VTR_parse_right_frame.grid_columnconfigure(0, weight=1)
+
+# VTR Parse Arguments Setup
+ttk.Label(VTR_parse_right_frame, text="Arguments").grid(row=0, column=0)
+args_entry = Text(VTR_parse_right_frame, width="35", height="8")
+args_entry.grid(row=1, column=0, pady=4)
+
+# VTR Task Run and Parse
+VTR_parse_bottom_frame = ttk.Frame(VTR_parse)
+VTR_parse_bottom_frame.grid(row=1, column=0, columnspan=2)
+VTR_parse_bottom_frame.grid_rowconfigure(0, weight=1)
+VTR_parse_bottom_frame.grid_columnconfigure(0, weight=1)
+
+VTR_run_button = Button(VTR_parse_bottom_frame,
+                        text = "Parse",
+                        command = lambda: VTR_run_parse())
+VTR_run_button.grid(row=0, column=0, pady=4,padx=8)
+VTR_run_button.config(height=3, width=6)
 
 #--------------------------
 #

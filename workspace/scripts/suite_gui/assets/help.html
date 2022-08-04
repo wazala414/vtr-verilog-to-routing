@@ -1,0 +1,100 @@
+<html>
+    <link rel="stylesheet" href="help.css">
+    <link rel="icon" href="favicon_medium.png"/>
+    <title>
+        ZeroAMP Helper
+    </title>
+    <head>
+        <center>            
+            <a href="https://www.zeroamp.eu" target="_blank"><img src="ZeroAMP_logo.png" width="500px"/></a>
+        </center>
+    </head>
+    <body>
+        <section>
+            <h3><a href="https://www.zeroamp.eu" target="_blank" style="text-decoration:none"><img src="favicon_medium.png" width="15px"/> ZeroAMP Project</a></h3>
+            <p>
+                Transistors are the building blocks of digital integrated circuits found in every modern electronic device, from cell phones to industrial electronics.<br>
+                However, more and more emerging applications utilise ultra-low power sources and operate at low power in harsh environmental conditions where transistors cannot perform efficiently.<br><br>
+                In ZeroAMP, we will address the societal and industrial needs for such computation solutions by pushing beyond the limits of transistors. <br>
+                To tackle this challenge, we will develop novel nanoelectromechanical (NEM) switches that survive extreme environments.<br><br>
+                The ZeroAMP Suite focuses on the benchmarking of a NEM-based FPGA architecture, including the implementation of the <a href="https://www.zeroamp.eu" target="_blank" style="text-decoration:none">switchblock matrix</a>.<br>
+                This suite will also include a programming feature for our future NEM-based FPGA architecture.<br><br>
+            </p>
+        </section>
+        <section>
+            <h3><a href="https://docs.verilogtorouting.org/en/latest/" target="_blank" style="text-decoration:none"><img src="https://docs.verilogtorouting.org/en/latest/_static/vtr_logo.svg" width="15px"/> Verilog-To-Routing (VTR)</a></h3>
+            <p>
+                Verilog-To-Routing also known as VTR is an open-source suite of tools for benchmarking FPGA architectures. The suite takes as input architecture descriptions and verilog description of circuit to be mapped on the given architecture.<br>
+                VTR is a complete flow that is able to simulate an architecture, optimize a circuit description to best map onto the architecture, place, pack and route the circuit and finally perform a performance analysis.<br>
+                For more information on VTR you can access the documentation by <a href="https://docs.verilogtorouting.org/en/latest/" target="_blank" style="text-decoration:none">clicking here</a>.<br>
+                The GUI allows the user to easily execute simple analysis using VTR. The VTR section of the GUI is split in 3 subsections: <b><u>Single</u></b>, <b><u>Batch</u></b> and <b><u>Parse</u></b>.
+            </p>
+            <p>
+                The <b><u>Single</u></b> subsection allows to quickly process simple task providing the following parameters:<br>
+                <p>
+                    <b>&emsp;Architecture:</b> Describes the FPGA architecture from a XML file.<br>
+                    <b>&emsp;Circuit:</b> Describes the circuit to map on the architecture from a verilog file.<br>
+                    <b>&emsp;Output Directory:</b> Location of all the output files from VTR.<br>
+                    <b>&emsp;Routing Width:</b> Specifies the number of channel/tracks in connect blocks.<br>
+                    <b>&emsp;Analysis:</b> Performs an analysis when displaying the graphical representation. Unticking allows incomplete task to still display.<br>
+                    &emsp;[optional] <b>Args:</b> List extra arguments. Refer to the <a href="https://docs.verilogtorouting.org/en/latest/vtr/run_vtr_flow/#detailed-command-line-options" target="_blank">command-line options</a> of the VTR Documentation for more information on supported arguments.<br>
+                </p>
+                The <b>Run</b> button executes the regular VTR flow using the specified parameters and save the output at the desired location.<br>
+                On the other hand, the <b>Display</b> will display the graphical representation using the previously saved outputs.<br><br>
+            </p>
+            <p>
+                The <b><u>Batch</u></b> subsection allows to process a list of task providing the following parameters:<br>
+                <p>
+                    <b>&emsp;Task List:</b> Describes the task list from a text file. To create a task and task lists refer the to the relevant section in the <a href="https://docs.verilogtorouting.org/en/latest/vtr/tasks/" target="_blank">Task section</a> of the VTR Documentation.<br>
+                    <b>&emsp;Short Names:</b> Shortens the folder names when processing a task list. Unticking will make the folders contain the full description of all arguments of a task.<br>
+                    &emsp;[optional] <b>Args:</b> List extra arguments. Refer to the <a href="https://docs.verilogtorouting.org/en/latest/vtr/run_vtr_task/#detailed-command-line-options" target="_blank">command-line options</a> in the VTR Documentation for more information on supported arguments.<br>           
+                </p>
+                The <b>Run</b> button executes the VTR task flow using the specified parameters.<br> All the outputs will be saved at the location of the task configuration files.<br><br>
+            </p>
+            <p>
+                The <b><u>Parse</u></b> subsection allows to quickly parse/re-parse results from previously processed tasks providing the following parameters:<br>
+                <p>    
+                    &emsp;[for batch] <b>Task List:</b> Describes the task list from a text file. To create a task and task lists refer the to the relevant section in the <a href="https://docs.verilogtorouting.org/en/latest/vtr/tasks/" target="_blank">Task section</a> of the VTR Documentation.<br>
+                    &emsp;[for single] <b>Parse Parameters:</b> Describes the regex list for parsing the results in a table.<br>
+                    &emsp;[for single] <b>Output Directory:</b> Location of the input files from VTR when parsing a single task. This will also be the location of the parsed files.<br>
+                    <b>&emsp;Batch:</b> Enables the parsing of multiple task using a task list. <br>
+                    &emsp;[optional] <b>Args:</b> List extra arguments. Refer to the <a href="https://docs.verilogtorouting.org/en/latest/vtr/parse_vtr_flow/" target="_blank">parse flow</a> and the <a href="https://docs.verilogtorouting.org/en/latest/vtr/parse_vtr_task/" target="_blank">parse task</a> sections of the VTR Documentation for more information on supported arguments of the single execution and batch execution respectively.<br>
+                </p>
+                The <b>Parse</b> button executes the parse flow for single task or tasks from a task list according to the parameters entered.<br>
+                This option can be used when the variables of interest extracted from the output of VTR are no longer relevant.<br>
+                Changing the content of the parse parameter file then allows to extract the new relevant varibles from already processed outputs.<br><br>
+            </p>
+        </section>
+        <section>
+            <h3>Routing Export</h3>
+            <p>
+                The routing export section of the GUI allows the user to use the routing path output from VTR and generate a database of the pin-to-pin connection of all switchblocks.<br>
+                This option is used for describing the required patterns for <a href="https://www.zeroamp.eu" target="_blank" style="text-decoration:none">switchblock matrix based</a> FPGA architecture and needs to be used in conjunction with the programming section.<br>
+                To run this script the following parameters will be used:
+                <p>
+                    <b>&emsp;Routing Outcome:</b> The routing ouput file of VTR using the extension .route.<br>
+                    <b>&emsp;Database Output Folder:</b> Specify the location of the output CSV database.<br>
+                    <b>&emsp;Name:</b> Specify the name of the output CSV database.<br>
+                    &emsp;[optional] <b>Regex Output:</b> When ticked the program exports a detailed file of the regex matches according to the file name specified.<br>
+                </p>
+                The <b>Run</b> button executes the script that returns a database describing the pin-to-pin patterns for a list of all the switchblock in the architecture.<br><br>
+            </p>
+        </section>
+        <section>
+            <h3>Programming</h3>
+            <p>
+                The programming section of the GUI is closely linked to the routing export section. <br>
+                It is responsible for computing NEM orientation required in all <a href="https://www.zeroamp.eu" target="_blank" style="text-decoration:none">switchblock matrix</a> of an FPGA architecture to achieved the connection patterns identified from the routing export section.<br>
+                <p>
+                    <b>&emsp;Routing Outcome:</b> The routing ouput file of VTR using the extension .route.<br>
+                    <b>&emsp;Database Output Folder:</b> Specify the location of the output CSV database.<br>
+                    <b>&emsp;Name:</b> Specify the name of the output CSV database.<br>
+                    &emsp;[optional] <b>Regex Output:</b> When ticked the program exports a detailed file of the regex matches according to the file name specified.<br>
+                </p>
+                The <b>Run</b> button starts the creation of the CSV database. <br>
+                From the output produced, the user can use the information to configure a NEM-based FPGA.<br><br>
+            </p>
+        </section>
+    </body>
+
+</html>
