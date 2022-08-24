@@ -1,0 +1,6 @@
+arch	circuit	script_params	vpr_status	total_wirelength	total_runtime	num_clb	min_chan_width	crit_path_delay	
+Reference.xml	single_wire.v	common	exited with return code 2	-1	0.42	0	-1	-1	
+Reference_short_wire.xml	single_wire.v	common	success	6	0.42	0	-1	-1	
+Unidir_FS4_Same_Side.xml	single_wire.v	common	success	2	0.45	0	-1	-1	
+Unidir_Full_Same_Side.xml	single_wire.v	common	success	2	0.75	0	-1	-1	
+Unidir_Full_No_Same_Side.xml	single_wire.v	common	success	5	0.67	0	-1	-1	

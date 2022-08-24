@@ -1,0 +1,19 @@
+# Benchmark "top" written by ABC on Sun Sep 4 19:30:25 2022 
+
+.model top 
+
+.inputs top^in 
+
+.outputs top^out 
+
+.names top^in top^out 
+1 1 
+
+
+.end 
+
+.model CLOCK_GATING
+.inputs I
+.blackbox
+.end
+

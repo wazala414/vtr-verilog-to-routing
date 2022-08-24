@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<block name="single_wire.net.post_routing" instance="FPGA_packed_netlist[0]" architecture_id="SHA256:2b6f11b62f94c1d54ffcdbba7426b430453127e2981e90823cf2d322e3f32947" atom_netlist_id="SHA256:d6ec37cd34b04422005e60d85cd2b25279757a504bff3390543378c7c419a979">
+	<inputs>top^in</inputs>
+	<outputs>out:top^out</outputs>
+	<clocks></clocks>
+	<block name="out:top^out" instance="io[0]" mode="outpad">
+		<inputs>
+			<port name="outpad">top^in</port>
+		</inputs>
+		<outputs>
+			<port name="inpad">open</port>
+		</outputs>
+		<clocks>
+			<port name="clock">open</port>
+		</clocks>
+		<block name="out:top^out" instance="outpad[0]">
+			<attributes />
+			<parameters />
+			<inputs>
+				<port name="outpad">io.outpad[0]-&gt;outpad</port>
+			</inputs>
+			<outputs />
+			<clocks />
+		</block>
+	</block>
+	<block name="top^in" instance="io[1]" mode="inpad">
+		<inputs>
+			<port name="outpad">open</port>
+		</inputs>
+		<outputs>
+			<port name="inpad">inpad[0].inpad[0]-&gt;inpad</port>
+		</outputs>
+		<clocks>
+			<port name="clock">open</port>
+		</clocks>
+		<block name="top^in" instance="inpad[0]">
+			<attributes />
+			<parameters />
+			<inputs />
+			<outputs>
+				<port name="inpad">top^in</port>
+			</outputs>
+			<clocks />
+		</block>
+	</block>
+</block>

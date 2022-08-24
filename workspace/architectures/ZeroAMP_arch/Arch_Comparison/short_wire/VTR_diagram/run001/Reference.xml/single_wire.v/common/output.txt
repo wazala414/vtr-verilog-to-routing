@@ -1,0 +1,5 @@
+vpr_status=exited with return code 2
+vpr_seconds=0
+rundir=/home/vm/VTR-Tools/workspace/architectures/ZeroAMP_arch/Arch_Comparison/short_wire
+hostname=vm-VirtualBox
+error=

@@ -1,0 +1,2 @@
+ arch	  circuit	  script_params	  vpr_status	  total_wirelength	  total_runtime	  num_clb	  min_chan_width	  crit_path_delay	 
+ Unidir_Full_Same_Side.xml	  single_wire.v	  common	  success	  2	  0.75	  0	  -1	  -1	 

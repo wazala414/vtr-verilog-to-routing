@@ -1,0 +1,2 @@
+ arch	  circuit	  script_params	  vpr_status	  total_wirelength	  total_runtime	  num_clb	  min_chan_width	  crit_path_delay	 
+ Reference_short_wire.xml	  single_wire.v	  common	  success	  6	  0.42	  0	  -1	  -1	 

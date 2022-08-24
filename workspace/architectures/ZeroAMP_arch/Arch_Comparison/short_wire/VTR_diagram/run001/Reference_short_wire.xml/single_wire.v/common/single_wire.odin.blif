@@ -1,0 +1,14 @@
+.model top
+.inputs top^in
+.outputs top^out
+
+.names gnd
+.names unconn
+.names vcc
+1
+
+.names top^in top^out
+1 1
+
+.end
+

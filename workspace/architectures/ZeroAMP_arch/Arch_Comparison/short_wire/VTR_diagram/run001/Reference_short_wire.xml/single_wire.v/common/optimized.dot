@@ -1,0 +1,10 @@
+digraph G {
+	ranksep=.25;
+	"top_in" [shape=triangle];
+	"top_in" -> "top_BUF~0"[label="top^out"];
+	"top_BUF~0" [shape=box];
+	"top_BUF~0" -> "top_out_O";
+	"top_out_O" [shape=triangle];
+	"top_ZGZ"
+	"top_OVC"
+}
