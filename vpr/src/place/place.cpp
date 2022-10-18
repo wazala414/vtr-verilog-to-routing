@@ -245,7 +245,7 @@ std::unique_ptr<FILE, decltype(&vtr::fclose)> f_move_stats_file(nullptr,
 
 /********************* Static subroutines local to place.c *******************/
 #ifdef VERBOSE
-static void print_clb_placement(const char* fname);
+void print_clb_placement(const char* fname);
 #endif
 
 static void alloc_and_load_placement_structs(float place_cost_exp,
@@ -426,7 +426,8 @@ void try_place(const t_placer_opts& placer_opts,
                t_det_routing_arch* det_routing_arch,
                std::vector<t_segment_inf>& segment_inf,
                t_direct_inf* directs,
-               int num_directs) {
+               int num_directs,
+               bool is_flat) {
     /* Does almost all the work of placing a circuit.  Width_fac gives the   *
      * width of the widest channel.  Place_cost_exp says what exponent the   *
      * width should be taken to when calculating costs.  This allows a       *
@@ -484,7 +485,7 @@ void try_place(const t_placer_opts& placer_opts,
         /*do this before the initial placement to avoid messing up the initial placement */
         place_delay_model = alloc_lookups_and_delay_model(chan_width_dist,
                                                           placer_opts, router_opts, det_routing_arch, segment_inf,
-                                                          directs, num_directs);
+                                                          directs, num_directs, is_flat);
 
         if (isEchoFileEnabled(E_ECHO_PLACEMENT_DELTA_DELAY_MODEL)) {
             place_delay_model->dump_echo(
@@ -2018,9 +2019,8 @@ static double comp_bb_cost(e_cost_methods method) {
     }
 
     if (method == CHECK) {
-        /*VTR_LOG("\n");
-         * VTR_LOG("BB estimate of min-dist (placement) wire length: %.0f\n",
-         * expected_wirelength);*/
+        VTR_LOG("\n");
+        VTR_LOG("BB estimate of min-dist (placement) wire length: %.0f\n", expected_wirelength);
     }
     return cost;
 }
@@ -2848,7 +2848,7 @@ int check_macro_placement_consistency() {
 }
 
 #ifdef VERBOSE
-static void print_clb_placement(const char* fname) {
+void print_clb_placement(const char* fname) {
     /* Prints out the clb placements to a file.  */
     FILE* fp;
     auto& cluster_ctx = g_vpr_ctx.clustering();
@@ -2859,7 +2859,7 @@ static void print_clb_placement(const char* fname) {
 
     fprintf(fp, "Block #\tName\t(X, Y, Z).\n");
     for (auto i : cluster_ctx.clb_nlist.blocks()) {
-        fprintf(fp, "#%d\t%s\t(%d, %d, %d).\n", i, cluster_ctx.clb_nlist.block_name(i), place_ctx.block_locs[i].x, place_ctx.block_locs[i].y, place_ctx.block_locs[i].sub_tile);
+        fprintf(fp, "#%d\t%s\t(%d, %d, %d).\n", i, cluster_ctx.clb_nlist.block_name(i).c_str(), place_ctx.block_locs[i].loc.x, place_ctx.block_locs[i].loc.y, place_ctx.block_locs[i].loc.sub_tile);
     }
 
     fclose(fp);
