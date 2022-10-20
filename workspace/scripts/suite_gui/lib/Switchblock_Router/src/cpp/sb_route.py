@@ -5,6 +5,7 @@ import subprocess
 import csv
 import os
 import sys
+#from .. import gui
 
 def getDemands(line):
     demands = []
@@ -66,13 +67,13 @@ def sb_route(
                 line.pop(0)
                 xcord = line.pop(0)
                 ycord = line.pop(0)
-                id = str(xcord + ',' + ycord)
+                id = str(xcord + ';' + ycord)
                 curr_cmd = cmd + ['-i',id]
 
-                # sb_name = f"sb_x{xcord}_y{ycord}_routing.csv"
-                # sb_name = "sb_out.txt"
-                # sb_name = os.path.join(curr_dir,sb_name)
-                # curr_cmd = cmd + ['-o',sb_name]
+                sb_name = f"sb_x{xcord}_y{ycord}_routing.csv"
+                #sb_name = "sb_out.txt"
+                sb_name = os.path.join(curr_dir,sb_name)
+                curr_cmd = cmd + ['-o',sb_name]
 
 
                 demands = (getDemands(line))           

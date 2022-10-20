@@ -148,6 +148,59 @@ def switch_position(route,sbu,ld):
                                 sbu_df[str(track), 'S'].loc[coordinate] = sbu_pos[2]
                                 sbu_df[str(track), 'W'].loc[coordinate] = sbu_pos[3]        
 
+    elif sb_type == 'matrix':
+        track = 5
+        # TODO: Find all match of cell in one variable then do 'find' in the variable to group by track values
+
+        for coordinate in sbu_df.index:
+
+            # Do the regex to determine track number to be used and instead loop through net number
+
+            # TODO: Loop through Net number of input file(NOT TRACKS)
+            for net in position.columns:            
+                if net != 'x' and net != 'y' and pd.notnull(position[net].loc[coordinate]):
+                    
+                    # Checks if the SB-U is already in use for another connection
+                    #if sbu_df[str(track), 'N'].loc[coordinate] or sbu_df[str(track), 'E'].loc[coordinate] or sbu_df[str(track), 'S'].loc[coordinate] or sbu_df[str(track), 'W'].loc[coordinate]:
+                    if 1:
+                        # Match
+                        match_N = re.match(re_N, position[net].loc[coordinate])
+                        match_E = re.match(re_E, position[net].loc[coordinate])
+                        match_S = re.match(re_S, position[net].loc[coordinate])
+                        match_W = re.match(re_W, position[net].loc[coordinate])
+                        match_all_list = re.findall(re_all, position[net].loc[coordinate])
+                        match_all_array = np.array(match_all_list)
+
+                        for track in np.unique(match_all_array[:,1]):                        
+
+                            # Example: Print True if S is found for the current each track value
+                            #print(('s', track) in match_all_list)
+                            #TODO: Make list with all tracks 
+                            
+                            #match_all_list = [('e', '28'),('n','28'),('w','28')]
+                            #print(match_all_list)
+                            north = ('n', track) in match_all_list
+                            east = ('e', track) in match_all_list
+                            south = ('s', track) in match_all_list
+                            west = ('w', track) in match_all_list
+                            #print(north,east,south,west)
+
+                            # Modify current SB-U switch position
+                            sbu_pos = switch(track,north, east, south, west)                        
+                            #print(sbu_pos)
+
+                            # Add condition if switchs are already used
+                            if not sbu_df[str(track), 'N'].loc[coordinate] and not sbu_df[str(track), 'E'].loc[coordinate] and not sbu_df[str(track), 'S'].loc[coordinate] and not sbu_df[str(track), 'W'].loc[coordinate]:
+                                print('')
+                            elif 1:
+                                print('')
+                            else:
+                                sbu_df[str(track), 'N'].loc[coordinate] = sbu_pos[0]
+                                sbu_df[str(track), 'E'].loc[coordinate] = sbu_pos[1]
+                                sbu_df[str(track), 'S'].loc[coordinate] = sbu_pos[2]
+                                sbu_df[str(track), 'W'].loc[coordinate] = sbu_pos[3] 
+
+
     # Save switches positions
     sbu_df.to_csv(sbu)
 
@@ -163,3 +216,40 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     switch_position(args.route,args.sbu,args.ld)
+
+
+
+
+
+
+    # LUT for NEM orientation conventions
+    #       Convention in labeling starts from the west (W) terminal and rotate clockwise
+    #       Switch coordinate -> [a,b,c,d] = [W,N,E,S]
+    #       Switch orientation -> 0 = unconnected, 1 = clockwise, 2 = anti-clockwise
+
+    orientation_list = {
+        # 4 ends and No signal path
+        'WNES': [2, 1, 2, 1],
+        'None': [0, 0, 0, 0],
+
+        # 2 ends signal path
+        'WN': [2, 1, 0, 0],
+        'WE': [2, 0, 2, 0],
+        'WS': [2, 0, 0, 1],
+        'NE': [0, 2, 2, 0],
+        'NS': [0, 2, 0, 2],
+        'ES': [0, 0, 2, 1],
+
+        # 3 ends signal path
+        'WNE': [2, 1, 2, 0],
+        'NES': [0, 2, 1, 2],
+        'ESW': [2, 0, 2, 1],
+        'SWN': [1, 2, 0, 2],
+
+        # 2 ends diagonal double signal paths
+        'WN-ES': [2, 1, 1, 2],
+        'NE-SW': [2, 2, 1, 1],
+
+        # 2 ends crossing double signal paths
+        'WE-NS': [2, 2, 2, 2]
+        }
