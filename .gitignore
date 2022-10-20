@@ -163,5 +163,5 @@ vtr_flow/benchmarks/titan_other_blif
 #
 # Benchmarks Results
 #
-workspace/benchmarking/ZeroAMP_Test
+workspace/benchmarking/ZeroAMP_Test/**/run*
 workspace/benchmarking/regression_tests

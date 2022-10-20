@@ -1,0 +1,12 @@
+# Architecture: k6_frac_N10_frac_chain_mem32K_40nm
+k6_frac_N10_frac_chain_mem32K_40nm/basic_no_timing
+k6_frac_N10_frac_chain_mem32K_40nm/basic_timing
+k6_frac_N10_frac_chain_mem32K_40nm/basic_timing_no_sdc
+k6_frac_N10_frac_chain_mem32K_40nm/hdl_include
+
+# Architecture: stratixiv_arch.timing
+#stratixiv_arch.timing/basic_no_timing
+#stratixiv_arch.timing/basic_timing
+#stratixiv_arch.timing/basic_timing_no_sdc
+#stratixiv_arch.timing/hdl_include
+

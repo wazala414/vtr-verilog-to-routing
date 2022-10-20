@@ -1,0 +1,51 @@
+##############################################
+# Configuration file for running experiments
+##############################################
+
+# Path to directory of circuits to use
+circuits_dir=benchmarks/verilog
+
+# Path to directory of architectures to use
+archs_dir=../workspace/benchmarking/arch/k6_frac_N10_frac_chain_mem32K_40nm/optimized
+
+# Add circuits to list to sweep
+circuit_list_add=mkPktMerge.v
+
+# Add architectures to list to sweep
+arch_list_add=Reference.xml
+arch_list_add=Unidir_FS4_Same_Side.xml
+arch_list_add=Unidir_Full_Same_Side.xml
+arch_list_add=Unidir_Full_No_Same_Side.xml
+
+# Parse info and how to parse
+parse_file=vpr_standard.txt
+
+# How to parse QoR info
+qor_parse_file=qor_standard.txt
+
+# Pass requirements
+pass_requirements_file=pass_requirements.txt
+
+# Script parameters
+script_params_common = -track_memory_usage  --reorder_rr_graph_nodes_algorithm random_shuffle --max_router_iterations 300
+script_params_list_add = --pres_fac_mult 1.3
+script_params_list_add = --pres_fac_mult 1.2
+script_params_list_add = --pres_fac_mult 1.1
+script_params_list_add = --pres_fac_mult 1.0
+script_params_list_add = --pres_fac_mult 0.9
+script_params_list_add = --astar_fac 1.2
+script_params_list_add = --astar_fac 1.15
+script_params_list_add = --astar_fac 1.10
+script_params_list_add = --astar_fac 1.05
+script_params_list_add = --astar_fac 1.0
+script_params_list_add = --astar_fac 0.95
+script_params_list_add = --astar_fac 0.90
+script_params_list_add = --astar_fac 0.90
+script_params_list_add = --max_criticality 0.99
+script_params_list_add = --max_criticality 0.8
+script_params_list_add = --max_criticality 0.6
+script_params_list_add = --max_criticality 0.4
+script_params_list_add = --max_criticality 0.2
+script_params_list_add = --max_criticality 0.15
+script_params_list_add = --max_criticality 0.10
+script_params_list_add = --max_criticality 0.05
