@@ -297,8 +297,13 @@ void ClockRib::create_rr_nodes_and_internal_edges_for_one_instance(ClockRRGraphB
             clock_graph.add_switch_location(get_name(), drive.name, drive_x, y, drive_node_idx);
 
             // create rib wire to the right and left of the drive point
+<<<<<<< HEAD
             auto left_node_idx = create_chanx_wire(layer_num,
                                                    x_start + x_offset,
+=======
+            /* TO INVESTIGATE - Function values might need modification as well as function itself */
+            auto left_node_idx = create_chanx_wire(x_start + x_offset,
+>>>>>>> refs/heads/victor/workspace
                                                    drive_x - 1,
                                                    y,
                                                    ptc_num,
@@ -348,6 +353,7 @@ int ClockRib::create_chanx_wire(int layer,
                                                        x_chan_wire.layer.r_metal, x_chan_wire.layer.c_metal, g_vpr_ctx.mutable_device().rr_rc_data)));
     rr_graph_builder.set_node_direction(chanx_node, direction);
 
+    /* TO INVESTIGATE - Does this still hold with ::SAME ? */
     short seg_index = 0;
     switch (direction) {
         case Direction::BIDIR:
@@ -632,6 +638,7 @@ void ClockSpine::create_rr_nodes_and_internal_edges_for_one_instance(ClockRRGrap
                                                     num_segments_x);
             clock_graph.add_switch_location(get_name(), drive.name, x, drive_y, drive_node_idx);
 
+            /* TO INVESTIGATE - Function values might need modification as well as function itself */
             // create spine wire above and below the drive point
             auto left_node_idx = create_chany_wire(layer_num,
                                                    y_start + y_offset,
@@ -690,6 +697,7 @@ int ClockSpine::create_chany_wire(int layer,
                                                        y_chan_wire.layer.r_metal, y_chan_wire.layer.c_metal, g_vpr_ctx.mutable_device().rr_rc_data)));
     rr_graph_builder.set_node_direction(chany_node, direction);
 
+    /* TO INVESTIGATE - Does this still hold ? */
     short seg_index = 0;
     switch (direction) {
         case Direction::BIDIR:

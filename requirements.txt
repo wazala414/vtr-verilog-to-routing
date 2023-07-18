@@ -9,3 +9,8 @@ pylint==2.7.4
 
 # Surelog
 orderedmultidict
+
+# ZeroAMP Specific Packages
+pandas
+tk
+pillow

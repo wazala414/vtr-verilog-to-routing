@@ -733,12 +733,45 @@ static void compute_router_wire_lookahead(const std::vector<t_segment_inf>& segm
                             sample_y = rr_graph.node_yhigh(sample_node);
                         }
 
+<<<<<<< HEAD
                         run_dijkstra(sample_node,
                                      layer_num,
                                      sample_x,
                                      sample_y,
                                      routing_cost_map,
                                      &dijkstra_data);
+=======
+                if (sample_nodes[chan_type].size() >= ref_increments.size()) {
+                    break;
+                }
+            }
+        }
+
+        //Finally, now that we have a list of sample locations, run a Djikstra flood from
+        //each sample location to profile the routing network from this type
+
+        t_dijkstra_data dijkstra_data;
+        t_routing_cost_map routing_cost_map({device_ctx.grid.width(), device_ctx.grid.height()});
+
+        for (e_rr_type chan_type : chan_types) {
+            if (sample_nodes[chan_type].empty()) {
+                VTR_LOG_WARN("Unable to find any sample location for segment %s type '%s' (length %d)\n",
+                             rr_node_typename[chan_type],
+                             segment_inf[iseg].name.c_str(),
+                             segment_inf[iseg].length);
+            } else {
+                //reset cost for this segment
+                routing_cost_map.fill(Expansion_Cost_Entry());
+
+                /* TO INVESTIGATE - Seems to require some adaptation */
+                for (RRNodeId sample_node : sample_nodes[chan_type]) {
+                    int sample_x = rr_graph.node_xlow(sample_node);
+                    int sample_y = rr_graph.node_ylow(sample_node);
+
+                    if (rr_graph.node_direction(sample_node) == Direction::DEC) {
+                        sample_x = rr_graph.node_xhigh(sample_node);
+                        sample_y = rr_graph.node_yhigh(sample_node);
+>>>>>>> refs/heads/victor/workspace
                     }
 
                     if (false) print_router_cost_map(routing_cost_map);
@@ -769,6 +802,7 @@ static RRNodeId get_start_node(int layer, int start_x, int start_y, int target_x
         VPR_FATAL_ERROR(VPR_ERROR_ROUTE, "Must start lookahead routing from CHANX or CHANY node\n");
     }
 
+    /* TO INVESTIGATE - Probably needs some extra statements for same side connection */
     /* determine which direction the wire should go in based on the start & target coordinates */
     Direction direction = Direction::INC;
     if ((rr_type == CHANX && target_x < start_x) || (rr_type == CHANY && target_y < start_y)) {
@@ -1170,6 +1204,7 @@ static void get_xy_deltas(const RRNodeId from_node, const RRNodeId to_node, int*
             delta_seg = 0;
         }
 
+        /* TO INVESTIGATE - Might need adaptation */
         /* account for wire direction. lookahead map was computed by looking up and to the right starting at INC wires. for targets
          * that are opposite of the wire direction, let's add 1 to delta_seg */
         Direction from_dir = rr_graph.node_direction(from_node);
@@ -1282,6 +1317,7 @@ static void adjust_rr_wire_position(const RRNodeId rr, int& x, int& y) {
 
     Direction rr_dir = rr_graph.node_direction(rr);
 
+    /* TO INVESTIGATE - Does it still hold if ::SAME doesn't exist ? */
     if (rr_dir == Direction::DEC) {
         x = rr_graph.node_xhigh(rr);
         y = rr_graph.node_yhigh(rr);

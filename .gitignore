@@ -142,3 +142,17 @@ tags
 cmake-build-debug
 cmake-build-release
 /.metadata/
+
+#
+# Titan Benchmarks
+#
+vtr_flow/arch/titan
+vtr_flow/benchmarks/titan_blif
+vtr_flow/benchmarks/titan_other_blif
+
+#
+# Benchmarks Results
+#
+workspace/benchmarking/**/run*/
+workspace/benchmarking/**/run*!.z*
+#workspace/benchmarking/regression_tests

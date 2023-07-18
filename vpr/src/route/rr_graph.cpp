@@ -1136,8 +1136,15 @@ static void build_rr_graph(const t_graph_type graph_type,
                                                                   switchblocks, &nodes_per_chan, directionality,
                                                                   switchpoint_rand_state);
         } else {
-            /* it looks like we get unbalanced muxing from this switch block code with Fs > 3 */
-            VTR_ASSERT(Fs == 3);
+            
+            /* TODO: same_side_boolean - This section should be uncommented when predefined architecture are able to get a same-side boolean to specify to the topology
+                                         that same side connections are allowed. The If statement should be completed here to check the state of the boolean. */
+            //if () {    
+            //    VTR_ASSERT(Fs == 4);
+            //} else {
+                /* it looks like we get unbalanced muxing from this switch block code with Fs > 3 */
+                VTR_ASSERT(Fs == 3);
+            //}    
 
             unidir_sb_pattern = alloc_sblock_pattern_lookup(grid, &nodes_per_chan);
             for (size_t i = 0; i < grid.width() - 1; i++) {
@@ -1883,6 +1890,9 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
     //RR graph creation is the high-watermark of VPR's memory use.
     t_rr_edge_info_set rr_edges_to_create;
 
+    /* Passes Fs to the build_rr_chan while taking same side connection into account */
+    int Fs_per_side;
+
     /* If Fc gets clipped, this will be flagged to true */
     *Fc_clipped = false;
 
@@ -1972,7 +1982,18 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
 
     num_edges = 0;
     /* Build channels */
-    VTR_ASSERT(Fs % 3 == 0);
+    /* TODO: same_side_boolean - This section should be uncommented when predefined architecture are able to get a same-side boolean to specify to the topology 
+                                 that same side connections are allowed. The If statement should be completed here to check the state of the boolean. 
+                                 At the moment, Fs % 3 == 0 works even when same side exist, modifications needed in place_and_route.cpp */
+    // if (false) {    
+    //    VTR_ASSERT(Fs % 4 == 0);
+    //    Fs_per_side = Fs / 4;
+    // } else {
+        /* it looks like we get unbalanced muxing from this switch block code with Fs > 3 */
+        VTR_ASSERT(Fs % 3 == 0);
+        Fs_per_side = Fs / 3;
+    // }       
+    
     for (int layer = 0; layer < grid.get_num_layers(); ++layer) {
         for (size_t i = 0; i < grid.width() - 1; ++i) {
             for (size_t j = 0; j < grid.height() - 1; ++j) {
@@ -1981,7 +2002,7 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
                     build_rr_chan(rr_graph_builder, layer, i, j, CHANX, track_to_pin_lookup_x, sb_conn_map, switch_block_conn,
                                   CHANX_COST_INDEX_START,
                                   chan_width, grid, tracks_per_chan,
-                                  sblock_pattern, Fs / 3, chan_details_x, chan_details_y,
+                                  sblock_pattern, Fs_per_side, chan_details_x, chan_details_y,
                                   rr_edges_to_create,
                                   wire_to_ipin_switch,
                                   directionality);
@@ -1998,7 +2019,7 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
                     build_rr_chan(rr_graph_builder, layer, i, j, CHANY, track_to_pin_lookup_y, sb_conn_map, switch_block_conn,
                                   CHANX_COST_INDEX_START + num_seg_types_x,
                                   chan_width, grid, tracks_per_chan,
-                                  sblock_pattern, Fs / 3, chan_details_x, chan_details_y,
+                                  sblock_pattern, Fs_per_side, chan_details_x, chan_details_y,
                                   rr_edges_to_create,
                                   wire_to_ipin_switch,
                                   directionality);
