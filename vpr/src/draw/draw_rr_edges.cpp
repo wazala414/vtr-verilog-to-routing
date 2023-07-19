@@ -161,7 +161,7 @@ void draw_chany_to_chany_edge(RRNodeId from_node, RRNodeId to_node, short switch
     }
 }
 
-void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int to_track, short switch_type, ezgl::renderer* g) {
+void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, short switch_type, ezgl::renderer* g) {
     /* Draws a connection between two x-channel segments.  Passing in the track *
      * numbers allows this routine to be used for both rr_graph and routing     *
      * drawing->                                                                 */
@@ -277,7 +277,7 @@ void draw_chanx_to_chanx_edge(RRNodeId from_node, RRNodeId to_node, int to_track
     }
 }
 
-void draw_chanx_to_chany_edge(int chanx_node, int chanx_track, int chany_node, int chany_track, enum e_edge_dir edge_dir, short switch_type, ezgl::renderer* g) {
+void draw_chanx_to_chany_edge(int chanx_node, int chany_node, enum e_edge_dir edge_dir, short switch_type, ezgl::renderer* g) {
     t_draw_state* draw_state = get_draw_state_vars();
     t_draw_coords* draw_coords = get_draw_coords_vars();
     auto& device_ctx = g_vpr_ctx.device();
@@ -311,7 +311,7 @@ void draw_chanx_to_chany_edge(int chanx_node, int chanx_track, int chany_node, i
         x1 = draw_coords->tile_x[chany_x] + draw_coords->get_tile_width();
         if (rr_graph.node_direction(RRNodeId(chanx_node)) != Direction::BIDIR && (SwitchType)switch_type != SwitchType::SHORT) {
             if (edge_dir == FROM_X_TO_Y) {
-                if ((chanx_track % 2) == 1) { /* If dec wire, then going left */
+                if (rr_graph.node_direction(RRNodeId(chanx_node)) == Direction::DEC) { /* If dec wire, then going left */
                     x1 = draw_coords->tile_x[chany_x + 1];
                 }
             }
@@ -325,7 +325,7 @@ void draw_chanx_to_chany_edge(int chanx_node, int chanx_track, int chany_node, i
 
         if (rr_graph.node_direction(RRNodeId(chany_node)) != Direction::BIDIR && (SwitchType)switch_type != SwitchType::SHORT) {
             if (edge_dir == FROM_Y_TO_X) {
-                if ((chany_track % 2) == 1) { /* If dec wire, then going down */
+                if (rr_graph.node_direction(RRNodeId(chany_node)) == Direction::DEC) { /* If dec wire, then going down */
                     y2 = draw_coords->tile_y[chanx_y + 1];
                 }
             }
