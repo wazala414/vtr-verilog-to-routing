@@ -1,5 +1,6 @@
 # Architecture: k6_frac_N10_frac_chain_mem32K_40nm
-stratixiv_control
+#stratixiv_control
+stratixiv_base
 #stratixiv_3T
 #stratixiv_7T
 #stratixiv_xi10
