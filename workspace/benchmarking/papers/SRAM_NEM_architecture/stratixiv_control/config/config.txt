@@ -3,50 +3,39 @@
 ##############################################
 
 # Path to directory of circuits to use
-#circuits_dir=benchmarks/titan_blif
-circuits_dir=benchmarks/titan_blif #/titan23/stratixiv
-sdc_dir=benchmarks/titan_blif #/titan23/stratixiv
+circuits_dir=benchmarks/titan_blif 
+sdc_dir=benchmarks/titan_blif 
 
 # Path to directory of architectures to use
-#archs_dir=../workspace/architectures/papers/SRAM_NEM_architecture
-archs_dir=arch/titan
-
-#../workspace/architectures/papers/SRAM_NEM_architecture/bitcoin_miner_stratixiv_arch_timing.blif
+archs_dir=../workspace/architectures/papers/SRAM_NEM_architecture
 
 # Add circuits to list to sweep
 #circuit_list_add=bitcoin_miner_stratixiv_arch_timing.blif
-circuit_list_add=bitcoin_miner_stratixiv_arch_timing.blif
-circuit_list_add=bitonic_mesh_stratixiv_arch_timing.blif
-circuit_list_add=cholesky_mc_stratixiv_arch_timing.blif
-circuit_list_add=cholesky_bdti_stratixiv_arch_timing.blif
-circuit_list_add=dart_stratixiv_arch_timing.blif
-circuit_list_add=denoise_stratixiv_arch_timing.blif
-circuit_list_add=des90_stratixiv_arch_timing.blif
-circuit_list_add=directrf_stratixiv_arch_timing.blif
-circuit_list_add=gaussianblur_stratixiv_arch_timing.blif
-circuit_list_add=gsm_switch_stratixiv_arch_timing.blif
-circuit_list_add=LU230_stratixiv_arch_timing.blif
-circuit_list_add=LU_Network_stratixiv_arch_timing.blif
-circuit_list_add=mes_noc_stratixiv_arch_timing.blif
-circuit_list_add=minres_stratixiv_arch_timing.blif
-circuit_list_add=neuron_stratixiv_arch_timing.blif
-circuit_list_add=openCV_stratixiv_arch_timing.blif
-circuit_list_add=segmentation_stratixiv_arch_timing.blif
-circuit_list_add=SLAM_spheric_stratixiv_arch_timing.blif
-circuit_list_add=sparcT1_chip2_stratixiv_arch_timing.blif
-circuit_list_add=sparcT1_core_stratixiv_arch_timing.blif
-circuit_list_add=sparcT2_core_stratixiv_arch_timing.blif
-circuit_list_add=stap_qrd_stratixiv_arch_timing.blif
-circuit_list_add=stereo_vision_stratixiv_arch_timing.blif
-
+#circuit_list_add=bitonic_mesh_stratixiv_arch_timing.blif
+#circuit_list_add=cholesky_mc_stratixiv_arch_timing.blif
+#circuit_list_add=cholesky_bdti_stratixiv_arch_timing.blif
+#circuit_list_add=dart_stratixiv_arch_timing.blif
+#circuit_list_add=denoise_stratixiv_arch_timing.blif
+#circuit_list_add=des90_stratixiv_arch_timing.blif
+#circuit_list_add=directrf_stratixiv_arch_timing.blif
+#circuit_list_add=gaussianblur_stratixiv_arch_timing.blif
+#circuit_list_add=gsm_switch_stratixiv_arch_timing.blif
+#circuit_list_add=LU230_stratixiv_arch_timing.blif
+#circuit_list_add=LU_Network_stratixiv_arch_timing.blif
+#circuit_list_add=mes_noc_stratixiv_arch_timing.blif
 #circuit_list_add=minres_stratixiv_arch_timing.blif
-#circuit_list_add=adder.blif
-#circuit_list_add=single_wire.v
-#circuit_list_add=single_ff.v
+#circuit_list_add=neuron_stratixiv_arch_timing.blif
+#circuit_list_add=openCV_stratixiv_arch_timing.blif
+#circuit_list_add=segmentation_stratixiv_arch_timing.blif
+#circuit_list_add=SLAM_spheric_stratixiv_arch_timing.blif
+#circuit_list_add=sparcT1_chip2_stratixiv_arch_timing.blif
+circuit_list_add=sparcT1_core_stratixiv_arch_timing.blif
+#circuit_list_add=sparcT2_core_stratixiv_arch_timing.blif
+#circuit_list_add=stap_qrd_stratixiv_arch_timing.blif
+#circuit_list_add=stereo_vision_stratixiv_arch_timing.blif
 
 # Add architectures to list to sweep
-#arch_list_add=stratixiv_arch.timing.control.xml
-arch_list_add=stratixiv_arch.timing.xml
+arch_list_add=stratixiv_arch.timing.control.xml
 
 # Parse info and how to parse
 parse_file=vpr_titan.txt
@@ -58,4 +47,4 @@ qor_parse_file=qor_vpr_titan.txt
 pass_requirements_file=pass_requirements_vpr_titan.txt
 
 # Script parameters
-script_params_common=-starting_stage vpr --route_chan_width 600 --max_router_iterations 500
+script_params_common=-starting_stage vpr -power --route_chan_width 600 --max_router_iterations 150 #-cmos_tech /home/vm/VTR-Tools/vtr_flow/tech/PTM_130nm/130nm.xml 
